@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+import { apiBase } from "@/lib/api";
 
 const FALLBACK_NAV = [
   { id: "dashboard", label: "Dashboard", href: "/" },
@@ -15,6 +18,7 @@ const FALLBACK_NAV = [
   { id: "optimization", label: "Optimization", href: "/optimization" },
   { id: "portfolio", label: "Portfolio", href: "/portfolio" },
   { id: "ai-lab", label: "AI Lab", href: "/ai-lab" },
+  { id: "notebook", label: "Notebook", href: "/notebook" },
   { id: "logs", label: "Logs", href: "/logs" },
   { id: "settings", label: "Settings", href: "/settings" },
   { id: "docs", label: "Documentation", href: "/docs" },
@@ -24,6 +28,22 @@ const appName = process.env.NEXT_PUBLIC_APP_NAME || "Research OS";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [query, setQuery] = useState("");
+  const [hits, setHits] = useState<Record<string, unknown> | null>(null);
+
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setHits(null);
+      return;
+    }
+    const handle = setTimeout(() => {
+      fetch(`${apiBase()}/api/v1/search?q=${encodeURIComponent(query)}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then(setHits)
+        .catch(() => setHits(null));
+    }, 250);
+    return () => clearTimeout(handle);
+  }, [query]);
 
   return (
     <div className="flex min-h-screen">
@@ -57,15 +77,33 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <p className="px-2 pt-4 font-mono text-[10px] text-ink-faint">⌘K search · Phase 0</p>
+        <p className="px-2 pt-4 font-mono text-[10px] text-ink-faint">Phase 1–6 · evidence first</p>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-canvas-border bg-canvas/70 px-6 backdrop-blur-md">
-          <p className="text-sm text-ink-muted">
-            Discover · validate · organize —{" "}
-            <span className="text-ink">evidence over intuition</span>
-          </p>
+        <header className="sticky top-0 z-20 flex h-12 items-center justify-between gap-4 border-b border-canvas-border bg-canvas/70 px-6 backdrop-blur-md">
+          <div className="relative min-w-0 flex-1 max-w-md">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search strategies, experiments, hypotheses…"
+              className="w-full rounded-md border border-canvas-border bg-canvas px-3 py-1.5 text-sm text-ink outline-none ring-accent focus:ring-1"
+            />
+            {hits && (
+              <div className="absolute left-0 right-0 top-9 z-30 panel max-h-72 overflow-auto p-3 text-xs">
+                {(["strategies", "experiments", "hypotheses"] as const).map((key) => (
+                  <div key={key} className="mb-2">
+                    <p className="mb-1 uppercase tracking-wider text-ink-faint">{key}</p>
+                    {((hits[key] as Array<Record<string, unknown>>) || []).map((item) => (
+                      <p key={String(item.id)} className="truncate text-ink-muted">
+                        {String(item.name || item.title || item.summary || item.id)}
+                      </p>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="flex items-center gap-3 font-mono text-[11px] text-ink-faint">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-accent-good" />

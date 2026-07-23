@@ -2,37 +2,22 @@
 
 Read this after any interruption, then `ROADMAP.md` and `CHANGELOG.md`.
 
-## Now (Phase 0)
+## Status
 
-- [x] Docs + license + gitignore
-- [x] Root config contract
-- [x] API domain models + Alembic first migration
-- [x] Web dashboard pages wired to API health/settings
-- [x] Docker Compose + CI workflow
-- [x] API tests (5) + ruff clean; web typecheck
-- [ ] Initial git commit (await operator request)
-- [ ] Optional: `docker compose up -d postgres redis` + `make migrate` smoke on machine
+**v0.1.0 research OS MVP is complete** — discover → backtest → validate → accept/reject → document works offline.
 
-## Next (Phase 1 kickoff)
+## Next horizon
 
-- [ ] Experiment CRUD API
-- [ ] DataProvider protocol + fake/fixture provider for tests
-- [ ] First configurable NSE historical adapter
-- [ ] Datasets page showing freshness
-
-## Parking lot
-
-- Desktop packaging
-- Options microstructure
-- Marketplace payments (keep OSS-first; optional later)
-- Vector DB (optional embeddings for literature/search)
-
-## Blockers
-
-- None (greenfield)
+- [ ] Real NSE vendor HTTP adapter behind `DATA_NSE_API_BASE_URL`
+- [ ] LangGraph durable graph + Celery forever-loop with pause/resume UI
+- [ ] In-browser notebook kernel (Pyodide or server kernels)
+- [ ] Auth / encrypted secrets for multi-user
+- [ ] Options architecture plugins
+- [ ] Playwright e2e smoke
 
 ## Notes for agents
 
 - Branding is placeholder — use `config.app.name`
 - Never hardcode provider URLs or API keys
 - Prefer evidence, tests, and reproducibility in every PR
+- Run `make api-test` after backend changes

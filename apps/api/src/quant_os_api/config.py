@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     quant_os_config_path: str = Field(default="", alias="QUANT_OS_CONFIG_PATH")
 
     database_url: str = Field(
-        default="postgresql+psycopg://quant:quant@localhost:5432/quant_os",
+        default="sqlite:///./data/quant_os.db",
         alias="DATABASE_URL",
     )
     redis_url: str = Field(default="redis://localhost:6379/0", alias="REDIS_URL")
@@ -143,3 +143,13 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+def resolve_database_url(url: str) -> str:
+    """Resolve relative SQLite paths against the monorepo root."""
+    if not url.startswith("sqlite:///"):
+        return url
+    rest = url.removeprefix("sqlite:///")
+    if rest == ":memory:" or rest.startswith("/"):
+        return url
+    return f"sqlite:///{(_repo_root() / rest).resolve()}"

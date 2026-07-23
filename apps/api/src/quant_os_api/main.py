@@ -2,12 +2,22 @@
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from quant_os_api import __version__
 from quant_os_api.config import get_settings
+from quant_os_api.db import init_db
 from quant_os_api.routes import router
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    init_db()
+    yield
 
 
 def create_app() -> FastAPI:
@@ -16,6 +26,7 @@ def create_app() -> FastAPI:
         title=settings.app_name,
         description=settings.app_tagline,
         version=__version__,
+        lifespan=lifespan,
     )
     app.add_middleware(
         CORSMiddleware,

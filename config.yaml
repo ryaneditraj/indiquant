@@ -55,25 +55,25 @@ ai:
       base_url: "http://localhost:11434/v1"
 
 data_providers:
-  default: "nse_historical"
+  default: "fixture"
   providers:
     nse_historical:
       enabled: true
-      # Concrete adapter module path — swappable without code edits to callers
-      module: "quant_os_api.plugins.data.nse_historical"
+      # package.module.ClassName — swappable without code edits to callers
+      module: "quant_os_api.plugins.data.nse_historical.NSEHistoricalProvider"
     bse_historical:
-      enabled: false
-      module: "quant_os_api.plugins.data.bse_historical"
+      enabled: true
+      module: "quant_os_api.plugins.data.bse_historical.BSEHistoricalProvider"
     fixture:
       enabled: true
-      module: "quant_os_api.plugins.data.fixture"
+      module: "quant_os_api.plugins.data.fixture.FixtureDataProvider"
 
 brokers:
   default: "paper"
   providers:
     paper:
       enabled: true
-      module: "quant_os_api.plugins.brokers.paper"
+      module: "quant_os_api.plugins.brokers.paper.PaperBroker"
 
 backtest:
   default_initial_cash: 1000000
@@ -88,9 +88,9 @@ validation:
   min_reproducibility_score: 0.7
 
 features:
-  ai_loop_enabled: false
+  ai_loop_enabled: true
   marketplace_enabled: false
-  notebook_enabled: false
+  notebook_enabled: true
   live_data_enabled: false
 
 logging:

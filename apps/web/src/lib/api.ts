@@ -31,55 +31,69 @@ export type NavSection = {
   enabled?: boolean;
 };
 
-function apiBase(): string {
+export function apiBase(): string {
   return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 }
 
-export async function fetchHealth(): Promise<HealthResponse | null> {
+async function getJson<T>(path: string, init?: RequestInit): Promise<T | null> {
   try {
-    const res = await fetch(`${apiBase()}/api/v1/health`, {
-      next: { revalidate: 5 },
+    const res = await fetch(`${apiBase()}${path}`, {
+      ...init,
+      headers: {
+        "Content-Type": "application/json",
+        ...(init?.headers || {}),
+      },
+      next: init?.method && init.method !== "GET" ? undefined : { revalidate: 5 },
+      cache: init?.method && init.method !== "GET" ? "no-store" : undefined,
     });
     if (!res.ok) return null;
-    return (await res.json()) as HealthResponse;
+    return (await res.json()) as T;
   } catch {
     return null;
   }
+}
+
+export async function fetchHealth(): Promise<HealthResponse | null> {
+  return getJson<HealthResponse>("/api/v1/health");
 }
 
 export async function fetchDashboard(): Promise<DashboardSnapshot | null> {
-  try {
-    const res = await fetch(`${apiBase()}/api/v1/dashboard/snapshot`, {
-      next: { revalidate: 5 },
-    });
-    if (!res.ok) return null;
-    return (await res.json()) as DashboardSnapshot;
-  } catch {
-    return null;
-  }
+  return getJson<DashboardSnapshot>("/api/v1/dashboard/snapshot");
 }
 
 export async function fetchNav(): Promise<{ app_name: string; sections: NavSection[] } | null> {
-  try {
-    const res = await fetch(`${apiBase()}/api/v1/meta/nav`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return null;
-    return (await res.json()) as { app_name: string; sections: NavSection[] };
-  } catch {
-    return null;
-  }
+  return getJson("/api/v1/meta/nav");
 }
 
 export async function fetchPublicSettings(): Promise<Record<string, unknown> | null> {
-  try {
-    const res = await fetch(`${apiBase()}/api/v1/settings/public`, {
-      next: { revalidate: 30 },
-    });
-    if (!res.ok) return null;
-    const body = (await res.json()) as { settings: Record<string, unknown> };
-    return body.settings;
-  } catch {
-    return null;
-  }
+  const body = await getJson<{ settings: Record<string, unknown> }>("/api/v1/settings/public");
+  return body?.settings ?? null;
+}
+
+export async function fetchExperiments() {
+  return getJson<Array<Record<string, unknown>>>("/api/v1/experiments");
+}
+
+export async function fetchStrategies() {
+  return getJson<Array<Record<string, unknown>>>("/api/v1/strategies");
+}
+
+export async function fetchHypotheses() {
+  return getJson<Array<Record<string, unknown>>>("/api/v1/hypotheses");
+}
+
+export async function fetchDatasets() {
+  return getJson<{ datasets: Array<Record<string, unknown>> }>("/api/v1/datasets");
+}
+
+export async function fetchProviders() {
+  return getJson<{ providers: Array<Record<string, unknown>> }>("/api/v1/data/providers");
+}
+
+export async function fetchAuditLogs() {
+  return getJson<{ events: Array<Record<string, unknown>> }>("/api/v1/logs/audit");
+}
+
+export async function fetchSearch(q: string) {
+  return getJson<Record<string, unknown>>(`/api/v1/search?q=${encodeURIComponent(q)}`);
 }

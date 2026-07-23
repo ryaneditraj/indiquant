@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "quant-os-api"
-version = "0.0.1"
+version = "0.1.0"
 description = "Research OS API — AI quantitative research operating system"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -24,6 +24,10 @@ dependencies = [
   "python-dotenv>=1.0.1",
   "httpx>=0.28.0",
   "orjson>=3.10.0",
+  "numpy>=2.1.0",
+  "pandas>=2.2.0",
+  "pyarrow>=18.0.0",
+  "scipy>=1.14.0",
 ]
 
 [project.optional-dependencies]
@@ -35,16 +39,20 @@ dev = [
   "mypy>=1.13.0",
   "types-PyYAML>=6.0.12",
 ]
+ai = [
+  "openai>=1.57.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/quant_os_api"]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]  # FastAPI Depends() in defaults is idiomatic
 
 [tool.black]
 line-length = 100
