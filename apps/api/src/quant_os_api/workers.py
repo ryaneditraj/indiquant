@@ -27,3 +27,18 @@ def research_cycle_task(symbol: str = "RELIANCE", seed: int = 42) -> dict:
         "accepted": result.accepted,
         "experiment_id": result.experiment["id"],
     }
+
+
+@celery_app.task(name="quant_os.research_loop_start")
+def research_loop_start_task(
+    symbols: list[str] | None = None,
+    max_cycles: int = 5,
+    provider: str = "fixture",
+) -> dict:
+    from quant_os_api.services.research_loop import get_loop_controller
+
+    return get_loop_controller().start(
+        symbols=symbols,
+        provider=provider,
+        max_cycles=max_cycles,
+    )

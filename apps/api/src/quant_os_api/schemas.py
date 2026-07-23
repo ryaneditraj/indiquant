@@ -159,3 +159,23 @@ class ChatRequest(BaseModel):
 
 class PortfolioRequest(BaseModel):
     symbols: list[str] = Field(default_factory=lambda: ["RELIANCE", "TCS", "INFY"])
+
+
+class LoopControlRequest(BaseModel):
+    symbols: list[str] = Field(default_factory=lambda: ["RELIANCE", "TCS", "INFY"])
+    provider: str | None = "fixture"
+    interval_seconds: float = 2.0
+    max_cycles: int | None = 5
+
+
+class NotebookExecuteRequest(BaseModel):
+    code: str
+
+
+class DuckDBQueryRequest(BaseModel):
+    sql: str
+    max_rows: int = 200
+
+
+class EncryptRequest(BaseModel):
+    value: str

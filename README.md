@@ -51,7 +51,7 @@ examples/       Curl / workflow examples
 
 ## Status
 
-**v0.1.0** — Research OS MVP complete: configurable providers, experiments, backtests, validation gates, AI cycle, dashboard. See [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
+**v0.2.0** — Forever loop, DuckDB analytics, CSV provider, notebook execute, equity charts, smoke tests. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick start (local)
 

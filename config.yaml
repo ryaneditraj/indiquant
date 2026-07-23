@@ -67,6 +67,9 @@ data_providers:
     fixture:
       enabled: true
       module: "quant_os_api.plugins.data.fixture.FixtureDataProvider"
+    csv_local:
+      enabled: true
+      module: "quant_os_api.plugins.data.csv_local.CSVLocalProvider"
 
 brokers:
   default: "paper"

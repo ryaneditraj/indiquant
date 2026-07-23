@@ -1,4 +1,4 @@
-.PHONY: help up down api-install api-test api-dev web-install web-dev migrate
+.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke
 
 help:
 	@echo "Quant OS / Research OS"
@@ -10,6 +10,8 @@ help:
 	@echo "  make web-install  - npm install web"
 	@echo "  make web-dev      - Next.js dev on :3000"
 	@echo "  make migrate      - Alembic upgrade head"
+	@echo "  make seed         - Seed sample CSV + parquet"
+	@echo "  make smoke        - curl smoke against :8000"
 
 up:
 	docker compose up -d postgres redis
@@ -34,3 +36,9 @@ web-dev:
 
 migrate:
 	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml alembic upgrade head
+
+seed:
+	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml python -c "from quant_os_api.services.seed import seed_sample_data; print(seed_sample_data())"
+
+smoke:
+	bash scripts/smoke.sh

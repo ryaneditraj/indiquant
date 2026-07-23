@@ -4,16 +4,16 @@ Read this after any interruption, then `ROADMAP.md` and `CHANGELOG.md`.
 
 ## Status
 
-**v0.1.0 research OS MVP is complete** — discover → backtest → validate → accept/reject → document works offline.
+**v0.2.0** — Forever loop, DuckDB analytics, CSV provider, notebook execute, charts, smoke tests.
 
 ## Next horizon
 
-- [ ] Real NSE vendor HTTP adapter behind `DATA_NSE_API_BASE_URL`
-- [ ] LangGraph durable graph + Celery forever-loop with pause/resume UI
-- [ ] In-browser notebook kernel (Pyodide or server kernels)
-- [ ] Auth / encrypted secrets for multi-user
+- [ ] Wire real NSE vendor behind `DATA_NSE_API_BASE_URL` (HTTP contract ready)
+- [ ] Full LangGraph durable checkpointing
+- [ ] Multi-user auth + encrypted secrets vault UI
 - [ ] Options architecture plugins
-- [ ] Playwright e2e smoke
+- [ ] Pyodide/in-browser kernel (server REPL exists)
+- [ ] CI job that boots API+web and runs Playwright
 
 ## Notes for agents
 

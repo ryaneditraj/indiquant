@@ -27,12 +27,16 @@ from quant_os_api.schemas import (
     BacktestRequest,
     ChatRequest,
     DashboardSnapshot,
+    DuckDBQueryRequest,
+    EncryptRequest,
     ExperimentCreate,
     ExperimentOut,
     HealthResponse,
     HypothesisCreate,
     HypothesisOut,
     IngestRequest,
+    LoopControlRequest,
+    NotebookExecuteRequest,
     PortfolioRequest,
     ResearchCycleRequest,
     SettingsPublicResponse,
@@ -42,8 +46,13 @@ from quant_os_api.schemas import (
 from quant_os_api.services import parquet_store
 from quant_os_api.services.ai_loop import llm_chat, run_research_cycle
 from quant_os_api.services.audit import read_audit, write_audit
+from quant_os_api.services.duckdb_store import query_duckdb, sync_parquet_to_duckdb
+from quant_os_api.services.notebook import execute_notebook_code
 from quant_os_api.services.persistence import persist_loop_result
 from quant_os_api.services.portfolio import portfolio_report
+from quant_os_api.services.research_loop import get_loop_controller
+from quant_os_api.services.secrets import decrypt_secret, encrypt_secret
+from quant_os_api.services.seed import seed_sample_data
 
 router = APIRouter()
 
@@ -91,6 +100,7 @@ def dashboard_snapshot(db: Session = Depends(get_db)) -> DashboardSnapshot:
         except Exception:  # noqa: BLE001
             regime = "unclassified"
 
+    loop = get_loop_controller().snapshot()
     return DashboardSnapshot(
         app_name=settings.app_name,
         research_score=round(score, 3),
@@ -98,8 +108,9 @@ def dashboard_snapshot(db: Session = Depends(get_db)) -> DashboardSnapshot:
             {
                 "id": "loop",
                 "agent": "ceo",
-                "title": "Research loop ready — POST /api/v1/ai/cycle",
-                "status": "idle",
+                "title": f"Research loop: {loop['status']}",
+                "status": loop["status"],
+                "cycles": loop["cycles_completed"],
             }
         ],
         queued_experiments=queued,
@@ -115,6 +126,7 @@ def dashboard_snapshot(db: Session = Depends(get_db)) -> DashboardSnapshot:
             "database": "ok",
             "datasets": len(datasets),
             "redis": "configured" if settings.redis_url else "missing",
+            "research_loop": loop["status"],
         },
         recent_discoveries=[
             {
@@ -455,7 +467,37 @@ def ai_chat(body: ChatRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
     )
 
 
-# --- Search / logs / notebook ---
+@router.get("/ai/loop")
+def ai_loop_status() -> dict[str, Any]:
+    return get_loop_controller().snapshot()
+
+
+@router.post("/ai/loop/start")
+def ai_loop_start(body: LoopControlRequest) -> dict[str, Any]:
+    return get_loop_controller().start(
+        symbols=body.symbols,
+        provider=body.provider,
+        interval_seconds=body.interval_seconds,
+        max_cycles=body.max_cycles,
+    )
+
+
+@router.post("/ai/loop/pause")
+def ai_loop_pause() -> dict[str, Any]:
+    return get_loop_controller().pause()
+
+
+@router.post("/ai/loop/resume")
+def ai_loop_resume() -> dict[str, Any]:
+    return get_loop_controller().resume()
+
+
+@router.post("/ai/loop/stop")
+def ai_loop_stop() -> dict[str, Any]:
+    return get_loop_controller().stop()
+
+
+# --- Search / logs / notebook / analytics ---
 
 
 @router.get("/search")
@@ -511,7 +553,49 @@ def notebook_examples() -> dict[str, Any]:
                 "id": str(uuid4()),
                 "title": "SMA momentum research template",
                 "markdown": "# Momentum research\nHypothesis first, then code, then validate.",
-                "code": "from quant_os_api.quant.backtest import sma_crossover_signals\nprint('ready')",
+                "code": (
+                    "provider = FixtureDataProvider()\n"
+                    "rows = provider.get_ohlcv('RELIANCE', date(2024,1,1), date(2024,6,1))\n"
+                    "bars = pd.DataFrame(rows)\n"
+                    "signals = backtest.sma_crossover_signals(bars['close'])\n"
+                    "result = backtest.run_bar_backtest(bars, signals).metrics\n"
+                    "print(result)\n"
+                ),
             }
         ]
     }
+
+
+@router.post("/notebook/execute")
+def notebook_execute(body: NotebookExecuteRequest) -> dict[str, Any]:
+    return execute_notebook_code(body.code)
+
+
+@router.post("/analytics/sync")
+def analytics_sync() -> dict[str, Any]:
+    return sync_parquet_to_duckdb()
+
+
+@router.post("/analytics/query")
+def analytics_query(body: DuckDBQueryRequest) -> dict[str, Any]:
+    try:
+        return query_duckdb(body.sql, max_rows=body.max_rows)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(400, str(exc)) from exc
+
+
+@router.post("/admin/seed")
+def admin_seed() -> dict[str, Any]:
+    result = seed_sample_data()
+    write_audit("sample_data_seeded", details={"count": len(result["seeded"])})
+    return result
+
+
+@router.post("/security/encrypt")
+def security_encrypt(body: EncryptRequest) -> dict[str, Any]:
+    return encrypt_secret(body.value)
+
+
+@router.post("/security/decrypt")
+def security_decrypt(body: EncryptRequest) -> dict[str, Any]:
+    return decrypt_secret(body.value)

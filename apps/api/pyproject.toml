@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "quant-os-api"
-version = "0.1.0"
+version = "0.2.0"
 description = "Research OS API — AI quantitative research operating system"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -28,6 +28,7 @@ dependencies = [
   "pandas>=2.2.0",
   "pyarrow>=18.0.0",
   "scipy>=1.14.0",
+  "duckdb>=1.1.0",
 ]
 
 [project.optional-dependencies]
@@ -41,6 +42,9 @@ dev = [
 ]
 ai = [
   "openai>=1.57.0",
+]
+security = [
+  "cryptography>=43.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]

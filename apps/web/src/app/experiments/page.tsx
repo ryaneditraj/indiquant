@@ -1,10 +1,32 @@
-import Link from "next/link";
+"use client";
 
+import { useEffect, useState } from "react";
+
+import { EquityChart } from "@/components/EquityChart";
 import { SectionTitle } from "@/components/ui";
-import { fetchExperiments } from "@/lib/api";
+import { apiBase } from "@/lib/api";
 
-export default async function ExperimentsPage() {
-  const experiments = (await fetchExperiments()) || [];
+type Experiment = {
+  id: string;
+  status: string;
+  ai_summary: string;
+  rejection_reason?: string;
+  reproducibility_score?: number;
+  outputs?: { equity_curve?: Array<{ ts?: string; equity: number }> };
+  metrics?: Record<string, number>;
+};
+
+export default function ExperimentsPage() {
+  const [experiments, setExperiments] = useState<Experiment[]>([]);
+
+  useEffect(() => {
+    fetch(`${apiBase()}/api/v1/experiments`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setExperiments)
+      .catch(() => setExperiments([]));
+  }, []);
+
+  const latestWithCurve = experiments.find((e) => (e.outputs?.equity_curve || []).length > 0);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -16,18 +38,34 @@ export default async function ExperimentsPage() {
         </p>
       </div>
 
+      {latestWithCurve ? (
+        <section className="panel p-5">
+          <SectionTitle
+            title="Latest equity curve"
+            subtitle={latestWithCurve.ai_summary || latestWithCurve.id}
+          />
+          <EquityChart data={latestWithCurve.outputs?.equity_curve || []} />
+        </section>
+      ) : null}
+
       <section className="panel overflow-hidden">
         <div className="border-b border-canvas-border px-5 py-3">
           <SectionTitle title={`${experiments.length} stored`} />
         </div>
         <div className="divide-y divide-canvas-border">
           {experiments.map((e) => (
-            <div key={String(e.id)} className="grid gap-2 px-5 py-4 md:grid-cols-[1fr_120px_100px]">
+            <div key={e.id} className="grid gap-2 px-5 py-4 md:grid-cols-[1fr_120px_100px]">
               <div>
-                <p className="text-sm text-ink">{String(e.ai_summary || "No summary")}</p>
-                <p className="mt-1 font-mono text-[10px] text-ink-faint">{String(e.id)}</p>
+                <p className="text-sm text-ink">{e.ai_summary || "No summary"}</p>
+                <p className="mt-1 font-mono text-[10px] text-ink-faint">{e.id}</p>
                 {e.rejection_reason ? (
-                  <p className="mt-1 text-xs text-accent-bad">{String(e.rejection_reason)}</p>
+                  <p className="mt-1 text-xs text-accent-bad">{e.rejection_reason}</p>
+                ) : null}
+                {e.metrics?.sharpe != null ? (
+                  <p className="mt-1 font-mono text-[10px] text-ink-muted">
+                    sharpe {Number(e.metrics.sharpe).toFixed(3)} · maxdd{" "}
+                    {Number(e.metrics.max_drawdown || 0).toFixed(3)}
+                  </p>
                 ) : null}
               </div>
               <p className="font-mono text-xs text-ink-muted">
@@ -38,14 +76,12 @@ export default async function ExperimentsPage() {
                   e.status === "accepted" ? "text-accent-good" : "text-accent-warn"
                 }`}
               >
-                {String(e.status)}
+                {e.status}
               </p>
             </div>
           ))}
           {!experiments.length && (
-            <p className="px-5 py-8 text-sm text-ink-muted">
-              Empty. Start from <Link href="/research">Research</Link> or Backtests.
-            </p>
+            <p className="px-5 py-8 text-sm text-ink-muted">Empty. Start from Research or Backtests.</p>
           )}
         </div>
       </section>

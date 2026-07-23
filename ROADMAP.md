@@ -84,15 +84,29 @@ Living document. Updated after every meaningful iteration.
 
 ---
 
-## Next horizon (post-0.1)
+## Phase 7 — v0.2 operational depth
+
+| Task | Status |
+|------|--------|
+| Forever loop pause/resume/stop | ✅ |
+| CSV local provider + sample seed | ✅ |
+| DuckDB analytics sync/query | ✅ |
+| Server notebook execute | ✅ |
+| Equity charts + Playwright smoke specs | ✅ |
+| Secret encrypt helpers | ✅ |
+
+---
+
+## Next horizon (post-0.2)
 
 | Task | Effort |
 |------|--------|
-| Live NSE websocket / paid vendor adapters | L |
-| Full LangGraph multi-agent graph + pause/resume UI | L |
-| In-browser notebook kernel | L |
+| Live NSE vendor HTTP (contract ready) | L |
+| LangGraph durable checkpoints | L |
+| Multi-user auth + secrets vault UI | L |
 | Options / microstructure plugins | XL |
-| Multi-user auth + encrypted secrets at rest | L |
+| Pyodide browser kernel | L |
+| CI boots stack + Playwright | M |
 | Desktop packaging | L |
 | Marketplace package format | M |
 
@@ -107,6 +121,7 @@ Living document. Updated after every meaningful iteration.
 | 2026-07-24 | SQLite default + Postgres optional | Zero-friction local research |
 | 2026-07-24 | Fixture fallback when NSE URL unset | Reproducible offline demos |
 | 2026-07-24 | Hypothesis-first AI cycle | Scientific discovery over indicator soup |
+| 2026-07-24 | In-process forever loop + Celery hooks | Pause/resume without Redis required |
 
 ---
 
