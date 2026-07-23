@@ -1,0 +1,29 @@
+---
+name: Feature request
+description: Propose a capability that helps discover a real market edge
+labels: [enhancement]
+body:
+  - type: textarea
+    id: edge
+    attributes:
+      label: How does this help discover a real edge?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Dashboard
+        - AI agents
+        - Data providers
+        - Backtest / validation
+        - Portfolio
+        - Docs / OSS
+        - Other

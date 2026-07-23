@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #0b0f14;
+  --ink: #e8eef4;
+  --accent: #3d9bfd;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-canvas text-ink antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(61, 155, 253, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(62, 207, 142, 0.06), transparent),
+    linear-gradient(180deg, #0b0f14 0%, #0d1218 100%);
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .panel {
+    @apply rounded-xl border border-canvas-border bg-canvas-elevated/80 shadow-panel backdrop-blur-sm;
+  }
+}

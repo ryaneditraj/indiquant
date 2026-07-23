@@ -1,0 +1,23 @@
+---
+name: Bug report
+description: Report incorrect behavior in the research OS
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Expected vs actual
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Steps, OS/arch, redacted config
+    validations:
+      required: true
+  - type: input
+    id: experiment
+    attributes:
+      label: Experiment ID (if any)
