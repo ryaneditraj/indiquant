@@ -61,9 +61,10 @@ Thumbs.db
 # Docker
 docker-data/
 
-# Logs
-logs/
+# Logs (runtime) — do not ignore Next.js /logs route
+/logs/
 *.log
+artifacts/audit/
 
 # Coverage / reports
 coverage/

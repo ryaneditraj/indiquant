@@ -25,8 +25,8 @@ It is a **research laboratory** whose purpose is to continuously **discover, val
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  Web (Next) │────▶│  API (FastAPI)│────▶│ PostgreSQL      │
-│  Dashboard  │     │  Agents/Jobs  │     │ DuckDB / Parquet│
+│  Web (Next) │────▶│  API (FastAPI)│────▶│ SQLite/Postgres │
+│  Dashboard  │     │  Agents/Jobs  │     │ Parquet store   │
 └─────────────┘     └──────┬───────┘     └─────────────────┘
                            │
                     ┌──────▼───────┐
@@ -43,11 +43,15 @@ See [docs/architecture.md](docs/architecture.md) and [ROADMAP.md](ROADMAP.md).
 apps/
   api/          FastAPI research backend
   web/          Next.js dashboard (desktop-first)
-packages/       Shared TypeScript / Python packages (growing)
 config.yaml     Default runtime configuration (no secrets)
 .env.example    Secret & environment template
-docs/           Architecture, contribution, design notes
+docs/           Architecture, security, TODO
+examples/       Curl / workflow examples
 ```
+
+## Status
+
+**v0.1.0** — Research OS MVP complete: configurable providers, experiments, backtests, validation gates, AI cycle, dashboard. See [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick start (local)
 
@@ -55,33 +59,26 @@ docs/           Architecture, contribution, design notes
 
 - Python 3.12+
 - Node.js 20+
-- Docker (recommended for Postgres + Redis)
+- Docker optional (Postgres + Redis)
 
 ### 1. Configure
 
 ```bash
 cp .env.example .env
-# Edit .env and config.yaml — never commit secrets
+# Default DATABASE_URL is SQLite — no Docker required
 ```
 
-### 2. Infrastructure
-
-```bash
-docker compose up -d postgres redis
-```
-
-### 3. API
+### 2. API
 
 ```bash
 cd apps/api
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-alembic upgrade head
 uvicorn quant_os_api.main:app --reload --port 8000
 ```
 
-### 4. Web
+### 3. Web
 
 ```bash
 cd apps/web
@@ -91,13 +88,23 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### 4. First discovery
+
+```bash
+curl -X POST http://localhost:8000/api/v1/ai/cycle \
+  -H 'Content-Type: application/json' \
+  -d '{"symbol":"RELIANCE","provider":"fixture","persist":true}'
+```
+
+Optional: `docker compose up -d postgres redis` then point `DATABASE_URL` / `REDIS_URL` at them.
+
 ## Configuration
 
 | Layer | Purpose |
 |-------|---------|
 | `.env` | Secrets, connection strings, API keys |
 | `config.yaml` | Non-secret defaults (providers, features, UI name) |
-| Settings UI | Runtime overrides persisted locally / DB |
+| Settings UI | Runtime public snapshot / future overrides |
 | `settings.json` | Optional machine-local overrides |
 
 **Never hardcode** API URLs, keys, providers, brokers, or model names.
@@ -105,10 +112,6 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Target users
 
 Retail quants · Professional traders · Researchers · Students · Funds · Universities · AI / financial engineers · Open-source contributors
-
-## Status
-
-**Phase 0 — Foundation** in progress. See [ROADMAP.md](ROADMAP.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
