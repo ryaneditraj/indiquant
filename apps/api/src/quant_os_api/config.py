@@ -89,14 +89,12 @@ class Settings(BaseSettings):
 
     @property
     def app_name(self) -> str:
-        return str(self.yaml_config.get("app", {}).get("name", "Research OS"))
+        return str(self.yaml_config.get("app", {}).get("name", "Pramana"))
 
     @property
     def app_tagline(self) -> str:
         return str(
-            self.yaml_config.get("app", {}).get(
-                "tagline", "AI Quantitative Research Operating System"
-            )
+            self.yaml_config.get("app", {}).get("tagline", "Evidence-first quant research OS")
         )
 
     @property

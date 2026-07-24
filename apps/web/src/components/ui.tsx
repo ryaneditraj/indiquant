@@ -21,7 +21,7 @@ export function MetricCard({
       className="panel p-4"
     >
       <p className="text-[11px] uppercase tracking-[0.14em] text-ink-faint">{label}</p>
-      <p className="mt-2 font-display text-3xl text-ink">{value}</p>
+      <p className="mt-2 font-display text-3xl capitalize text-ink">{value}</p>
       {hint ? <p className="mt-1 text-xs text-ink-muted">{hint}</p> : null}
     </motion.div>
   );

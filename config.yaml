@@ -1,13 +1,15 @@
-# Quant OS — root configuration (non-secret defaults)
+# Pramana — root configuration (non-secret defaults)
 # Override with .env for secrets and connection strings.
 # UI Settings may override at runtime. Never put API keys here.
 
 app:
-  name: "Research OS"
-  tagline: "AI Quantitative Research Operating System"
-  primary_market: "IN" # ISO-ish market focus; adapters are plugins
+  name: "Pramana"
+  tagline: "Evidence-first quant research OS"
+  short_description: "Discover, validate, and organize trading strategies for Indian markets."
+  primary_market: "IN"
   default_timezone: "Asia/Kolkata"
   locale: "en-IN"
+  github_url: "https://github.com/YOUR_ORG/pramana"
 
 api:
   host: "0.0.0.0"
@@ -18,24 +20,21 @@ api:
 
 web:
   port: 3000
-  # Set via NEXT_PUBLIC_API_BASE_URL in .env for the browser
   api_base_url: "http://localhost:8000"
 
 database:
-  # Prefer DATABASE_URL from environment
   echo_sql: false
   pool_size: 5
 
 duckdb:
-  path: "data/analytics/quant_os.duckdb"
+  path: "data/analytics/pramana.duckdb"
 
 storage:
   parquet_root: "data/parquet"
   artifacts_root: "artifacts"
 
 redis:
-  # Prefer REDIS_URL from environment
-  default_queue: "quant_os"
+  default_queue: "pramana"
 
 celery:
   task_always_eager: false
@@ -45,8 +44,6 @@ ai:
   default_model: "gpt-4o-mini"
   temperature: 0.2
   max_tokens: 4096
-  # Provider endpoints/keys come from env:
-  # AI_OPENAI_COMPATIBLE_BASE_URL, AI_OPENAI_COMPATIBLE_API_KEY, etc.
   providers:
     openai_compatible:
       enabled: true
@@ -59,7 +56,6 @@ data_providers:
   providers:
     nse_historical:
       enabled: true
-      # package.module.ClassName — swappable without code edits to callers
       module: "quant_os_api.plugins.data.nse_historical.NSEHistoricalProvider"
     bse_historical:
       enabled: true
@@ -95,6 +91,7 @@ features:
   marketplace_enabled: false
   notebook_enabled: true
   live_data_enabled: false
+  auto_seed_on_boot: true
 
 logging:
   level: "INFO"
@@ -102,5 +99,6 @@ logging:
 
 ui:
   theme: "dark"
-  glassmorphism: false
+  glassmorphism: true
   density: "comfortable"
+  accent: "lime"

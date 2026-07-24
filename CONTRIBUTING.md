@@ -1,6 +1,6 @@
-# Contributing
+# Contributing to Pramana
 
-Thank you for helping build an open-source AI quant research OS.
+Thank you for helping build an evidence-first quant research OS.
 
 ## Ground rules
 
@@ -9,18 +9,23 @@ Thank you for helping build an open-source AI quant research OS.
 3. **Reproducibility** — Experiments need IDs, inputs, seeds, and metrics.
 4. **Evidence** — Prefer tests and statistical checks over “it looked good.”
 5. **No secrets** — Never commit `.env`, keys, or credentials.
-6. **Placeholder branding** — Do not tightly couple product marketing names.
+6. **Brand** — Product name is **Pramana**; keep tone precise and non-hype. See [docs/brand.md](docs/brand.md).
 
 ## Development setup
 
 See [README.md](README.md) quick start.
 
+```bash
+make api-test   # backend
+cd apps/web && npm run typecheck
+```
+
 ## Branch & PR workflow
 
 1. Fork / branch from `main`
 2. Keep PRs focused (one concern)
-3. Update docs + `CHANGELOG.md` Unreleased section when user-facing
-4. Update `ROADMAP.md` status if you complete a roadmap item
+3. Update docs + `CHANGELOG.md` Unreleased when user-facing
+4. Update `ROADMAP.md` if you complete a roadmap item
 5. Ensure CI passes
 
 ### PR checklist
@@ -30,14 +35,15 @@ See [README.md](README.md) quick start.
 - [ ] Config documented if new external dependency
 - [ ] No secrets or large binary dumps
 - [ ] Indian market assumptions documented when NSE/BSE-specific
+- [ ] Passes the edge test (above)
 
 ## Code style
 
 | Area | Tool |
 |------|------|
-| Python | Ruff + Black + MyPy |
+| Python | Ruff (+ Black/MyPy available) |
 | TypeScript | ESLint + TypeScript strict |
-| Commits | Imperative, why-focused: `add experiment UUID persistence for reproducibility` |
+| Commits | Imperative, why-focused |
 
 ## Architecture expectations
 
@@ -47,17 +53,7 @@ See [README.md](README.md) quick start.
 
 ## Reporting issues
 
-Include:
-
-- OS / arch (incl. ARM if relevant)
-- Config shape (redacted)
-- Steps to reproduce
-- Expected vs actual
-- Experiment IDs if applicable
-
-## Security
-
-Report vulnerabilities privately to maintainers when possible. Do not open public issues with exploit details until a fix is available.
+Include OS/arch, redacted config shape, steps, expected vs actual, experiment IDs.
 
 ## License
 

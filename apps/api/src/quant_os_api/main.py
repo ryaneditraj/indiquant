@@ -17,6 +17,13 @@ from quant_os_api.routes import router
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     init_db()
+    settings = get_settings()
+    if bool(settings.yaml_config.get("features", {}).get("auto_seed_on_boot", False)):
+        from quant_os_api.services import parquet_store
+        from quant_os_api.services.seed import seed_sample_data
+
+        if not parquet_store.list_datasets():
+            seed_sample_data()
     yield
 
 

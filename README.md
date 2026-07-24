@@ -1,94 +1,78 @@
-# Quant OS
+# Pramana
 
-> Placeholder product name — branding is configurable. Rename via `config.yaml` / Settings UI.
+<p align="center">
+  <img src="apps/web/public/brand.svg" width="72" height="72" alt="Pramana mark" />
+</p>
 
-**Open-source AI Quantitative Research Operating System** focused on the Indian equity markets (NSE/BSE), designed to extend to additional markets without redesign.
+<h1 align="center">Pramana</h1>
 
-This is **not** a trading bot, screener, or backtester-as-product.
+<p align="center">
+  <strong>Evidence-first AI quant research OS</strong> for Indian markets (NSE/BSE)
+</p>
 
-It is a **research laboratory** whose purpose is to continuously **discover, validate, improve, and organize** trading strategies using AI agents and rigorous statistical methods.
+<p align="center">
+  <a href="#quick-start"><img alt="Quick start" src="https://img.shields.io/badge/quick%20start-2%20commands-c8f54a?style=flat-square&labelColor=06110d" /></a>
+  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-4fd1c5?style=flat-square&labelColor=06110d" /></a>
+  <a href="CHANGELOG.md"><img alt="version" src="https://img.shields.io/badge/version-0.3.0-8fb29e?style=flat-square&labelColor=06110d" /></a>
+  <a href="#philosophy"><img alt="not a bot" src="https://img.shields.io/badge/not%20a-trading%20bot-fb7185?style=flat-square&labelColor=06110d" /></a>
+</p>
+
+---
+
+**Pramana** (प्रमाण) means *a means of valid knowledge* — proof, evidence, warrant.
+
+This project is an open-source **research laboratory** that continuously **discovers, validates, improves, and organizes** trading strategies using AI agents and rigorous statistics.
+
+It is **not** a trading bot.  
+It is **not** another screener.  
+It is **not** prediction theater.
 
 > Every feature must answer: *Does this help discover a real market edge?*
 
-## Principles
+## Why Pramana
 
-| Priority | Meaning |
-|----------|---------|
-| Simplicity | Prefer clear modules over clever abstractions |
-| Modularity | Providers, brokers, models, validators are plugins |
-| Reproducibility | Every experiment has UUID, inputs, seeds, metrics |
-| Transparency | Rejection reasons, AI notes, and evidence are first-class |
-| Configurability | Nothing requires source edits — `.env`, `config.yaml`, Settings UI |
-| Evidence | Prefer statistical validation over intuition |
+| Most quant tools | Pramana |
+|------------------|---------|
+| Combine indicators and hope | Hypotheses first, then code |
+| One pretty backtest | Walk-forward, Monte Carlo, leakage checks |
+| Opaque “AI picks” | Agents cite experiment IDs — or stay offline |
+| Hardcoded vendors | Every provider/URL/key is configurable |
+| Lose the trail | Every rejection reason is stored |
 
-## Architecture (high level)
+## Screenshot of the cockpit
 
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│  Web (Next) │────▶│  API (FastAPI)│────▶│ SQLite/Postgres │
-│  Dashboard  │     │  Agents/Jobs  │     │ Parquet store   │
-└─────────────┘     └──────┬───────┘     └─────────────────┘
-                           │
-                    ┌──────▼───────┐
-                    │ Redis/Celery │
-                    │ Research loop│
-                    └──────────────┘
-```
-
-See [docs/architecture.md](docs/architecture.md) and [ROADMAP.md](ROADMAP.md).
-
-## Repository layout
+Run locally and open [http://localhost:3000](http://localhost:3000) — dark forest UI, lime edge accents, live loop status, searchable experiments.
 
 ```
-apps/
-  api/          FastAPI research backend
-  web/          Next.js dashboard (desktop-first)
-config.yaml     Default runtime configuration (no secrets)
-.env.example    Secret & environment template
-docs/           Architecture, security, TODO
-examples/       Curl / workflow examples
+Dashboard → Research / AI Lab → Experiments (equity curves) → Strategies
 ```
 
-## Status
+## Quick start
 
-**v0.2.0** — Forever loop, DuckDB analytics, CSV provider, notebook execute, equity charts, smoke tests. See [CHANGELOG.md](CHANGELOG.md).
-
-## Quick start (local)
-
-### Prerequisites
-
-- Python 3.12+
-- Node.js 20+
-- Docker optional (Postgres + Redis)
-
-### 1. Configure
+**Prerequisites:** Python 3.12+, Node.js 20+
 
 ```bash
 cp .env.example .env
-# Default DATABASE_URL is SQLite — no Docker required
-```
 
-### 2. API
-
-```bash
+# API
 cd apps/api
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-uvicorn quant_os_api.main:app --reload --port 8000
-```
+QUANT_OS_CONFIG_PATH=../../config.yaml uvicorn quant_os_api.main:app --reload --port 8000
 
-### 3. Web
-
-```bash
+# Web (new terminal)
 cd apps/web
 npm install
-npm run dev
+NEXT_PUBLIC_APP_NAME=Pramana NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then:
 
-### 4. First discovery
+1. Open **http://localhost:3000**
+2. Go to **AI Lab → Start research loop**
+3. Watch accept / reject land in **Experiments**
+
+Or one-shot:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/ai/cycle \
@@ -96,27 +80,77 @@ curl -X POST http://localhost:8000/api/v1/ai/cycle \
   -d '{"symbol":"RELIANCE","provider":"fixture","persist":true}'
 ```
 
-Optional: `docker compose up -d postgres redis` then point `DATABASE_URL` / `REDIS_URL` at them.
+## Philosophy
+
+1. **Simplicity** — clear modules over clever abstractions  
+2. **Modularity** — providers, brokers, models, validators as plugins  
+3. **Reproducibility** — UUID, inputs, seeds, metrics on every experiment  
+4. **Transparency** — rejection reasons are first-class  
+5. **Configurability** — `.env` + `config.yaml` + Settings UI; no source edits  
+6. **Evidence** — statistical validation over intuition  
+
+## Architecture
+
+```
+┌──────────────┐     ┌────────────────┐     ┌──────────────────┐
+│  Web (Next)  │────▶│  API (FastAPI)  │────▶│ SQLite / Postgres│
+│  Pramana UI  │     │  Agents / Loop  │     │ Parquet + DuckDB │
+└──────────────┘     └────────┬───────┘     └──────────────────┘
+                              │
+                       ┌──────▼───────┐
+                       │ Redis/Celery │  (optional)
+                       └──────────────┘
+```
+
+## Repository layout
+
+```
+apps/api/       FastAPI research backend
+apps/web/       Next.js desktop-first dashboard
+config.yaml     Non-secret defaults (rename branding here)
+.env.example    Secrets template
+docs/           Architecture, security, brand
+examples/       Curl workflows
+scripts/        Smoke checks
+```
 
 ## Configuration
 
+Nothing requires a code edit to swap vendors:
+
 | Layer | Purpose |
 |-------|---------|
-| `.env` | Secrets, connection strings, API keys |
-| `config.yaml` | Non-secret defaults (providers, features, UI name) |
-| Settings UI | Runtime public snapshot / future overrides |
-| `settings.json` | Optional machine-local overrides |
+| `.env` | Secrets, `DATABASE_URL`, AI keys, `DATA_*_URL` |
+| `config.yaml` | App name, feature flags, plugin module paths |
+| Settings UI | Public runtime snapshot |
 
-**Never hardcode** API URLs, keys, providers, brokers, or model names.
+Point `DATA_NSE_API_BASE_URL` at your vendor when ready — until then, fixture / CSV mode stays reproducible offline.
 
-## Target users
+## Stack
 
-Retail quants · Professional traders · Researchers · Students · Funds · Universities · AI / financial engineers · Open-source contributors
+Next.js · Tailwind · FastAPI · SQLAlchemy · Parquet · DuckDB · Celery-ready · Pytest · Playwright · GitHub Actions
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Quality bar: tests, docs, reproducibility, no secret commits.
+We welcome researchers, engineers, and students.
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md)
+- Follow the edge test: *does this help discover a real edge?*
+- Never commit secrets
+- Update `CHANGELOG.md` for user-facing changes
+
+## Security
+
+See [docs/security.md](docs/security.md) and [SECURITY.md](SECURITY.md).
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md). Near-term: real NSE vendor adapters, durable agent graphs, multi-user auth.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) — use it, fork it, teach with it, fund research with it.
+
+---
+
+<p align="center"><sub>Pramana — proof before prediction.</sub></p>

@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Quant OS is a **research operating system**: observe → hypothesize → implement → backtest → validate → reject or improve → document — continuously.
+**Pramana** is a research operating system: observe → hypothesize → implement → backtest → validate → reject or improve → document — continuously.
 
-Scientific discovery over prediction theater.
+Scientific discovery over prediction theater. *Pramana* = means of valid knowledge.
 
 ## Modular surfaces
 

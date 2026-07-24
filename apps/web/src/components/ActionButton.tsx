@@ -46,7 +46,7 @@ export function ActionButton({
         type="button"
         disabled={busy}
         onClick={run}
-        className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-canvas disabled:opacity-50"
+        className="rounded-xl bg-accent px-3 py-1.5 text-sm font-semibold text-canvas disabled:opacity-50"
       >
         {busy ? "Working…" : label}
       </button>

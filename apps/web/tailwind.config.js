@@ -6,21 +6,22 @@ module.exports = {
     extend: {
       colors: {
         canvas: {
-          DEFAULT: "#0b0f14",
-          elevated: "#121820",
-          border: "#1e2a36",
+          DEFAULT: "#06110d",
+          elevated: "#0b1a14",
+          border: "#1a3228",
         },
         ink: {
-          DEFAULT: "#e8eef4",
-          muted: "#8b9aab",
-          faint: "#5c6b7a",
+          DEFAULT: "#e7f6ee",
+          muted: "#8fb29e",
+          faint: "#5a7a6a",
         },
         accent: {
-          DEFAULT: "#3d9bfd",
-          soft: "#1a3a5c",
-          warn: "#e8a838",
-          good: "#3ecf8e",
-          bad: "#f07178",
+          DEFAULT: "#c8f54a",
+          soft: "#1d3a18",
+          teal: "#4fd1c5",
+          warn: "#f0b429",
+          good: "#5eead4",
+          bad: "#fb7185",
         },
       },
       fontFamily: {
@@ -29,13 +30,28 @@ module.exports = {
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       boxShadow: {
-        panel: "0 0 0 1px rgba(30, 42, 54, 0.9), 0 12px 40px rgba(0, 0, 0, 0.35)",
+        panel:
+          "0 0 0 1px rgba(26, 50, 40, 0.9), 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(200, 245, 74, 0.04)",
       },
       backgroundImage: {
-        grid: "linear-gradient(rgba(61, 155, 253, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(61, 155, 253, 0.04) 1px, transparent 1px)",
+        grid: "linear-gradient(rgba(200, 245, 74, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(200, 245, 74, 0.035) 1px, transparent 1px)",
       },
       backgroundSize: {
-        grid: "48px 48px",
+        grid: "56px 56px",
+      },
+      keyframes: {
+        pulseDot: {
+          "0%, 100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: "0.55", transform: "scale(0.85)" },
+        },
+        rise: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        pulseDot: "pulseDot 2s ease-in-out infinite",
+        rise: "rise 0.45s ease-out both",
       },
     },
   },

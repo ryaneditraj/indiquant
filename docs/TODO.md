@@ -4,20 +4,18 @@ Read this after any interruption, then `ROADMAP.md` and `CHANGELOG.md`.
 
 ## Status
 
-**v0.2.0** — Forever loop, DuckDB analytics, CSV provider, notebook execute, charts, smoke tests.
+**v0.3.0 — Pramana** branded, polished for open-source launch.
 
-## Next horizon
+## Next for GitHub push
 
-- [ ] Wire real NSE vendor behind `DATA_NSE_API_BASE_URL` (HTTP contract ready)
-- [ ] Full LangGraph durable checkpointing
-- [ ] Multi-user auth + encrypted secrets vault UI
-- [ ] Options architecture plugins
-- [ ] Pyodide/in-browser kernel (server REPL exists)
-- [ ] CI job that boots API+web and runs Playwright
+- [ ] Replace `YOUR_ORG` in `config.yaml` `app.github_url`
+- [ ] Create GitHub repo named `pramana` (or keep `quant-os` with Pramana branding)
+- [ ] Add topics: `quantitative-finance`, `india`, `nse`, `backtesting`, `ai-agents`, `fastapi`, `nextjs`
+- [ ] Optional: record a short demo GIF for README
 
 ## Notes for agents
 
-- Branding is placeholder — use `config.app.name`
+- Product name is **Pramana**
+- Internal package may remain `quant_os_api`
 - Never hardcode provider URLs or API keys
-- Prefer evidence, tests, and reproducibility in every PR
 - Run `make api-test` after backend changes

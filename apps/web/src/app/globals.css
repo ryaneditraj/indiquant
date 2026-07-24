@@ -3,9 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --canvas: #0b0f14;
-  --ink: #e8eef4;
-  --accent: #3d9bfd;
+  --canvas: #06110d;
+  --canvas-elevated: #0b1a14;
+  --canvas-border: #1a3228;
+  --ink: #e7f6ee;
+  --ink-muted: #8fb29e;
+  --ink-faint: #5a7a6a;
+  --accent: #c8f54a;
+  --accent-soft: #1d3a18;
+  --accent-teal: #4fd1c5;
+  --accent-warn: #f0b429;
+  --accent-good: #5eead4;
+  --accent-bad: #fb7185;
 }
 
 html {
@@ -14,15 +23,33 @@ html {
 
 body {
   @apply bg-canvas text-ink antialiased;
+  background-color: var(--canvas);
   background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(61, 155, 253, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(62, 207, 142, 0.06), transparent),
-    linear-gradient(180deg, #0b0f14 0%, #0d1218 100%);
+    radial-gradient(ellipse 90% 55% at 12% -8%, rgba(200, 245, 74, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 92% 0%, rgba(79, 209, 197, 0.1), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(26, 50, 40, 0.65), transparent),
+    linear-gradient(180deg, #06110d 0%, #081510 45%, #06110d 100%);
   min-height: 100vh;
+}
+
+::selection {
+  background: rgba(200, 245, 74, 0.28);
+  color: #06110d;
 }
 
 @layer utilities {
   .panel {
-    @apply rounded-xl border border-canvas-border bg-canvas-elevated/80 shadow-panel backdrop-blur-sm;
+    @apply rounded-2xl border border-canvas-border bg-canvas-elevated/75 shadow-panel backdrop-blur-md;
+  }
+
+  .brand-mark {
+    background: linear-gradient(135deg, #c8f54a 0%, #4fd1c5 100%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(120deg, #e7f6ee 10%, #c8f54a 55%, #4fd1c5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }

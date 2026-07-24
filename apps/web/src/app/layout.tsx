@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from "next/font/google";
+import { Fraunces, IBM_Plex_Mono, Sora } from "next/font/google";
 
 import { AppShell } from "@/components/AppShell";
 
 import "./globals.css";
 
-const display = Newsreader({
+const display = Fraunces({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const sans = IBM_Plex_Sans({
+const sans = Sora({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "500", "600"],
@@ -23,11 +23,18 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Research OS";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Pramana";
 
 export const metadata: Metadata = {
-  title: appName,
-  description: "AI Quantitative Research Operating System",
+  title: {
+    default: `${appName} — Evidence-first quant research OS`,
+    template: `%s · ${appName}`,
+  },
+  description:
+    "Open-source AI quantitative research operating system for Indian markets. Hypotheses first. Validation always.",
+  icons: {
+    icon: "/brand.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
