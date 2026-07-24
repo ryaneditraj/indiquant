@@ -7,39 +7,61 @@ export default function DocsPage() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <p className="text-[11px] uppercase tracking-[0.2em] text-accent">Documentation</p>
-        <h1 className="mt-2 font-display text-3xl text-ink">Pramana docs</h1>
+        <h1 className="mt-2 font-display text-3xl text-ink">Sonar docs</h1>
         <p className="mt-2 text-sm text-ink-muted">
-          Pramana means <em>means of valid knowledge</em>. This OS privileges evidence over
-          intuition.
+          Sonar is a{" "}
+          <a href="https://moneyradar.in" className="text-accent-radar hover:underline">
+            Money Radar
+          </a>{" "}
+          product by Thugir Group — evidence-first quant research for NSE/BSE.
         </p>
       </div>
 
       <section className="panel p-5 space-y-3">
-        <SectionTitle title="In-repo guides" />
-        <ul className="space-y-2 text-sm text-ink-muted">
+        <SectionTitle title="Brand hierarchy" />
+        <ul className="space-y-1 text-sm text-ink-muted">
           <li>
-            <span className="text-ink">README.md</span> — quick start & philosophy
+            <span className="text-ink">Thugir Group</span> — company
           </li>
           <li>
-            <span className="text-ink">docs/architecture.md</span> — system design
+            <span className="text-ink">Money Radar</span> — parent platform (moneyradar.in)
           </li>
           <li>
-            <span className="text-ink">docs/brand.md</span> — name, voice, visual system
-          </li>
-          <li>
-            <span className="text-ink">ROADMAP.md</span> — what ships next
-          </li>
-          <li>
-            <span className="text-ink">CONTRIBUTING.md</span> — how to help
+            <span className="text-ink">Sonar</span> — this research OS
           </li>
         </ul>
       </section>
 
       <section className="panel p-5 space-y-3">
-        <SectionTitle title="Try the loop" />
+        <SectionTitle title="License" />
         <p className="text-sm text-ink-muted">
-          Open <Link href="/ai-lab" className="text-accent">AI Lab</Link> and start a short forever
-          loop, or run a single cycle from{" "}
+          PolyForm Noncommercial 1.0.0 — free for research & education; commercial use requires a
+          license from Money Radar / Thugir Group.
+        </p>
+      </section>
+
+      <section className="panel p-5 space-y-3">
+        <SectionTitle title="In-repo guides" />
+        <ul className="space-y-2 text-sm text-ink-muted">
+          <li>
+            <span className="text-ink">README.md</span> — quick start
+          </li>
+          <li>
+            <span className="text-ink">docs/brand.md</span> — brand system
+          </li>
+          <li>
+            <span className="text-ink">docs/architecture.md</span> — design
+          </li>
+          <li>
+            <span className="text-ink">ROADMAP.md</span> — what ships next
+          </li>
+        </ul>
+      </section>
+
+      <section className="panel p-5">
+        <SectionTitle title="Try it" />
+        <p className="text-sm text-ink-muted">
+          Open <Link href="/ai-lab" className="text-accent">AI Lab</Link> or{" "}
           <Link href="/research" className="text-accent">Research</Link>.
         </p>
       </section>

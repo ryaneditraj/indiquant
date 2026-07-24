@@ -6,41 +6,64 @@ import { fetchDashboard, fetchHealth } from "@/lib/api";
 export default async function DashboardPage() {
   const [health, snap] = await Promise.all([fetchHealth(), fetchDashboard()]);
   const online = Boolean(health?.status === "ok");
-  const name =
-    snap?.app_name || health?.app_name || process.env.NEXT_PUBLIC_APP_NAME || "Pramana";
+  const name = snap?.app_name || health?.app_name || process.env.NEXT_PUBLIC_APP_NAME || "Sonar";
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-canvas-border bg-canvas-elevated/50 p-7 md:p-9">
-        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 left-1/3 h-40 w-40 rounded-full bg-accent-teal/10 blur-3xl" />
-        <p className="text-[11px] uppercase tracking-[0.24em] text-accent">Live research cockpit</p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl tracking-tight text-ink md:text-5xl">
+      <section className="relative overflow-hidden rounded-3xl border border-canvas-border bg-canvas-elevated/60 p-7 md:p-10">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 right-1/4 h-40 w-40 rounded-full bg-accent-radar/10 blur-3xl" />
+        <div className="pointer-events-none absolute right-8 top-8 h-28 w-28 rounded-full border border-accent/20" />
+        <div className="pointer-events-none absolute right-14 top-14 h-16 w-16 rounded-full border border-accent-radar/30" />
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full border border-accent/30 bg-accent-soft px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+            Money Radar
+          </span>
+          <span className="rounded-full border border-canvas-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
+            Thugir Group
+          </span>
+          <span className="rounded-full border border-canvas-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
+            Non-commercial OSS
+          </span>
+        </div>
+
+        <h1 className="mt-5 max-w-3xl font-display text-4xl tracking-tight md:text-6xl">
           <span className="text-gradient">{name}</span>
         </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted md:text-[15px]">
-          Open-source AI quant research OS for Indian markets. Invent hypotheses, run rigorous
-          validation, reject weak edges — continuously.
+        <p className="mt-2 font-display text-xl text-ink-muted md:text-2xl">
+          Scan Indian markets. Prove every edge.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-muted md:text-[15px]">
+          AI quantitative research OS for NSE/BSE — hypothesis-first discovery, walk-forward
+          validation, reproducible experiments. A{" "}
+          <a href="https://moneyradar.in" className="text-accent hover:underline">
+            Money Radar
+          </a>{" "}
+          product by Thugir Group.
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href="/ai-lab"
-            className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-canvas transition hover:brightness-110"
+            className="rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-canvas shadow-[0_0_24px_rgba(61,255,154,0.25)] transition hover:brightness-110"
           >
             Start research loop
           </Link>
           <Link
             href="/research"
-            className="rounded-xl border border-canvas-border bg-canvas/50 px-4 py-2 text-sm text-ink transition hover:border-accent/40"
+            className="rounded-xl border border-canvas-border bg-canvas/60 px-4 py-2.5 text-sm text-ink transition hover:border-accent/40"
           >
-            Run single cycle
+            Single discovery cycle
           </Link>
-          <Link
-            href="/settings"
-            className="rounded-xl border border-transparent px-4 py-2 text-sm text-ink-muted transition hover:text-ink"
+          <a
+            href="https://moneyradar.in"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl px-4 py-2.5 text-sm text-ink-muted transition hover:text-accent-radar"
           >
-            Configure providers
-          </Link>
+            moneyradar.in →
+          </a>
         </div>
       </section>
 
@@ -48,7 +71,7 @@ export default async function DashboardPage() {
         <MetricCard
           label="API"
           value={online ? "online" : "offline"}
-          hint={online ? `v${health?.version}` : "Start apps/api · uvicorn"}
+          hint={online ? `v${health?.version}` : "Start apps/api"}
           delay={0.05}
         />
         <MetricCard
@@ -73,7 +96,7 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <section className="panel p-5 lg:col-span-2">
-          <SectionTitle title="AI tasks" subtitle="CEO agent coordinates the discovery loop" />
+          <SectionTitle title="AI tasks" subtitle="CEO agent coordinates continuous discovery" />
           <ul className="space-y-3">
             {(snap?.ai_tasks || []).map((task, i) => (
               <li
@@ -91,7 +114,7 @@ export default async function DashboardPage() {
             ))}
             {!snap?.ai_tasks?.length && (
               <li className="text-sm text-ink-muted">
-                Idle. Open <Link className="text-accent" href="/ai-lab">AI Lab</Link> to start.
+                Idle. Open <Link className="text-accent" href="/ai-lab">AI Lab</Link> to start scanning.
               </li>
             )}
           </ul>
@@ -109,12 +132,12 @@ export default async function DashboardPage() {
               ),
             )}
             <div className="flex justify-between gap-2 pt-2">
-              <dt className="text-ink-faint">data_freshness</dt>
-              <dd className="truncate text-ink">{snap?.data_freshness ?? "—"}</dd>
-            </div>
-            <div className="flex justify-between gap-2">
               <dt className="text-ink-faint">market</dt>
               <dd className="text-ink">{health?.primary_market ?? "IN"}</dd>
+            </div>
+            <div className="flex justify-between gap-2">
+              <dt className="text-ink-faint">parent</dt>
+              <dd className="text-accent-radar">moneyradar.in</dd>
             </div>
           </dl>
         </section>
@@ -139,7 +162,7 @@ export default async function DashboardPage() {
         </section>
 
         <section className="panel p-5">
-          <SectionTitle title="Timeline" subtitle="Recent events" />
+          <SectionTitle title="Timeline" />
           <ol className="space-y-3">
             {(snap?.timeline || []).map((item, i) => (
               <li key={i} className="flex gap-4 text-sm">

@@ -6,21 +6,21 @@ module.exports = {
     extend: {
       colors: {
         canvas: {
-          DEFAULT: "#06110d",
-          elevated: "#0b1a14",
-          border: "#1a3228",
+          DEFAULT: "#030712",
+          elevated: "#0a1224",
+          border: "#1a2744",
         },
         ink: {
-          DEFAULT: "#e7f6ee",
-          muted: "#8fb29e",
-          faint: "#5a7a6a",
+          DEFAULT: "#e8eefc",
+          muted: "#8b9dc3",
+          faint: "#5a6f96",
         },
         accent: {
-          DEFAULT: "#c8f54a",
-          soft: "#1d3a18",
-          teal: "#4fd1c5",
-          warn: "#f0b429",
-          good: "#5eead4",
+          DEFAULT: "#3dff9a",
+          soft: "#0a2f22",
+          radar: "#22d3ee",
+          warn: "#fbbf24",
+          good: "#3dff9a",
           bad: "#fb7185",
         },
       },
@@ -31,10 +31,10 @@ module.exports = {
       },
       boxShadow: {
         panel:
-          "0 0 0 1px rgba(26, 50, 40, 0.9), 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(200, 245, 74, 0.04)",
+          "0 0 0 1px rgba(26, 39, 68, 0.95), 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(61, 255, 154, 0.05)",
       },
       backgroundImage: {
-        grid: "linear-gradient(rgba(200, 245, 74, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(200, 245, 74, 0.035) 1px, transparent 1px)",
+        grid: "linear-gradient(rgba(61, 255, 154, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px)",
       },
       backgroundSize: {
         grid: "56px 56px",
@@ -42,16 +42,16 @@ module.exports = {
       keyframes: {
         pulseDot: {
           "0%, 100%": { opacity: "1", transform: "scale(1)" },
-          "50%": { opacity: "0.55", transform: "scale(0.85)" },
+          "50%": { opacity: "0.5", transform: "scale(0.85)" },
         },
-        rise: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        sweep: {
+          "0%": { transform: "rotate(0deg)", opacity: "0.35" },
+          "100%": { transform: "rotate(360deg)", opacity: "0.35" },
         },
       },
       animation: {
         pulseDot: "pulseDot 2s ease-in-out infinite",
-        rise: "rise 0.45s ease-out both",
+        sweep: "sweep 8s linear infinite",
       },
     },
   },

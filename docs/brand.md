@@ -1,38 +1,51 @@
-# Brand
+# Brand system — Sonar
 
-## Name
+## Hierarchy
 
-**Pramana** (प्रमाण) — *a means of valid knowledge*; evidence; warrant.
+```
+Thugir Group
+ └── Money Radar  (https://moneyradar.in)   ← parent brand / platform
+      └── Sonar                             ← this open-source research OS
+```
 
-Chosen because this product is about **scientific discovery of market edges**, not prediction theater.
+Never present Sonar as unrelated to Money Radar. Always attribute Thugir Group as builder.
+
+## Naming
+
+| Use | Form |
+|-----|------|
+| Product | **Sonar** |
+| Repo (suggested) | `sonar` or `thugir-sonar` |
+| Full lockup | Sonar by Money Radar |
+| Domain parent | moneyradar.in |
+| Product path | moneyradar.in/sonar |
 
 ## Voice
 
-- Direct, calm, precise
-- Prefer “reject”, “evidence”, “hypothesis” over hype
-- Never claim guaranteed profits
+- Precise, confident, zero hype
+- “Scan”, “prove”, “reject”, “evidence”
+- Never claim guaranteed returns
+- Always non-commercial unless separately licensed
 
 ## Visual
 
-| Token | Value | Role |
-|-------|-------|------|
-| Canvas | `#06110d` | Deep forest laboratory |
-| Accent | `#c8f54a` | Edge / discovery signal |
-| Teal | `#4fd1c5` | Secondary / health |
-| Ink | `#e7f6ee` | Primary text |
+| Token | Hex | Role |
+|-------|-----|------|
+| Canvas | `#030712` | Radar night |
+| Accent | `#3dff9a` | Ping / edge found |
+| Radar cyan | `#22d3ee` | Parent / secondary |
+| Ink | `#e8eefc` | Primary text |
 
-Typography: **Fraunces** (display) · **Sora** (UI) · **IBM Plex Mono** (ids/metrics)
+Typography: **Fraunces** (display) · **Sora** (UI) · **IBM Plex Mono** (ids)
 
-Mark: triangle + node — hypothesis rising to a validated point.
+Mark: concentric radar rings + sweep blip.
 
 ## Config
 
-Product name lives in `config.yaml`:
-
 ```yaml
 app:
-  name: "Pramana"
-  tagline: "Evidence-first quant research OS"
+  name: "Sonar"
+  parent_brand: "Money Radar"
+  parent_url: "https://moneyradar.in"
+  organization: "Thugir Group"
 ```
-
-Internal Python package remains `quant_os_api` for stability; branding is soft-coupled via config.

@@ -89,7 +89,7 @@ class Settings(BaseSettings):
 
     @property
     def app_name(self) -> str:
-        return str(self.yaml_config.get("app", {}).get("name", "Pramana"))
+        return str(self.yaml_config.get("app", {}).get("name", "Sonar"))
 
     @property
     def app_tagline(self) -> str:
@@ -116,12 +116,17 @@ class Settings(BaseSettings):
         """Non-secret settings snapshot for the Settings / health UI."""
         features = self.yaml_config.get("features", {})
         ui = self.yaml_config.get("ui", {})
+        app = self.yaml_config.get("app", {})
         return {
             "env": self.quant_os_env,
             "app_name": self.app_name,
             "tagline": self.app_tagline,
-            "primary_market": self.yaml_config.get("app", {}).get("primary_market", "IN"),
-            "timezone": self.yaml_config.get("app", {}).get("default_timezone", "Asia/Kolkata"),
+            "parent_brand": app.get("parent_brand", "Money Radar"),
+            "parent_url": app.get("parent_url", "https://moneyradar.in"),
+            "organization": app.get("organization", "Thugir Group"),
+            "primary_market": app.get("primary_market", "IN"),
+            "timezone": app.get("default_timezone", "Asia/Kolkata"),
+            "license": "PolyForm Noncommercial 1.0.0",
             "ai": {
                 "default_provider": self.ai_default_provider,
                 "default_model": self.ai_default_model,
@@ -135,6 +140,7 @@ class Settings(BaseSettings):
             "ui": ui,
             "backtest_defaults": self.yaml_config.get("backtest", {}),
             "validation": self.yaml_config.get("validation", {}),
+            "seo_keywords": app.get("seo_keywords", []),
         }
 
 

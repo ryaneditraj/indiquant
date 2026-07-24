@@ -24,7 +24,10 @@ const FALLBACK_NAV = [
   { id: "docs", label: "Docs", href: "/docs" },
 ];
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Pramana";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Sonar";
+const parentBrand = process.env.NEXT_PUBLIC_PARENT_BRAND || "Money Radar";
+const parentUrl = process.env.NEXT_PUBLIC_PARENT_URL || "https://moneyradar.in";
+const orgName = process.env.NEXT_PUBLIC_ORG_NAME || "Thugir Group";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -47,28 +50,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 flex h-screen w-[15.5rem] shrink-0 flex-col border-r border-canvas-border/80 bg-canvas/85 px-3 py-5 backdrop-blur-xl">
-        <Link href="/" className="mb-7 flex items-center gap-3 px-2">
-          <span className="brand-mark flex h-9 w-9 items-center justify-center rounded-xl shadow-[0_0_24px_rgba(200,245,74,0.25)]">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M4 17 L12 4 L20 17 Z"
-                stroke="#06110d"
-                strokeWidth="2.2"
-                strokeLinejoin="round"
-              />
-              <circle cx="12" cy="14.5" r="2.2" fill="#06110d" />
-            </svg>
+      <aside className="sticky top-0 flex h-screen w-[15.75rem] shrink-0 flex-col border-r border-canvas-border/90 bg-canvas/90 px-3 py-5 backdrop-blur-xl">
+        <Link href="/" className="mb-6 flex items-center gap-3 px-2">
+          <span className="brand-mark relative flex h-10 w-10 items-center justify-center rounded-2xl">
+            <span className="absolute inset-1 rounded-xl border border-canvas/30" />
+            <span className="relative h-2 w-2 rounded-full bg-canvas" />
           </span>
           <span>
-            <span className="block font-display text-xl leading-none tracking-tight text-ink">
+            <span className="block font-display text-2xl leading-none tracking-tight text-ink">
               {appName}
             </span>
-            <span className="mt-1 block text-[10px] uppercase tracking-[0.22em] text-ink-faint">
-              evidence first
+            <span className="mt-1 block text-[10px] uppercase tracking-[0.2em] text-accent-radar">
+              by {parentBrand}
             </span>
           </span>
         </Link>
+
+        <a
+          href={parentUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="mb-5 mx-1 rounded-xl border border-canvas-border/80 bg-canvas-elevated/70 px-3 py-2 transition hover:border-accent/30"
+        >
+          <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-faint">Parent</p>
+          <p className="text-sm font-medium text-accent">{parentBrand}</p>
+          <p className="font-mono text-[10px] text-ink-muted">moneyradar.in</p>
+        </a>
 
         <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto pr-1">
           {FALLBACK_NAV.map((item) => {
@@ -84,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {active && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-accent-soft/80 ring-1 ring-accent/20"
+                    className="absolute inset-0 rounded-lg bg-accent-soft/90 ring-1 ring-accent/25"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 )}
@@ -94,16 +101,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="mt-3 rounded-xl border border-canvas-border/70 bg-canvas-elevated/60 p-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">Philosophy</p>
-          <p className="mt-1.5 text-[11px] leading-relaxed text-ink-muted">
-            Hypotheses before code. Reject without evidence. Keep every trail.
-          </p>
+        <div className="mt-3 space-y-2 px-1">
+          <div className="rounded-xl border border-canvas-border/70 bg-canvas-elevated/50 p-3">
+            <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-ink-faint">Built by</p>
+            <p className="mt-1 text-xs font-medium text-ink">{orgName}</p>
+            <p className="mt-2 text-[10px] leading-relaxed text-ink-muted">
+              Non-commercial open source. Proof before prediction.
+            </p>
+          </div>
         </div>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-canvas-border/80 bg-canvas/70 px-6 backdrop-blur-xl">
+        <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-canvas-border/80 bg-canvas/75 px-6 backdrop-blur-xl">
           <div className="relative min-w-0 flex-1 max-w-lg">
             <input
               value={query}
@@ -126,15 +136,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-3 font-mono text-[11px] text-ink-faint">
+          <div className="flex items-center gap-2 font-mono text-[11px] text-ink-faint">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-canvas-border bg-canvas-elevated/70 px-2.5 py-1">
-              <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-accent-good" />
-              local
+              <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-accent" />
+              scanning
             </span>
-            <span className="hidden sm:inline">NSE · BSE</span>
+            <span className="hidden rounded-full border border-canvas-border px-2.5 py-1 sm:inline">
+              NSE · BSE
+            </span>
           </div>
         </header>
-        <main className="flex-1 bg-grid bg-[length:56px_56px] p-6 md:p-8">{children}</main>
+        <main className="relative flex-1 bg-grid bg-[length:56px_56px] p-6 md:p-8">
+          <div className="pointer-events-none absolute inset-0 radar-ring opacity-40" />
+          <div className="relative">{children}</div>
+        </main>
       </div>
     </div>
   );

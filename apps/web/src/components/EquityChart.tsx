@@ -44,7 +44,7 @@ export function EquityChart({
           <Line
             type="monotone"
             dataKey="equity"
-            stroke="#c8f54a"
+            stroke="#3dff9a"
             strokeWidth={2}
             dot={false}
             isAnimationActive

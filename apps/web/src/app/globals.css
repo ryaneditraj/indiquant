@@ -3,18 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --canvas: #06110d;
-  --canvas-elevated: #0b1a14;
-  --canvas-border: #1a3228;
-  --ink: #e7f6ee;
-  --ink-muted: #8fb29e;
-  --ink-faint: #5a7a6a;
-  --accent: #c8f54a;
-  --accent-soft: #1d3a18;
-  --accent-teal: #4fd1c5;
-  --accent-warn: #f0b429;
-  --accent-good: #5eead4;
+  --canvas: #030712;
+  --canvas-elevated: #0a1224;
+  --canvas-border: #1a2744;
+  --ink: #e8eefc;
+  --ink-muted: #8b9dc3;
+  --ink-faint: #5a6f96;
+  --accent: #3dff9a;
+  --accent-soft: #0a2f22;
+  --accent-radar: #22d3ee;
+  --accent-warn: #fbbf24;
+  --accent-good: #3dff9a;
   --accent-bad: #fb7185;
+  --mr: #3dff9a;
 }
 
 html {
@@ -25,31 +26,39 @@ body {
   @apply bg-canvas text-ink antialiased;
   background-color: var(--canvas);
   background-image:
-    radial-gradient(ellipse 90% 55% at 12% -8%, rgba(200, 245, 74, 0.14), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 92% 0%, rgba(79, 209, 197, 0.1), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(26, 50, 40, 0.65), transparent),
-    linear-gradient(180deg, #06110d 0%, #081510 45%, #06110d 100%);
+    radial-gradient(ellipse 100% 60% at 50% -20%, rgba(61, 255, 154, 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(34, 211, 238, 0.1), transparent 45%),
+    radial-gradient(circle at 50% 120%, rgba(26, 39, 68, 0.8), transparent 50%),
+    linear-gradient(180deg, #030712 0%, #070d1a 50%, #030712 100%);
   min-height: 100vh;
 }
 
 ::selection {
-  background: rgba(200, 245, 74, 0.28);
-  color: #06110d;
+  background: rgba(61, 255, 154, 0.28);
+  color: #030712;
 }
 
 @layer utilities {
   .panel {
-    @apply rounded-2xl border border-canvas-border bg-canvas-elevated/75 shadow-panel backdrop-blur-md;
+    @apply rounded-2xl border border-canvas-border bg-canvas-elevated/80 shadow-panel backdrop-blur-md;
   }
 
   .brand-mark {
-    background: linear-gradient(135deg, #c8f54a 0%, #4fd1c5 100%);
+    background: linear-gradient(145deg, #3dff9a 0%, #22d3ee 100%);
+    box-shadow: 0 0 28px rgba(61, 255, 154, 0.35);
   }
 
   .text-gradient {
-    background: linear-gradient(120deg, #e7f6ee 10%, #c8f54a 55%, #4fd1c5 100%);
+    background: linear-gradient(115deg, #e8eefc 0%, #3dff9a 48%, #22d3ee 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  .radar-ring {
+    background:
+      radial-gradient(circle at center, transparent 42%, rgba(61, 255, 154, 0.08) 43%, transparent 44%),
+      radial-gradient(circle at center, transparent 62%, rgba(34, 211, 238, 0.07) 63%, transparent 64%),
+      radial-gradient(circle at center, transparent 82%, rgba(61, 255, 154, 0.05) 83%, transparent 84%);
   }
 }

@@ -1,15 +1,26 @@
-# Pramana — root configuration (non-secret defaults)
-# Override with .env for secrets and connection strings.
-# UI Settings may override at runtime. Never put API keys here.
+# Sonar — configuration (non-secret defaults)
+# Product of Money Radar (moneyradar.in) · Thugir Group
+# Override secrets via .env. Never put API keys here.
 
 app:
-  name: "Pramana"
+  name: "Sonar"
   tagline: "Evidence-first quant research OS"
   short_description: "Discover, validate, and organize trading strategies for Indian markets."
+  parent_brand: "Money Radar"
+  parent_url: "https://moneyradar.in"
+  organization: "Thugir Group"
   primary_market: "IN"
   default_timezone: "Asia/Kolkata"
   locale: "en-IN"
-  github_url: "https://github.com/YOUR_ORG/pramana"
+  github_url: "https://github.com/thugir/sonar"
+  seo_keywords:
+    - Indian stock market research
+    - NSE BSE quant research
+    - AI trading strategy discovery
+    - walk-forward backtesting India
+    - open source quant OS
+    - Money Radar Sonar
+    - Thugir Group fintech
 
 api:
   host: "0.0.0.0"
@@ -17,24 +28,27 @@ api:
   cors_origins:
     - "http://localhost:3000"
     - "http://127.0.0.1:3000"
+    - "https://moneyradar.in"
+    - "https://www.moneyradar.in"
 
 web:
   port: 3000
   api_base_url: "http://localhost:8000"
+  site_url: "https://moneyradar.in/sonar"
 
 database:
   echo_sql: false
   pool_size: 5
 
 duckdb:
-  path: "data/analytics/pramana.duckdb"
+  path: "data/analytics/sonar.duckdb"
 
 storage:
   parquet_root: "data/parquet"
   artifacts_root: "artifacts"
 
 redis:
-  default_queue: "pramana"
+  default_queue: "sonar"
 
 celery:
   task_always_eager: false
@@ -101,4 +115,4 @@ ui:
   theme: "dark"
   glassmorphism: true
   density: "comfortable"
-  accent: "lime"
+  accent: "radar"

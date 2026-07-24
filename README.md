@@ -1,78 +1,81 @@
-# Pramana
+# Sonar
 
 <p align="center">
-  <img src="apps/web/public/brand.svg" width="72" height="72" alt="Pramana mark" />
+  <img src="apps/web/public/brand.svg" width="80" height="80" alt="Sonar mark" />
 </p>
 
-<h1 align="center">Pramana</h1>
+<h1 align="center">Sonar</h1>
 
 <p align="center">
-  <strong>Evidence-first AI quant research OS</strong> for Indian markets (NSE/BSE)
+  <strong>Evidence-first AI quant research OS</strong> for Indian markets (NSE · BSE)<br/>
+  A <a href="https://moneyradar.in"><strong>Money Radar</strong></a> product by <strong>Thugir Group</strong>
 </p>
 
 <p align="center">
-  <a href="#quick-start"><img alt="Quick start" src="https://img.shields.io/badge/quick%20start-2%20commands-c8f54a?style=flat-square&labelColor=06110d" /></a>
-  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-4fd1c5?style=flat-square&labelColor=06110d" /></a>
-  <a href="CHANGELOG.md"><img alt="version" src="https://img.shields.io/badge/version-0.3.0-8fb29e?style=flat-square&labelColor=06110d" /></a>
-  <a href="#philosophy"><img alt="not a bot" src="https://img.shields.io/badge/not%20a-trading%20bot-fb7185?style=flat-square&labelColor=06110d" /></a>
+  <a href="https://moneyradar.in"><img alt="Money Radar" src="https://img.shields.io/badge/parent-Money%20Radar-3dff9a?style=for-the-badge&labelColor=030712" /></a>
+  <a href="https://moneyradar.in"><img alt="moneyradar.in" src="https://img.shields.io/badge/web-moneyradar.in-22d3ee?style=for-the-badge&labelColor=030712" /></a>
+  <a href="LICENSE"><img alt="Noncommercial" src="https://img.shields.io/badge/license-PolyForm%20Noncommercial-fb7185?style=for-the-badge&labelColor=030712" /></a>
+</p>
+
+<p align="center">
+  <img alt="NSE" src="https://img.shields.io/badge/NSE-ready-3dff9a?style=flat-square&labelColor=030712" />
+  <img alt="BSE" src="https://img.shields.io/badge/BSE-ready-22d3ee?style=flat-square&labelColor=030712" />
+  <img alt="AI agents" src="https://img.shields.io/badge/AI-research%20loop-8b9dc3?style=flat-square&labelColor=030712" />
+  <img alt="version" src="https://img.shields.io/badge/version-0.4.0-5a6f96?style=flat-square&labelColor=030712" />
 </p>
 
 ---
 
-**Pramana** (प्रमाण) means *a means of valid knowledge* — proof, evidence, warrant.
+### Brand hierarchy
 
-This project is an open-source **research laboratory** that continuously **discovers, validates, improves, and organizes** trading strategies using AI agents and rigorous statistics.
+| Layer | Name |
+|-------|------|
+| Company | **Thugir Group** |
+| Parent platform | **[Money Radar](https://moneyradar.in)** (`moneyradar.in`) |
+| This product / repo | **Sonar** |
 
-It is **not** a trading bot.  
-It is **not** another screener.  
-It is **not** prediction theater.
+Sonar is the research operating system under Money Radar — continuous discovery of trading strategies with statistical proof, not prediction theater.
 
 > Every feature must answer: *Does this help discover a real market edge?*
 
-## Why Pramana
+## What Sonar is (and is not)
 
-| Most quant tools | Pramana |
-|------------------|---------|
-| Combine indicators and hope | Hypotheses first, then code |
-| One pretty backtest | Walk-forward, Monte Carlo, leakage checks |
-| Opaque “AI picks” | Agents cite experiment IDs — or stay offline |
-| Hardcoded vendors | Every provider/URL/key is configurable |
-| Lose the trail | Every rejection reason is stored |
+| Sonar | Not Sonar |
+|-------|-----------|
+| Hypothesis-first research lab | Trading bot / broker |
+| Walk-forward · Monte Carlo · leakage checks | One cherry-picked equity curve |
+| Agents that cite experiment IDs | Opaque “AI picks” |
+| Configurable NSE/BSE providers | Hardcoded vendor lock-in |
+| Non-commercial open source | Free-for-commercial SaaS clone |
 
-## Screenshot of the cockpit
+## SEO / discoverability keywords
 
-Run locally and open [http://localhost:3000](http://localhost:3000) — dark forest UI, lime edge accents, live loop status, searchable experiments.
-
-```
-Dashboard → Research / AI Lab → Experiments (equity curves) → Strategies
-```
+Indian stock market research · NSE quant · BSE backtesting · AI trading strategy discovery · walk-forward validation India · open source quant OS · Money Radar Sonar · Thugir Group fintech · reproducible experiments · market regime detection
 
 ## Quick start
 
-**Prerequisites:** Python 3.12+, Node.js 20+
+**Requires:** Python 3.12+, Node.js 20+
 
 ```bash
 cp .env.example .env
 
 # API
-cd apps/api
-python -m venv .venv && source .venv/bin/activate
+cd apps/api && python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 QUANT_OS_CONFIG_PATH=../../config.yaml uvicorn quant_os_api.main:app --reload --port 8000
 
-# Web (new terminal)
-cd apps/web
-npm install
-NEXT_PUBLIC_APP_NAME=Pramana NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 npm run dev
+# Web
+cd apps/web && npm install
+NEXT_PUBLIC_APP_NAME=Sonar \
+NEXT_PUBLIC_PARENT_BRAND="Money Radar" \
+NEXT_PUBLIC_PARENT_URL=https://moneyradar.in \
+NEXT_PUBLIC_ORG_NAME="Thugir Group" \
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 \
+NEXT_PUBLIC_SITE_URL=https://moneyradar.in/sonar \
+npm run dev
 ```
 
-Then:
-
-1. Open **http://localhost:3000**
-2. Go to **AI Lab → Start research loop**
-3. Watch accept / reject land in **Experiments**
-
-Or one-shot:
+Open **http://localhost:3000** → **AI Lab → Start research loop**
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/ai/cycle \
@@ -80,51 +83,15 @@ curl -X POST http://localhost:8000/api/v1/ai/cycle \
   -d '{"symbol":"RELIANCE","provider":"fixture","persist":true}'
 ```
 
-## Philosophy
+## License — Non-commercial
 
-1. **Simplicity** — clear modules over clever abstractions  
-2. **Modularity** — providers, brokers, models, validators as plugins  
-3. **Reproducibility** — UUID, inputs, seeds, metrics on every experiment  
-4. **Transparency** — rejection reasons are first-class  
-5. **Configurability** — `.env` + `config.yaml` + Settings UI; no source edits  
-6. **Evidence** — statistical validation over intuition  
+Sonar is licensed under the **[PolyForm Noncommercial License 1.0.0](LICENSE)**.
 
-## Architecture
+You **may** use, study, modify, and share Sonar for **noncommercial** purposes (personal research, education, public-interest research).
 
-```
-┌──────────────┐     ┌────────────────┐     ┌──────────────────┐
-│  Web (Next)  │────▶│  API (FastAPI)  │────▶│ SQLite / Postgres│
-│  Pramana UI  │     │  Agents / Loop  │     │ Parquet + DuckDB │
-└──────────────┘     └────────┬───────┘     └──────────────────┘
-                              │
-                       ┌──────▼───────┐
-                       │ Redis/Celery │  (optional)
-                       └──────────────┘
-```
+You **may not** use Sonar (or modifications) for **commercial** purposes — including selling access, embedding in paid products, or operating a commercial research/trading service — without a separate commercial license from Thugir Group / Money Radar.
 
-## Repository layout
-
-```
-apps/api/       FastAPI research backend
-apps/web/       Next.js desktop-first dashboard
-config.yaml     Non-secret defaults (rename branding here)
-.env.example    Secrets template
-docs/           Architecture, security, brand
-examples/       Curl workflows
-scripts/        Smoke checks
-```
-
-## Configuration
-
-Nothing requires a code edit to swap vendors:
-
-| Layer | Purpose |
-|-------|---------|
-| `.env` | Secrets, `DATABASE_URL`, AI keys, `DATA_*_URL` |
-| `config.yaml` | App name, feature flags, plugin module paths |
-| Settings UI | Public runtime snapshot |
-
-Point `DATA_NSE_API_BASE_URL` at your vendor when ready — until then, fixture / CSV mode stays reproducible offline.
+For commercial licensing: **[moneyradar.in](https://moneyradar.in)**
 
 ## Stack
 
@@ -132,25 +99,18 @@ Next.js · Tailwind · FastAPI · SQLAlchemy · Parquet · DuckDB · Celery-read
 
 ## Contributing
 
-We welcome researchers, engineers, and students.
-
-- Read [CONTRIBUTING.md](CONTRIBUTING.md)
-- Follow the edge test: *does this help discover a real edge?*
-- Never commit secrets
-- Update `CHANGELOG.md` for user-facing changes
+See [CONTRIBUTING.md](CONTRIBUTING.md). Non-commercial license still welcomes community PRs for research and education.
 
 ## Security
 
-See [docs/security.md](docs/security.md) and [SECURITY.md](SECURITY.md).
+See [SECURITY.md](SECURITY.md).
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md). Near-term: real NSE vendor adapters, durable agent graphs, multi-user auth.
-
-## License
-
-[MIT](LICENSE) — use it, fork it, teach with it, fund research with it.
+See [ROADMAP.md](ROADMAP.md).
 
 ---
 
-<p align="center"><sub>Pramana — proof before prediction.</sub></p>
+<p align="center">
+  <sub><strong>Sonar</strong> · Money Radar · Thugir Group<br/>Scan markets. Prove edges. Never invent evidence.</sub>
+</p>
