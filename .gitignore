@@ -41,10 +41,13 @@ pnpm-debug.log*
 data/raw/
 data/processed/
 data/cache/
+data/*.db
+data/**/*.db
 *.parquet
 *.duckdb
 *.duckdb.wal
 artifacts/
+!artifacts/.gitkeep
 exports/
 notebooks/.ipynb_checkpoints/
 
