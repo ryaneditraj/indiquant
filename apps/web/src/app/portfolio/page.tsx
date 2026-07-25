@@ -17,6 +17,7 @@ export default function PortfolioPage() {
         <ActionButton
           label="Run portfolio analysis"
           path="/api/v1/portfolio/analyze"
+          demo
           body={{ symbols: ["RELIANCE", "TCS", "INFY"] }}
         />
       </section>

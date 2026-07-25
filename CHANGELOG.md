@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1] — 2026-07-25
+
+### Changed
+
+- UI polish: shared buttons, honest validation/optimization copy, structured Settings
+- Action results show accept/reject summaries instead of raw JSON dumps
+- Header status reflects API idle / scanning / offline
+- Removed dead PlaceholderPage; cleaned Quant OS leftovers
+
 ## [0.4.0] — 2026-07-25
 
 ### Added

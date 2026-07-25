@@ -29,10 +29,49 @@ const parentBrand = process.env.NEXT_PUBLIC_PARENT_BRAND || "Money Radar";
 const parentUrl = process.env.NEXT_PUBLIC_PARENT_URL || "https://moneyradar.in";
 const orgName = process.env.NEXT_PUBLIC_ORG_NAME || "Thugir Group";
 
+type StatusKind = "online" | "offline" | "loop";
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<Record<string, unknown> | null>(null);
+  const [status, setStatus] = useState<{ kind: StatusKind; label: string }>({
+    kind: "offline",
+    label: "connecting",
+  });
+
+  useEffect(() => {
+    let alive = true;
+    async function ping() {
+      try {
+        const [healthRes, loopRes] = await Promise.all([
+          fetch(`${apiBase()}/api/v1/health`),
+          fetch(`${apiBase()}/api/v1/ai/loop`),
+        ]);
+        if (!alive) return;
+        if (!healthRes.ok) {
+          setStatus({ kind: "offline", label: "offline" });
+          return;
+        }
+        const loop = loopRes.ok ? await loopRes.json() : null;
+        if (loop?.status === "running") {
+          setStatus({ kind: "loop", label: "scanning" });
+        } else if (loop?.status === "paused") {
+          setStatus({ kind: "loop", label: "paused" });
+        } else {
+          setStatus({ kind: "online", label: "idle" });
+        }
+      } catch {
+        if (alive) setStatus({ kind: "offline", label: "offline" });
+      }
+    }
+    ping();
+    const id = setInterval(ping, 4000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
 
   useEffect(() => {
     if (query.trim().length < 2) {
@@ -47,6 +86,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }, 250);
     return () => clearTimeout(handle);
   }, [query]);
+
+  const dot =
+    status.kind === "offline"
+      ? "bg-accent-bad"
+      : status.kind === "loop"
+        ? "bg-accent animate-pulseDot"
+        : "bg-accent-good";
 
   return (
     <div className="flex min-h-screen">
@@ -70,7 +116,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           href={parentUrl}
           target="_blank"
           rel="noreferrer"
-          className="mb-5 mx-1 rounded-xl border border-canvas-border/80 bg-canvas-elevated/70 px-3 py-2 transition hover:border-accent/30"
+          className="mx-1 mb-5 rounded-xl border border-canvas-border/80 bg-canvas-elevated/70 px-3 py-2 transition hover:border-accent/30"
         >
           <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-faint">Parent</p>
           <p className="text-sm font-medium text-accent">{parentBrand}</p>
@@ -114,7 +160,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-canvas-border/80 bg-canvas/75 px-6 backdrop-blur-xl">
-          <div className="relative min-w-0 flex-1 max-w-lg">
+          <div className="relative min-w-0 max-w-lg flex-1">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -122,24 +168,44 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               className="w-full rounded-xl border border-canvas-border bg-canvas-elevated/80 px-3.5 py-2 text-sm text-ink outline-none transition focus:border-accent/40 focus:ring-1 focus:ring-accent/30"
             />
             {hits && (
-              <div className="absolute left-0 right-0 top-11 z-30 panel max-h-72 overflow-auto p-3 text-xs">
-                {(["strategies", "experiments", "hypotheses"] as const).map((key) => (
-                  <div key={key} className="mb-2 last:mb-0">
-                    <p className="mb-1 uppercase tracking-wider text-ink-faint">{key}</p>
-                    {((hits[key] as Array<Record<string, unknown>>) || []).map((item) => (
-                      <p key={String(item.id)} className="truncate py-0.5 text-ink-muted">
-                        {String(item.name || item.title || item.summary || item.id)}
-                      </p>
-                    ))}
-                  </div>
-                ))}
+              <div className="panel absolute left-0 right-0 top-11 z-30 max-h-72 overflow-auto p-3 text-xs">
+                {(["strategies", "experiments", "hypotheses"] as const).map((key) => {
+                  const items = (hits[key] as Array<Record<string, unknown>>) || [];
+                  if (!items.length) return null;
+                  return (
+                    <div key={key} className="mb-2 last:mb-0">
+                      <p className="mb-1 uppercase tracking-wider text-ink-faint">{key}</p>
+                      {items.map((item) => {
+                        const href =
+                          key === "strategies"
+                            ? `/strategies/${item.id}`
+                            : key === "experiments"
+                              ? "/experiments"
+                              : "/research";
+                        return (
+                          <Link
+                            key={String(item.id)}
+                            href={href}
+                            className="block truncate py-0.5 text-ink-muted hover:text-accent"
+                            onClick={() => {
+                              setQuery("");
+                              setHits(null);
+                            }}
+                          >
+                            {String(item.name || item.title || item.summary || item.id)}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
           <div className="flex items-center gap-2 font-mono text-[11px] text-ink-faint">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-canvas-border bg-canvas-elevated/70 px-2.5 py-1">
-              <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-accent" />
-              scanning
+              <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+              {status.label}
             </span>
             <span className="hidden rounded-full border border-canvas-border px-2.5 py-1 sm:inline">
               NSE · BSE

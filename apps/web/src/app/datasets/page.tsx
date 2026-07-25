@@ -22,6 +22,7 @@ export default async function DatasetsPage() {
         <ActionButton
           label="Ingest RELIANCE (fixture)"
           path="/api/v1/data/ingest"
+          demo
           body={{
             symbol: "RELIANCE",
             start: "2023-01-01",
@@ -33,19 +34,25 @@ export default async function DatasetsPage() {
 
       <section className="panel p-5">
         <SectionTitle title="Providers" />
-        <ul className="space-y-2">
-          {providers.map((p) => (
-            <li key={String(p.name)} className="flex justify-between gap-3 text-sm">
-              <span className="text-ink">
-                {String(p.name)}
-                {p.default ? " · default" : ""}
-              </span>
-              <span className="font-mono text-xs text-ink-muted">
-                {String((p.health as Record<string, unknown>)?.status || "—")}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {!providers.length ? (
+          <p className="text-sm text-accent-warn">
+            No providers loaded — is the API reachable?
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {providers.map((p) => (
+              <li key={String(p.name)} className="flex justify-between gap-3 text-sm">
+                <span className="text-ink">
+                  {String(p.name)}
+                  {p.default ? " · default" : ""}
+                </span>
+                <span className="font-mono text-xs text-ink-muted">
+                  {String((p.health as Record<string, unknown>)?.status || "—")}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="panel overflow-hidden">

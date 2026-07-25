@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/Button";
 import { SectionTitle } from "@/components/ui";
 import { apiBase } from "@/lib/api";
 
@@ -17,6 +18,8 @@ print(result)
 export default function NotebookPage() {
   const [code, setCode] = useState(DEFAULT_CODE);
   const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const [examples, setExamples] = useState<Array<Record<string, unknown>>>([]);
 
   useEffect(() => {
@@ -27,13 +30,26 @@ export default function NotebookPage() {
   }, []);
 
   async function run() {
-    const res = await fetch(`${apiBase()}/api/v1/notebook/execute`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code }),
-    });
-    const json = await res.json();
-    setOutput(JSON.stringify(json, null, 2));
+    setBusy(true);
+    setError("");
+    setOutput("");
+    try {
+      const res = await fetch(`${apiBase()}/api/v1/notebook/execute`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(typeof json.detail === "string" ? json.detail : `error ${res.status}`);
+        return;
+      }
+      setOutput(JSON.stringify(json, null, 2));
+    } catch (err) {
+      setError(String(err));
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -46,37 +62,30 @@ export default function NotebookPage() {
         </p>
       </div>
 
-      <section className="panel p-5 space-y-3">
+      <section className="panel space-y-3 p-5">
         <SectionTitle title="Editor" />
         <textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="min-h-48 w-full rounded-lg border border-canvas-border bg-canvas p-3 font-mono text-xs text-accent outline-none ring-accent focus:ring-1"
+          className="min-h-48 w-full rounded-xl border border-canvas-border bg-canvas p-3 font-mono text-xs text-accent outline-none ring-accent focus:ring-1"
         />
-        <button
-          type="button"
-          onClick={run}
-          className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-canvas"
-        >
-          Run
-        </button>
+        <Button disabled={busy || !code.trim()} onClick={run}>
+          {busy ? "Running…" : "Run"}
+        </Button>
+        {error ? <p className="text-sm text-accent-bad">{error}</p> : null}
         {output ? (
-          <pre className="max-h-72 overflow-auto rounded-lg bg-canvas p-3 font-mono text-[11px] text-ink-muted">
+          <pre className="max-h-72 overflow-auto rounded-xl bg-canvas p-3 font-mono text-[11px] text-ink-muted">
             {output}
           </pre>
         ) : null}
       </section>
 
       {examples.map((nb) => (
-        <section key={String(nb.id)} className="panel p-5 space-y-2">
+        <section key={String(nb.id)} className="panel space-y-2 p-5">
           <SectionTitle title={String(nb.title)} />
-          <button
-            type="button"
-            className="text-xs text-accent"
-            onClick={() => setCode(String(nb.code))}
-          >
+          <Button variant="ghost" className="!px-0" onClick={() => setCode(String(nb.code))}>
             Load into editor
-          </button>
+          </Button>
         </section>
       ))}
     </div>

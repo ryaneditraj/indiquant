@@ -1,7 +1,7 @@
 .PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke
 
 help:
-	@echo "Quant OS / Research OS"
+	@echo "Sonar · Money Radar · Thugir Group"
 	@echo "  make up           - Postgres + Redis"
 	@echo "  make down         - Stop compose services"
 	@echo "  make api-install  - Install API with dev deps"

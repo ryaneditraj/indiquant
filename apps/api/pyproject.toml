@@ -9,7 +9,7 @@ description = "Sonar — Money Radar evidence-first quant research OS (Thugir Gr
 readme = "README.md"
 requires-python = ">=3.12"
 license = "LicenseRef-PolyForm-Noncommercial-1.0.0"
-authors = [{ name = "Quant OS Contributors" }]
+authors = [{ name = "Thugir Group" }]
 dependencies = [
   "fastapi>=0.115.0",
   "uvicorn[standard]>=0.32.0",

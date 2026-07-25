@@ -17,6 +17,7 @@ export default function BacktestsPage() {
         <ActionButton
           label="Run momentum backtest"
           path="/api/v1/backtests/run"
+          demo
           body={{ symbol: "RELIANCE", family: "momentum", provider: "fixture", persist: true }}
         />
       </section>
@@ -26,6 +27,7 @@ export default function BacktestsPage() {
         <ActionButton
           label="Run mean-reversion backtest"
           path="/api/v1/backtests/run"
+          demo
           body={{ symbol: "TCS", family: "mean_reversion", provider: "fixture", persist: true }}
         />
       </section>

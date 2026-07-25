@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { ActionButton } from "@/components/ActionButton";
+import { Button } from "@/components/Button";
 import { SectionTitle } from "@/components/ui";
 import { apiBase } from "@/lib/api";
 
@@ -19,7 +20,10 @@ type LoopState = {
 export default function AILabPage() {
   const [input, setInput] = useState("Why might a momentum strategy fail in sideways regimes?");
   const [reply, setReply] = useState("");
+  const [chatError, setChatError] = useState("");
+  const [chatBusy, setChatBusy] = useState(false);
   const [loop, setLoop] = useState<LoopState | null>(null);
+  const [loopError, setLoopError] = useState("");
 
   const refreshLoop = useCallback(() => {
     fetch(`${apiBase()}/api/v1/ai/loop`)
@@ -35,25 +39,47 @@ export default function AILabPage() {
   }, [refreshLoop]);
 
   async function chat() {
-    const res = await fetch(`${apiBase()}/api/v1/ai/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: input }],
-        experiment_ids: loop?.last_experiment_id ? [loop.last_experiment_id] : [],
-      }),
-    });
-    const json = await res.json();
-    setReply(json.content || JSON.stringify(json));
+    setChatBusy(true);
+    setChatError("");
+    setReply("");
+    try {
+      const res = await fetch(`${apiBase()}/api/v1/ai/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: input }],
+          experiment_ids: loop?.last_experiment_id ? [loop.last_experiment_id] : [],
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setChatError(typeof json.detail === "string" ? json.detail : `error ${res.status}`);
+        return;
+      }
+      setReply(json.content || JSON.stringify(json));
+    } catch (err) {
+      setChatError(String(err));
+    } finally {
+      setChatBusy(false);
+    }
   }
 
   async function loopAction(path: string, body?: Record<string, unknown>) {
-    await fetch(`${apiBase()}${path}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    refreshLoop();
+    setLoopError("");
+    try {
+      const res = await fetch(`${apiBase()}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setLoopError(typeof json.detail === "string" ? json.detail : `error ${res.status}`);
+      }
+      refreshLoop();
+    } catch (err) {
+      setLoopError(String(err));
+    }
   }
 
   return (
@@ -66,15 +92,13 @@ export default function AILabPage() {
         </p>
       </div>
 
-      <section className="panel p-5 space-y-4">
+      <section className="panel space-y-4 p-5">
         <SectionTitle
           title="Forever loop"
           subtitle={`Status: ${loop?.status ?? "…"} · cycles ${loop?.cycles_completed ?? 0} · accepted ${loop?.accepted ?? 0} · rejected ${loop?.rejected ?? 0}`}
         />
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            className="rounded-md bg-accent px-3 py-1.5 text-sm text-canvas"
+          <Button
             onClick={() =>
               loopAction("/api/v1/ai/loop/start", {
                 symbols: ["RELIANCE", "TCS", "INFY"],
@@ -85,32 +109,19 @@ export default function AILabPage() {
             }
           >
             Start (3 cycles)
-          </button>
-          <button
-            type="button"
-            className="rounded-md border border-canvas-border px-3 py-1.5 text-sm text-ink"
-            onClick={() => loopAction("/api/v1/ai/loop/pause")}
-          >
+          </Button>
+          <Button variant="secondary" onClick={() => loopAction("/api/v1/ai/loop/pause")}>
             Pause
-          </button>
-          <button
-            type="button"
-            className="rounded-md border border-canvas-border px-3 py-1.5 text-sm text-ink"
-            onClick={() => loopAction("/api/v1/ai/loop/resume")}
-          >
+          </Button>
+          <Button variant="secondary" onClick={() => loopAction("/api/v1/ai/loop/resume")}>
             Resume
-          </button>
-          <button
-            type="button"
-            className="rounded-md border border-accent-bad/40 px-3 py-1.5 text-sm text-accent-bad"
-            onClick={() => loopAction("/api/v1/ai/loop/stop")}
-          >
+          </Button>
+          <Button variant="danger" onClick={() => loopAction("/api/v1/ai/loop/stop")}>
             Stop
-          </button>
+          </Button>
         </div>
-        {loop?.last_error ? (
-          <p className="text-xs text-accent-bad">{loop.last_error}</p>
-        ) : null}
+        {loopError ? <p className="text-xs text-accent-bad">{loopError}</p> : null}
+        {loop?.last_error ? <p className="text-xs text-accent-bad">{loop.last_error}</p> : null}
         <ul className="space-y-2 text-xs text-ink-muted">
           {(loop?.history || []).slice(-5).map((h, i) => (
             <li key={i}>
@@ -118,6 +129,9 @@ export default function AILabPage() {
               <span className="font-mono text-ink-faint">{String(h.experiment_id)}</span>
             </li>
           ))}
+          {!loop?.history?.length ? (
+            <li className="text-ink-faint">No cycles yet — hit Start to begin scanning.</li>
+          ) : null}
         </ul>
       </section>
 
@@ -126,26 +140,24 @@ export default function AILabPage() {
         <ActionButton
           label="Run CEO research cycle"
           path="/api/v1/ai/cycle"
+          demo
           body={{ symbol: "INFY", lookback_days: 250, seed: 7, provider: "fixture", persist: true }}
         />
       </section>
 
-      <section className="panel p-5 space-y-3">
+      <section className="panel space-y-3 p-5">
         <SectionTitle title="Research chat" subtitle="Cites last loop experiment when available" />
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="min-h-24 w-full rounded-md border border-canvas-border bg-canvas p-3 text-sm text-ink outline-none ring-accent focus:ring-1"
+          className="min-h-24 w-full rounded-xl border border-canvas-border bg-canvas p-3 text-sm text-ink outline-none ring-accent focus:ring-1"
         />
-        <button
-          type="button"
-          onClick={chat}
-          className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-canvas"
-        >
-          Ask
-        </button>
+        <Button disabled={chatBusy || !input.trim()} onClick={chat}>
+          {chatBusy ? "Thinking…" : "Ask"}
+        </Button>
+        {chatError ? <p className="text-sm text-accent-bad">{chatError}</p> : null}
         {reply ? (
-          <pre className="whitespace-pre-wrap rounded-lg bg-canvas p-3 text-xs text-ink-muted">{reply}</pre>
+          <pre className="whitespace-pre-wrap rounded-xl bg-canvas p-3 text-xs text-ink-muted">{reply}</pre>
         ) : null}
       </section>
     </div>

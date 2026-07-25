@@ -35,8 +35,8 @@ export function EquityChart({
           />
           <Tooltip
             contentStyle={{
-              background: "#121820",
-              border: "1px solid #1e2a36",
+              background: "#0a1224",
+              border: "1px solid #1a2744",
               borderRadius: 8,
               fontSize: 12,
             }}

@@ -21,6 +21,7 @@ export default async function ResearchPage() {
         <ActionButton
           label="Discover on RELIANCE"
           path="/api/v1/ai/cycle"
+          demo
           body={{ symbol: "RELIANCE", lookback_days: 365, seed: 42, provider: "fixture", persist: true }}
         />
       </section>

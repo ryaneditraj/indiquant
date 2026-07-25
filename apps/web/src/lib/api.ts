@@ -61,10 +61,6 @@ export async function fetchDashboard(): Promise<DashboardSnapshot | null> {
   return getJson<DashboardSnapshot>("/api/v1/dashboard/snapshot");
 }
 
-export async function fetchNav(): Promise<{ app_name: string; sections: NavSection[] } | null> {
-  return getJson("/api/v1/meta/nav");
-}
-
 export async function fetchPublicSettings(): Promise<Record<string, unknown> | null> {
   const body = await getJson<{ settings: Record<string, unknown> }>("/api/v1/settings/public");
   return body?.settings ?? null;
