@@ -89,7 +89,7 @@ class Settings(BaseSettings):
 
     @property
     def app_name(self) -> str:
-        return str(self.yaml_config.get("app", {}).get("name", "Sonar"))
+        return str(self.yaml_config.get("app", {}).get("name", "Indiquant"))
 
     @property
     def app_tagline(self) -> str:

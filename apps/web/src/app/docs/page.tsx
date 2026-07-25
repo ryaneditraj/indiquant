@@ -7,9 +7,9 @@ export default function DocsPage() {
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
         <p className="text-[11px] uppercase tracking-[0.2em] text-accent">Documentation</p>
-        <h1 className="mt-2 font-display text-3xl text-ink">Sonar docs</h1>
+        <h1 className="mt-2 font-display text-3xl text-ink">Indiquant docs</h1>
         <p className="mt-2 text-sm text-ink-muted">
-          Sonar is a{" "}
+          Indiquant is a{" "}
           <a href="https://moneyradar.in" className="text-accent-radar hover:underline">
             Money Radar
           </a>{" "}
@@ -27,7 +27,7 @@ export default function DocsPage() {
             <span className="text-ink">Money Radar</span> — parent platform (moneyradar.in)
           </li>
           <li>
-            <span className="text-ink">Sonar</span> — this research OS
+            <span className="text-ink">Indiquant</span> — this research OS
           </li>
         </ul>
       </section>

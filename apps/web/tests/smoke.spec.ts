@@ -8,12 +8,12 @@ test("api health", async ({ request }) => {
   expect(res.ok()).toBeTruthy();
   const body = await res.json();
   expect(body.status).toBe("ok");
-  expect(String(body.app_name)).toMatch(/Sonar/i);
+  expect(String(body.app_name)).toMatch(/Indiquant/i);
 });
 
 test("dashboard loads", async ({ page }) => {
   await page.goto(web);
-  await expect(page.getByText(/Sonar|Prove every edge|Money Radar/i).first()).toBeVisible({
+  await expect(page.getByText(/Indiquant|Prove every edge|Money Radar/i).first()).toBeVisible({
     timeout: 15000,
   });
 });

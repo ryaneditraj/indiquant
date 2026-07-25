@@ -6,7 +6,7 @@ import { fetchDashboard, fetchHealth } from "@/lib/api";
 export default async function DashboardPage() {
   const [health, snap] = await Promise.all([fetchHealth(), fetchDashboard()]);
   const online = Boolean(health?.status === "ok");
-  const name = snap?.app_name || health?.app_name || process.env.NEXT_PUBLIC_APP_NAME || "Sonar";
+  const name = snap?.app_name || health?.app_name || process.env.NEXT_PUBLIC_APP_NAME || "Indiquant";
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">

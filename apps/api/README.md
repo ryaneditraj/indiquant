@@ -1,6 +1,6 @@
-# Sonar API
+# Indiquant API
 
-FastAPI backend for **Sonar** — Money Radar's evidence-first quant research OS (Thugir Group).
+FastAPI backend for **Indiquant** — Money Radar's evidence-first quant research OS (Thugir Group).
 
 ```bash
 pip install -e ".[dev]"

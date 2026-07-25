@@ -1,5 +1,5 @@
 {
-  "name": "sonar-web",
+  "name": "indiquant-web",
   "version": "0.4.0",
   "private": true,
   "scripts": {

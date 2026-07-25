@@ -41,7 +41,7 @@ export default async function SettingsPage() {
           <section className="panel p-5">
             <SectionTitle title="Product" />
             <dl>
-              <Row label="App" value={String(settings.app_name || "Sonar")} />
+              <Row label="App" value={String(settings.app_name || "Indiquant")} />
               <Row label="Parent" value={String(settings.parent_brand || "Money Radar")} />
               <Row label="Org" value={String(settings.organization || "Thugir Group")} />
               <Row label="Market" value={String(settings.primary_market || "IN")} />

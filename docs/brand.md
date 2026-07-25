@@ -1,24 +1,34 @@
-# Brand system — Sonar
+# Brand system — Indiquant
 
 ## Hierarchy
 
 ```
 Thugir Group
  └── Money Radar  (https://moneyradar.in)   ← parent brand / platform
-      └── Sonar                             ← this open-source research OS
+      └── Indiquant                         ← this open-source research OS
 ```
 
-Never present Sonar as unrelated to Money Radar. Always attribute Thugir Group as builder.
+GitHub ships under the personal account: **`ryaneditraj/indiquant`**.
+
+Never present Indiquant as unrelated to Money Radar. Always attribute Thugir Group as builder.
+
+## Why “Indiquant”
+
+Chosen for GitHub discoverability:
+
+- Signals **India + quantitative finance** in one word
+- Avoids collisions (`sonar` → SonarQube, `quant-os` → generic)
+- Short, brandable, topic-friendly (`indiquant`, `nse`, `bse`)
 
 ## Naming
 
 | Use | Form |
 |-----|------|
-| Product | **Sonar** |
-| Repo (suggested) | `sonar` or `thugir-sonar` |
-| Full lockup | Sonar by Money Radar |
+| Product | **Indiquant** |
+| Repo | [`ryaneditraj/indiquant`](https://github.com/ryaneditraj/indiquant) |
+| Full lockup | Indiquant by Money Radar |
 | Domain parent | moneyradar.in |
-| Product path | moneyradar.in/sonar |
+| Product path | moneyradar.in/indiquant |
 
 ## Voice
 
@@ -44,8 +54,9 @@ Mark: concentric radar rings + sweep blip.
 
 ```yaml
 app:
-  name: "Sonar"
+  name: "Indiquant"
   parent_brand: "Money Radar"
   parent_url: "https://moneyradar.in"
   organization: "Thugir Group"
+  github_url: "https://github.com/ryaneditraj/indiquant"
 ```

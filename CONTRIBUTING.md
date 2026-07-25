@@ -1,6 +1,6 @@
-# Contributing to Sonar
+# Contributing to Indiquant
 
-Sonar is a **Money Radar** product by **Thugir Group**.
+Indiquant is a **Money Radar** product by **Thugir Group**.
 
 ## License reminder
 
@@ -13,7 +13,7 @@ This project uses **PolyForm Noncommercial 1.0.0**. Contributions are accepted u
 3. **Reproducibility** — Experiment IDs, inputs, seeds, metrics.
 4. **Evidence** — Tests and statistics over vibes.
 5. **No secrets** in git.
-6. **Brand** — Keep Sonar ↔ Money Radar ↔ Thugir Group hierarchy clear. See [docs/brand.md](docs/brand.md).
+6. **Brand** — Keep Indiquant ↔ Money Radar ↔ Thugir Group hierarchy clear. See [docs/brand.md](docs/brand.md).
 
 ## Setup
 

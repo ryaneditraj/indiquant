@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2] — 2026-07-25
+
+### Changed
+
+- Product rename **Sonar → Indiquant** for GitHub discoverability (avoids SonarQube collision)
+- GitHub target: personal account `ryaneditraj/indiquant`
+- Star-oriented README, topics list, OG asset refresh
+
 ## [0.4.1] — 2026-07-25
 
 ### Changed
@@ -13,14 +21,14 @@
 
 ### Added
 
-- Product identity: **Sonar** under **Money Radar** (`moneyradar.in`) by **Thugir Group**
+- Product identity: **Indiquant** under **Money Radar** (`moneyradar.in`) by **Thugir Group**
 - PolyForm Noncommercial 1.0.0 license (no commercial use without separate license)
 - Radar-screen visual system, OG image, JSON-LD, sitemap, robots
 - Parent-brand lockups across UI, README, and public settings
 
 ### Changed
 
-- Replaces prior product names; repo/app product is Sonar
+- Replaces prior product names; repo/app product is Indiquant
 - SEO metadata tuned for Indian market quant research discoverability
 
 ## [0.3.0] — 2026-07-25

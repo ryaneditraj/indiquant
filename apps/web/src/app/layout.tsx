@@ -24,8 +24,8 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Sonar";
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://moneyradar.in/sonar";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Indiquant";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://moneyradar.in/indiquant";
 const parentUrl = process.env.NEXT_PUBLIC_PARENT_URL || "https://moneyradar.in";
 
 export const viewport: Viewport = {
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
     template: `%s · ${appName} · Money Radar`,
   },
   description:
-    "Sonar is Money Radar's open-source AI quantitative research operating system for NSE/BSE. Hypothesis-first strategy discovery, walk-forward validation, and reproducible experiments. Built by Thugir Group.",
+    "Indiquant is Money Radar's open-source AI quantitative research operating system for NSE/BSE. Hypothesis-first strategy discovery, walk-forward validation, and reproducible experiments. Built by Thugir Group.",
   applicationName: appName,
   authors: [{ name: "Thugir Group", url: parentUrl }],
   creator: "Thugir Group",
   publisher: "Money Radar",
   keywords: [
-    "Sonar",
+    "Indiquant",
     "Money Radar",
     "Thugir Group",
     "Indian stock market",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Sonar by Money Radar — AI Quant Research OS",
+        alt: "Indiquant by Money Radar — AI Quant Research OS",
       },
     ],
   },

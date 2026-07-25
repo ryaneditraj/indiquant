@@ -15,12 +15,13 @@ export function JsonLd() {
       },
       {
         "@type": "SoftwareApplication",
-        name: "Sonar",
+        name: "Indiquant",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Web, macOS, Linux, Windows",
-        url: "https://moneyradar.in/sonar",
+        url: "https://moneyradar.in/indiquant",
+        codeRepository: "https://github.com/ryaneditraj/indiquant",
         description:
-          "Evidence-first AI quantitative research operating system for Indian equity markets (NSE/BSE).",
+          "Open-source AI quantitative research OS for Indian equity markets (NSE/BSE). Evidence-first — not a trading bot.",
         offers: {
           "@type": "Offer",
           price: "0",
@@ -34,8 +35,8 @@ export function JsonLd() {
       },
       {
         "@type": "WebSite",
-        name: "Sonar by Money Radar",
-        url: "https://moneyradar.in/sonar",
+        name: "Indiquant by Money Radar",
+        url: "https://moneyradar.in/indiquant",
         publisher: { "@id": "https://moneyradar.in/#organization" },
       },
     ],

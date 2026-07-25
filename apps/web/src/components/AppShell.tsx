@@ -24,7 +24,7 @@ const FALLBACK_NAV = [
   { id: "docs", label: "Docs", href: "/docs" },
 ];
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "Sonar";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Indiquant";
 const parentBrand = process.env.NEXT_PUBLIC_PARENT_BRAND || "Money Radar";
 const parentUrl = process.env.NEXT_PUBLIC_PARENT_URL || "https://moneyradar.in";
 const orgName = process.env.NEXT_PUBLIC_ORG_NAME || "Thugir Group";

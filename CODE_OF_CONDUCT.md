@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We pledge to make participation in Sonar (a Money Radar product by Thugir Group) a harassment-free experience for everyone.
+We pledge to make participation in Indiquant (a Money Radar product by Thugir Group) a harassment-free experience for everyone.
 
 ## Our standards
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-**Sonar** is Money Radar's research operating system: observe → hypothesize → implement → backtest → validate → reject or improve → document — continuously.
+**Indiquant** is Money Radar's research operating system: observe → hypothesize → implement → backtest → validate → reject or improve → document — continuously.
 
 Built by **Thugir Group**. Parent brand: **[Money Radar](https://moneyradar.in)**.
 

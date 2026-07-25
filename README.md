@@ -1,62 +1,92 @@
-# Sonar
+# Indiquant
 
 <p align="center">
-  <img src="apps/web/public/brand.svg" width="80" height="80" alt="Sonar mark" />
+  <img src="apps/web/public/brand.svg" width="88" height="88" alt="Indiquant" />
 </p>
 
-<h1 align="center">Sonar</h1>
+<h1 align="center">Indiquant</h1>
 
 <p align="center">
-  <strong>Evidence-first AI quant research OS</strong> for Indian markets (NSE · BSE)<br/>
-  A <a href="https://moneyradar.in"><strong>Money Radar</strong></a> product by <strong>Thugir Group</strong>
-</p>
-
-<p align="center">
-  <a href="https://moneyradar.in"><img alt="Money Radar" src="https://img.shields.io/badge/parent-Money%20Radar-3dff9a?style=for-the-badge&labelColor=030712" /></a>
-  <a href="https://moneyradar.in"><img alt="moneyradar.in" src="https://img.shields.io/badge/web-moneyradar.in-22d3ee?style=for-the-badge&labelColor=030712" /></a>
-  <a href="LICENSE"><img alt="Noncommercial" src="https://img.shields.io/badge/license-PolyForm%20Noncommercial-fb7185?style=for-the-badge&labelColor=030712" /></a>
+  <b>Open-source AI quant research OS for Indian markets (NSE · BSE)</b><br/>
+  Hypothesis → backtest → walk-forward proof → accept or reject.<br/>
+  Not a trading bot. A discovery lab.
 </p>
 
 <p align="center">
-  <img alt="NSE" src="https://img.shields.io/badge/NSE-ready-3dff9a?style=flat-square&labelColor=030712" />
-  <img alt="BSE" src="https://img.shields.io/badge/BSE-ready-22d3ee?style=flat-square&labelColor=030712" />
-  <img alt="AI agents" src="https://img.shields.io/badge/AI-research%20loop-8b9dc3?style=flat-square&labelColor=030712" />
-  <img alt="version" src="https://img.shields.io/badge/version-0.4.0-5a6f96?style=flat-square&labelColor=030712" />
+  A <a href="https://moneyradar.in"><strong>Money Radar</strong></a> product · Built by <strong>Thugir Group</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ryaneditraj/indiquant/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ryaneditraj/indiquant?style=for-the-badge&color=3dff9a&labelColor=030712" /></a>
+  <a href="https://github.com/ryaneditraj/indiquant/forks"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ryaneditraj/indiquant?style=for-the-badge&color=22d3ee&labelColor=030712" /></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-PolyForm%20NC-fb7185?style=for-the-badge&labelColor=030712" /></a>
+</p>
+
+<p align="center">
+  <img alt="NSE" src="https://img.shields.io/badge/NSE-India-3dff9a?style=flat-square&labelColor=030712" />
+  <img alt="BSE" src="https://img.shields.io/badge/BSE-India-22d3ee?style=flat-square&labelColor=030712" />
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-white?style=flat-square&labelColor=030712" />
+  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-Python-009688?style=flat-square&labelColor=030712" />
+  <img alt="AI" src="https://img.shields.io/badge/AI-research%20loop-8b9dc3?style=flat-square&labelColor=030712" />
+</p>
+
+<p align="center">
+  <a href="#quick-start"><b>Quick start</b></a> ·
+  <a href="#why-indiquant"><b>Why Indiquant</b></a> ·
+  <a href="#features"><b>Features</b></a> ·
+  <a href="https://moneyradar.in"><b>Money Radar</b></a>
 </p>
 
 ---
 
-### Brand hierarchy
+## Why Indiquant?
 
-| Layer | Name |
-|-------|------|
-| Company | **Thugir Group** |
-| Parent platform | **[Money Radar](https://moneyradar.in)** (`moneyradar.in`) |
-| This product / repo | **Sonar** |
+Most “AI trading” projects sell vibes. Indiquant sells **evidence**.
 
-Sonar is the research operating system under Money Radar — continuous discovery of trading strategies with statistical proof, not prediction theater.
+| You get | You don’t get |
+|--------|----------------|
+| Hypothesis-first research loop | Broker auto-trading |
+| Walk-forward · Monte Carlo · leakage checks | One cherry-picked equity curve |
+| Agents that cite experiment IDs | Opaque “AI picks” |
+| Configurable NSE/BSE data providers | Hardcoded vendor lock-in |
+| Dashboard-first research OS | CLI-only scripts |
 
 > Every feature must answer: *Does this help discover a real market edge?*
 
-## What Sonar is (and is not)
+If this saves you from a fake backtest — **[★ star the repo](https://github.com/ryaneditraj/indiquant)** so other Indian quants find it.
 
-| Sonar | Not Sonar |
-|-------|-----------|
-| Hypothesis-first research lab | Trading bot / broker |
-| Walk-forward · Monte Carlo · leakage checks | One cherry-picked equity curve |
-| Agents that cite experiment IDs | Opaque “AI picks” |
-| Configurable NSE/BSE providers | Hardcoded vendor lock-in |
-| Non-commercial open source | Free-for-commercial SaaS clone |
+---
 
-## SEO / discoverability keywords
+## Features
 
-Indian stock market research · NSE quant · BSE backtesting · AI trading strategy discovery · walk-forward validation India · open source quant OS · Money Radar Sonar · Thugir Group fintech · reproducible experiments · market regime detection
+- **Forever research loop** — pause / resume / stop AI cycles that propose → test → validate
+- **Validation suite** — walk-forward, Monte Carlo, train/test leakage guards
+- **Indian market focus** — NSE/BSE providers, Asia/Kolkata defaults, INR research mindset
+- **Evidence store** — hypotheses, strategies, experiments with full audit trail
+- **Analytics** — Parquet market data + DuckDB queries
+- **Dashboard** — dark radar UI, equity charts, live scan status
+- **Configurable everything** — `config.yaml` + `.env`, no secret hardcoding
+- **Non-commercial OSS** — study & research freely; commercial use needs a license
+
+---
+
+## Stack
+
+```
+Next.js + Tailwind  →  FastAPI  →  SQLAlchemy / Parquet / DuckDB
+        ↓                    ↓
+   Research dashboard    AI agents · backtests · validation
+```
+
+---
 
 ## Quick start
 
-**Requires:** Python 3.12+, Node.js 20+
+**Requires:** Python 3.12+ · Node.js 20+
 
 ```bash
+git clone https://github.com/ryaneditraj/indiquant.git
+cd indiquant
 cp .env.example .env
 
 # API
@@ -64,14 +94,14 @@ cd apps/api && python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 QUANT_OS_CONFIG_PATH=../../config.yaml uvicorn quant_os_api.main:app --reload --port 8000
 
-# Web
+# Web (new terminal)
 cd apps/web && npm install
-NEXT_PUBLIC_APP_NAME=Sonar \
+NEXT_PUBLIC_APP_NAME=Indiquant \
 NEXT_PUBLIC_PARENT_BRAND="Money Radar" \
 NEXT_PUBLIC_PARENT_URL=https://moneyradar.in \
 NEXT_PUBLIC_ORG_NAME="Thugir Group" \
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 \
-NEXT_PUBLIC_SITE_URL=https://moneyradar.in/sonar \
+NEXT_PUBLIC_SITE_URL=https://moneyradar.in/indiquant \
 npm run dev
 ```
 
@@ -83,34 +113,52 @@ curl -X POST http://localhost:8000/api/v1/ai/cycle \
   -d '{"symbol":"RELIANCE","provider":"fixture","persist":true}'
 ```
 
+Docker: `docker compose up` (see `docker-compose.yml`).
+
+---
+
+## Brand
+
+| Layer | Name |
+|-------|------|
+| Company | **Thugir Group** |
+| Parent | **[Money Radar](https://moneyradar.in)** |
+| Product / repo | **Indiquant** → [`ryaneditraj/indiquant`](https://github.com/ryaneditraj/indiquant) |
+
+---
+
+## GitHub topics (paste on repo Settings → Topics)
+
+```
+indiquant money-radar nse bse indian-stock-market quant quantitative-finance
+algorithmic-trading backtesting walk-forward fastapi nextjs ai-agents
+open-source fintech india thugir
+```
+
+---
+
 ## License — Non-commercial
 
-Sonar is licensed under the **[PolyForm Noncommercial License 1.0.0](LICENSE)**.
+**[PolyForm Noncommercial License 1.0.0](LICENSE)**
 
-You **may** use, study, modify, and share Sonar for **noncommercial** purposes (personal research, education, public-interest research).
+- ✅ Personal research, education, public-interest research
+- ❌ Commercial use (paid products, SaaS, commercial trading desks) without a separate license
 
-You **may not** use Sonar (or modifications) for **commercial** purposes — including selling access, embedding in paid products, or operating a commercial research/trading service — without a separate commercial license from Thugir Group / Money Radar.
+Commercial licensing: [moneyradar.in](https://moneyradar.in)
 
-For commercial licensing: **[moneyradar.in](https://moneyradar.in)**
+---
 
-## Stack
+## Contributing · Security · Roadmap
 
-Next.js · Tailwind · FastAPI · SQLAlchemy · Parquet · DuckDB · Celery-ready · Pytest · Playwright · GitHub Actions
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Non-commercial license still welcomes community PRs for research and education.
-
-## Security
-
-See [SECURITY.md](SECURITY.md).
-
-## Roadmap
-
-See [ROADMAP.md](ROADMAP.md).
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [SECURITY.md](SECURITY.md)
+- [ROADMAP.md](ROADMAP.md)
+- [docs/brand.md](docs/brand.md)
 
 ---
 
 <p align="center">
-  <sub><strong>Sonar</strong> · Money Radar · Thugir Group<br/>Scan markets. Prove edges. Never invent evidence.</sub>
+  <b>Indiquant</b> · Money Radar · Thugir Group<br/>
+  <sub>Scan markets. Prove edges. Never invent evidence.</sub><br/><br/>
+  <a href="https://github.com/ryaneditraj/indiquant">★ Star if you’re building Indian market research the honest way</a>
 </p>
