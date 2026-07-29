@@ -14,6 +14,8 @@ CAVEATS = [
     "Terms pulled in the same request are normalized relative to each other; preserve query-group context.",
     "Sparse or frequently-zero series are flagged unreliable and down-weighted in the Search Demand Score.",
     "Trends is a confirmatory alt-data channel — combine with satellite, app, pricing, and hiring signals.",
+    "Multi-entity rankings use proxy labels and/or Search Demand Score — not guaranteed alpha or trade advice.",
+    "Empty inventory after a fresh clone is expected; run make trends-demo (fixture) before judging the UI.",
 ]
 
 QUALITY_BADGES = ("high", "medium", "low", "unreliable")

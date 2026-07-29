@@ -434,6 +434,24 @@ def nowcast_entity(entity_id: str, *, window: str = "90d") -> dict[str, Any]:
     }
 
 
+_QUALITY_TIER = {"high": 0, "medium": 1, "low": 2, "unreliable": 3}
+
+
+def _side_hint(*, rank: int, n: int, quality_badge: str | None) -> str:
+    """Tertile long/short labels — withheld for unreliable samples."""
+    if quality_badge == "unreliable":
+        return "watch"
+    if n <= 0:
+        return "neutral"
+    top = max(1, n // 3)
+    bottom = max(1, n // 3)
+    if rank <= top:
+        return "long"
+    if rank > n - bottom:
+        return "short"
+    return "neutral"
+
+
 def rank_entities(
     entity_ids: list[str] | None = None,
     *,
@@ -442,8 +460,20 @@ def rank_entities(
     ids = entity_ids or list_entities()
     rows: list[dict[str, Any]] = []
     for eid in ids:
-        # Skip entities with no data
-        feat = compute_features(eid, window=window)
+        # Skip unknown / empty entities without aborting the whole ranking
+        try:
+            feat = compute_features(eid, window=window)
+        except KeyError as exc:
+            rows.append(
+                {
+                    "entity_id": eid,
+                    "ok": False,
+                    "error": str(exc),
+                    "ranking_score": None,
+                    "ranking_method": None,
+                }
+            )
+            continue
         if not feat.get("ok"):
             rows.append(
                 {
@@ -451,6 +481,7 @@ def rank_entities(
                     "ok": False,
                     "error": feat.get("error"),
                     "ranking_score": None,
+                    "ranking_method": None,
                 }
             )
             continue
@@ -469,6 +500,7 @@ def rank_entities(
                     "quality_badge": scored.get("quality_badge"),
                     "regime": scored.get("regime"),
                     "model_ready": False,
+                    "ranking_method": "demand_fallback",
                     "is_absolute_volume": False,
                 }
             )
@@ -485,19 +517,28 @@ def rank_entities(
                 "regime": pred.get("regime"),
                 "predictions": pred.get("predictions"),
                 "model_ready": True,
+                "ranking_method": "model",
                 "proxy_labels": True,
                 "is_absolute_volume": False,
             }
         )
+    # Score desc → quality tier asc (high first) → demand desc as tie-break
     ranked = sorted(
         [r for r in rows if r.get("ranking_score") is not None],
-        key=lambda r: float(r["ranking_score"]),
-        reverse=True,
+        key=lambda r: (
+            -float(r["ranking_score"]),
+            _QUALITY_TIER.get(str(r.get("quality_badge") or "medium"), 9),
+            -float(r.get("search_demand_score") or 0.0),
+        ),
     )
     for i, r in enumerate(ranked, start=1):
         r["rank"] = i
-        n = len(ranked)
-        r["side_hint"] = "long" if i <= max(1, n // 3) else ("short" if i > n - max(1, n // 3) else "neutral")
+        r["side_hint"] = _side_hint(
+            rank=i,
+            n=len(ranked),
+            quality_badge=r.get("quality_badge"),
+        )
+    methods = {r.get("ranking_method") for r in ranked if r.get("ranking_method")}
     return {
         "ok": True,
         "window": window,
@@ -505,7 +546,12 @@ def rank_entities(
         "rankings": ranked,
         "failed": [r for r in rows if not r.get("ok")],
         "proxy_labels": True,
-        "proxy_note": "Ranking uses proxy-trained models and/or Search Demand Score until fundamentals wired.",
+        "proxy_note": (
+            "Ranking uses proxy-trained models and/or Search Demand Score until fundamentals "
+            "wired. side_hint is a relative tertile label — not a trade recommendation. "
+            "Unreliable quality → side_hint=watch."
+        ),
+        "ranking_methods_used": sorted(m for m in methods if m),
         "is_absolute_volume": False,
         "caveats": CAVEATS,
     }

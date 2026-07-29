@@ -45,10 +45,14 @@ celery -A quant_os_api.workers.celery_app beat -l info
 
 ```bash
 make trends-collect ENTITY=dmart
+make trends-demo                 # dmart + trent fixture collect + rank
+make demo                        # sample OHLCV seed + trends-demo
 make trends-collect-all          # scripts/trends_weekly.sh
 # crontab example:
 # 30 2 * * 0 cd /path/to/quant-os && bash scripts/trends_weekly.sh >> logs/trends_cron.log 2>&1
 ```
+
+Empty `/trends` after clone is expected — run `make trends-demo`, then Refresh. Ranking `side_hint` is a relative tertile label (`long` / `neutral` / `short` / `watch`); unreliable quality → `watch`. Not trade advice.
 
 ## API
 

@@ -39,7 +39,12 @@ def _quality_badge(features: dict[str, Any]) -> str:
 def score_entity(entity_id: str = "dmart", *, as_of: str | None = None, window: str = "90d") -> dict[str, Any]:
     feat_payload = compute_features(entity_id, as_of=as_of, window=window)
     if not feat_payload.get("ok"):
-        return {**feat_payload, "score": None}
+        return {
+            **feat_payload,
+            "score": None,
+            "is_absolute_volume": False,
+            "caveats": CAVEATS,
+        }
 
     f = feat_payload["features"]
     weights = (trends_config().get("score_weights") or {}).copy()

@@ -27,6 +27,8 @@ type Dashboard = {
   entity_id?: string;
   label?: string;
   ticker?: string;
+  empty_state?: boolean;
+  next_steps?: string[];
   inventory?: Record<string, number | string>;
   score?: {
     search_demand_score?: number;
@@ -84,6 +86,7 @@ type RankingRow = {
   regime?: string;
   side_hint?: string;
   model_ready?: boolean;
+  ranking_method?: string;
 };
 
 type ModelPred = {
@@ -321,7 +324,7 @@ export default function TrendsPage() {
         <section className="panel p-5">
           <SectionTitle
             title="Retail longs / shorts ranking"
-            subtitle="Proxy-trained ranking · relative search demand — not absolute volume"
+            subtitle="Proxy-trained ranking · relative search demand — not absolute volume · not trade advice"
           />
           <div className="overflow-hidden rounded-xl border border-canvas-border">
             <table className="w-full text-left text-xs">
@@ -333,6 +336,7 @@ export default function TrendsPage() {
                   <th className="px-3 py-2">Demand</th>
                   <th className="px-3 py-2">Regime</th>
                   <th className="px-3 py-2">Quality</th>
+                  <th className="px-3 py-2">Method</th>
                   <th className="px-3 py-2">Side</th>
                 </tr>
               </thead>
@@ -357,13 +361,33 @@ export default function TrendsPage() {
                     <td className="px-3 py-2 font-mono text-ink">{fmt(r.search_demand_score)}</td>
                     <td className="px-3 py-2 capitalize text-ink-muted">{r.regime}</td>
                     <td className={`px-3 py-2 ${badgeClass(r.quality_badge)}`}>{r.quality_badge}</td>
-                    <td className="px-3 py-2 capitalize text-accent-radar">{r.side_hint}</td>
+                    <td className="px-3 py-2 font-mono text-[10px] text-ink-faint">
+                      {r.ranking_method || (r.model_ready ? "model" : "—")}
+                    </td>
+                    <td
+                      className={`px-3 py-2 capitalize ${
+                        r.side_hint === "watch" ? "text-accent-warn" : "text-accent-radar"
+                      }`}
+                    >
+                      {r.side_hint}
+                    </td>
                   </tr>
                 ))}
                 {!rankings.length && (
                   <tr>
-                    <td colSpan={7} className="px-3 py-4 text-ink-muted">
-                      Collect entities (and optionally train models), then refresh ranking.
+                    <td colSpan={8} className="px-3 py-8 text-center">
+                      <p className="text-sm text-ink">No rankings yet</p>
+                      <p className="mt-2 text-xs text-ink-muted">
+                        Fresh clone? Seed fixture Trends data, then open this view again.
+                      </p>
+                      <ol className="mx-auto mt-3 max-w-md space-y-1 text-left text-xs text-ink-muted">
+                        <li>1. In the repo root: <code className="text-accent">make trends-demo</code></li>
+                        <li>2. Click <span className="text-ink">Collect all entities</span> or refresh</li>
+                        <li>3. Optional: <code className="text-accent">make trends-train</code> for model ranks</li>
+                      </ol>
+                      <p className="mt-3 text-[10px] text-ink-faint">
+                        Rankings are relative tertiles on proxy scores — not buy/sell advice.
+                      </p>
                     </td>
                   </tr>
                 )}
@@ -376,11 +400,51 @@ export default function TrendsPage() {
       {view === "entity" && loading && <p className="text-sm text-ink-muted">Loading Trends dashboard…</p>}
 
       {view === "entity" && !loading && dash && !dash.ok && (
-        <section className="panel p-5">
-          <p className="text-sm text-accent-warn">{dash.error || "No data"}</p>
-          <p className="mt-2 text-xs text-ink-muted">
-            Run collect above, then refresh. Inventory: {JSON.stringify(dash.inventory || {})}
+        <section className="panel border-accent-warn/25 p-6">
+          <p className="text-[11px] uppercase tracking-[0.16em] text-accent-warn">Empty state</p>
+          <h2 className="mt-2 font-display text-2xl text-ink">No Trends inventory yet</h2>
+          <p className="mt-2 max-w-xl text-sm text-ink-muted">
+            {dash.error || "Collect fixture (or live) Trends data before the dashboard can score demand."}
           </p>
+          <ol className="mt-4 space-y-2 text-sm text-ink-muted">
+            {(
+              dash.next_steps || [
+                "make trends-demo  # fixture offline seed for dmart + trent",
+                "Click Collect above, then Refresh",
+                "Optional: make trends-train for proxy model ranking",
+              ]
+            ).map((step) => (
+              <li key={step} className="flex gap-2">
+                <span className="font-mono text-accent">→</span>
+                <code className="text-xs text-ink">{step}</code>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <ActionButton
+              label={`Collect ${activeLabel} (fixture)`}
+              path="/api/v1/trends/collect"
+              demo
+              body={{ entity_id: entityId, provider: "fixture" }}
+            />
+            <button
+              type="button"
+              onClick={() => refresh()}
+              className="rounded-xl border border-canvas-border px-4 py-2 text-sm text-ink hover:border-accent/40"
+            >
+              Refresh after collect
+            </button>
+          </div>
+          <p className="mt-4 text-[11px] text-ink-faint">
+            Inventory: {JSON.stringify(dash.inventory || {})} · Never absolute volume
+          </p>
+          {dash.caveats?.length ? (
+            <ul className="mt-3 space-y-1 text-[11px] text-ink-faint">
+              {dash.caveats.slice(0, 3).map((c) => (
+                <li key={c}>· {c}</li>
+              ))}
+            </ul>
+          ) : null}
         </section>
       )}
 

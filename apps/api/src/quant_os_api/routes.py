@@ -706,16 +706,28 @@ def trends_dashboard(entity_id: str, window: str = Query("90d")) -> dict[str, An
     from quant_os_api.trends.score import score_entity
     from quant_os_api.trends import store as trends_store
 
+    from quant_os_api.trends import CAVEATS
+
     inv = trends_store.inventory(entity_id)
     if inv["interest_rows"] == 0:
         return {
             "ok": False,
             "entity_id": entity_id,
-            "error": "No Trends data — POST /api/v1/trends/collect first",
+            "error": "No Trends data — run make trends-demo or POST /api/v1/trends/collect first",
             "inventory": inv,
             "is_absolute_volume": False,
+            "caveats": CAVEATS,
+            "empty_state": True,
+            "next_steps": [
+                "make trends-demo  # fixture offline seed for dmart + trent",
+                "Open /trends and click Refresh",
+                "Optional: make trends-train for proxy model ranking",
+            ],
         }
-    scored = score_entity(entity_id, window=window)
+    try:
+        scored = score_entity(entity_id, window=window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
     alerts = build_alerts(entity_id, window=window)
     panel = pre_earnings_panel(entity_id)
     cross = scored.get("cross_signal") or load_cross_signals(entity_id, window=window)

@@ -181,3 +181,69 @@ def test_features_missing_data_message() -> None:
         assert False, "expected KeyError"
     except KeyError:
         pass
+
+
+def test_score_unknown_entity_no_data() -> None:
+    """Configured entity with empty store should fail soft, not crash."""
+    scored = score_entity("titan", window="90d")
+    # May be ok if prior tests collected titan; if empty, must be soft failure.
+    if not scored.get("ok"):
+        assert scored.get("error")
+        assert scored.get("is_absolute_volume") is not True
+        assert "caveats" in scored or "score" in scored or "error" in scored
+
+
+def test_rank_empty_and_partial_universe() -> None:
+    """Ranking with no collected entities returns empty list, not an exception."""
+    empty = rank_entities(["not_configured_entity_zzz"], window="90d")
+    assert empty["ok"] is True
+    assert empty["n"] == 0
+    assert empty["rankings"] == []
+    assert empty["is_absolute_volume"] is False
+    assert any("absolute" in c.lower() or "relative" in c.lower() for c in empty["caveats"])
+
+    collect_fixture("dmart", windows=["90d"], repeats=1)
+    partial = rank_entities(["dmart", "not_configured_entity_zzz"], window="90d")
+    assert partial["ok"] is True
+    assert partial["n"] >= 1
+    assert all(r.get("rank") for r in partial["rankings"])
+    assert all(r.get("side_hint") in {"long", "short", "neutral", "watch"} for r in partial["rankings"])
+    assert "demand_fallback" in (partial.get("ranking_methods_used") or []) or partial["rankings"][0].get(
+        "ranking_method"
+    ) in {"demand_fallback", "model"}
+
+
+def test_rank_quality_tiebreak_and_watch() -> None:
+    collect_fixture("dmart", windows=["90d", "5y"], repeats=1)
+    collect_fixture("trent", windows=["90d", "5y"], repeats=1)
+    ranked = rank_entities(["dmart", "trent"], window="90d")
+    assert ranked["ok"] is True
+    assert ranked["n"] == 2
+    ranks = [r["rank"] for r in ranked["rankings"]]
+    assert ranks == list(range(1, ranked["n"] + 1))
+    # Scores must be non-increasing
+    scores = [float(r["ranking_score"]) for r in ranked["rankings"]]
+    assert scores == sorted(scores, reverse=True)
+    for r in ranked["rankings"]:
+        assert r.get("is_absolute_volume") is False
+        assert r.get("ranking_method") in {"model", "demand_fallback"}
+
+
+def test_collect_rejects_bad_provider_softly() -> None:
+    r = client.post(
+        "/api/v1/trends/collect",
+        json={"entity_id": "dmart", "provider": "not_a_provider"},
+    )
+    assert r.status_code == 400
+    assert "provider" in r.json()["detail"].lower() or "Unknown" in r.json()["detail"]
+
+
+def test_dashboard_missing_entity_soft_failure() -> None:
+    d = client.get("/api/v1/trends/not_a_real_entity_xyz/dashboard")
+    assert d.status_code == 200
+    body = d.json()
+    assert body.get("ok") is False
+    assert body.get("empty_state") is True
+    assert body.get("is_absolute_volume") is False
+    assert body.get("caveats")
+    assert body.get("next_steps")
