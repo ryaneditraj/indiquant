@@ -118,6 +118,9 @@ google_trends:
   timezone: "Asia/Kolkata"
   default_provider: "fixture"  # fixture | pytrends
   collect_repeats: 3           # average repeated pulls (sampling noise)
+  pytrends_retries: 3         # exponential backoff on 429 / transient errors
+  pytrends_backoff_sec: 2.0
+  pytrends_request_gap_sec: 1.0
   windows:
     - "30d"
     - "90d"

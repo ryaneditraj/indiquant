@@ -44,6 +44,8 @@ data/cache/
 data/*.db
 data/**/*.db
 *.parquet
+data/parquet/trends/**/runs/
+!data/parquet/trends/**/.gitkeep
 *.duckdb
 *.duckdb.wal
 artifacts/

@@ -1,6 +1,6 @@
 # CI workflow leftover
 
-**Status (tick 0):** `.github/workflows/ci.yml` exists locally (API ruff+pytest, web typecheck) but is **not** on `origin/main`.
+**Status (tick 1):** `.github/workflows/ci.yml` exists locally (API ruff+pytest, web typecheck) but is **not** on `origin/main`. Soft-parked on `backup/local-ci` so product commits can push without `workflow` scope.
 
 ## Why
 
@@ -8,13 +8,14 @@ Pushing or updating GitHub Actions workflow files requires a GitHub token with t
 
 ## Local artifact
 
-- Path: `.github/workflows/ci.yml` (untracked until scope is available)
-- Prior local commit tip was preserved on branch `backup/local-ci`
+- Path: `.github/workflows/ci.yml` (keep **untracked** until scope is available)
+- Prior local CI tip: branch `backup/local-ci`
 
 ## Unblock
 
 ```bash
 gh auth refresh -h github.com -s repo,workflow,read:org
+git checkout backup/local-ci -- .github/workflows/ci.yml
 git add .github/workflows/ci.yml
 git commit -m "Add GitHub Actions CI for API tests and web typecheck."
 git push origin main

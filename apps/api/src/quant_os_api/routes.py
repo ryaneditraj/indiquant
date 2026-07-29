@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import csv
+import io
 from datetime import date, timedelta
 from typing import Any
 from uuid import UUID, uuid4
 
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import Response
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
@@ -852,9 +855,83 @@ def trends_comparison(window: str = Query("90d")) -> dict[str, Any]:
     return rank_entities(window=window)
 
 
+def _trends_export_csv(payload: dict[str, Any]) -> str:
+    """Flatten score + chart series into CSV (relative indices only)."""
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(
+        [
+            "section",
+            "entity_id",
+            "label",
+            "ticker",
+            "window",
+            "as_of",
+            "key",
+            "date",
+            "value",
+            "is_absolute_volume",
+            "note",
+        ]
+    )
+    eid = payload.get("entity_id")
+    label = payload.get("label")
+    ticker = payload.get("ticker")
+    window = payload.get("window")
+    as_of = payload.get("as_of")
+    note = "relative_index_not_absolute_volume"
+
+    def row(section: str, key: str, value: Any, date: str | None = None) -> None:
+        writer.writerow(
+            [
+                section,
+                eid,
+                label,
+                ticker,
+                window,
+                as_of,
+                key,
+                date or "",
+                value if value is not None else "",
+                False,
+                note,
+            ]
+        )
+
+    row("meta", "search_demand_score", payload.get("search_demand_score"))
+    row("meta", "quality_badge", payload.get("quality_badge"))
+    row("meta", "regime", payload.get("regime"))
+    ci = payload.get("confidence_interval") or {}
+    if isinstance(ci, dict):
+        row("meta", "confidence_low", ci.get("low"))
+        row("meta", "confidence_high", ci.get("high"))
+    for key, val in (payload.get("components") or {}).items():
+        row("component", key, val)
+    chart = payload.get("chart") or {}
+    for series_name in ("brand", "transactional"):
+        for pt in chart.get(series_name) or []:
+            row("chart", series_name, pt.get("interest"), date=pt.get("date"))
+    for hm in payload.get("heatmap") or []:
+        row("heatmap", hm.get("region"), hm.get("interest"))
+    for rq in payload.get("rising_queries") or []:
+        row("rising_query", rq.get("query"), rq.get("value"))
+    for alert in payload.get("alerts") or []:
+        row(
+            "alert",
+            alert.get("kind"),
+            alert.get("magnitude"),
+            date=alert.get("direction"),
+        )
+    return buf.getvalue()
+
+
 @router.get("/trends/{entity_id}/export")
-def trends_export(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
-    """JSON export of score, chart series, features — relative indices only."""
+def trends_export(
+    entity_id: str,
+    window: str = Query("90d"),
+    format: str = Query("json", pattern="^(json|csv)$"),
+) -> Any:
+    """JSON or CSV export of score/chart — relative indices only."""
     from quant_os_api.trends.alerts import build_alerts
     from quant_os_api.trends.score import score_entity
 
@@ -865,7 +942,7 @@ def trends_export(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
     if not scored.get("ok"):
         raise HTTPException(400, scored.get("error") or "export unavailable")
     alerts = build_alerts(entity_id, window=window)
-    return {
+    payload = {
         "ok": True,
         "entity_id": entity_id,
         "label": scored.get("label"),
@@ -885,8 +962,18 @@ def trends_export(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
         "alerts": alerts.get("alerts", []),
         "is_absolute_volume": False,
         "caveats": scored.get("caveats", []),
-        "export_format": "json",
+        "export_format": format,
     }
+    if format == "csv":
+        body = _trends_export_csv(payload)
+        return Response(
+            content=body,
+            media_type="text/csv; charset=utf-8",
+            headers={
+                "Content-Disposition": f'attachment; filename="trends-{entity_id}-{window}.csv"'
+            },
+        )
+    return payload
 
 
 @router.get("/trends/{entity_id}/cross-signals")

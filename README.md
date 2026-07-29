@@ -91,7 +91,18 @@ Or one-shot market + Trends fixtures: `make demo`
 
 Empty `/trends` after a fresh clone is expected — run `make trends-demo`, then Refresh.
 
+Export: JSON or CSV (`/api/v1/trends/{id}/export?format=csv`) — relative indices only.
+
 Full module docs: **[docs/trends.md](docs/trends.md)**
+
+### Screenshots / GIF (for stars)
+
+Hero OG image already ships at `apps/web/public/og.png`. For README GIFs after a local demo:
+
+1. `make demo && make api-dev` + `make web-dev`
+2. Capture `/trends` entity dashboard (score + chart) and multi-entity ranking
+3. Prefer short looped GIF (~8s) showing Collect → Refresh → Export CSV
+4. Drop files under `apps/web/public/` (e.g. `trends-demo.gif`) and link here — do **not** paste brokerage P&L or return claims
 
 ---
 

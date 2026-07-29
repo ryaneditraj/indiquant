@@ -126,6 +126,7 @@ export default function TrendsPage() {
   const [model, setModel] = useState<ModelPred | null>(null);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"entity" | "comparison">("entity");
+  const [copiedCurl, setCopiedCurl] = useState(false);
 
   const refreshEntities = useCallback(async () => {
     try {
@@ -187,9 +188,22 @@ export default function TrendsPage() {
     dash?.label || entities.find((e) => e.entity_id === entityId)?.label || entityId;
   const crossPanel = dash?.cross_signal?.panel || {};
 
-  async function downloadExport() {
-    const res = await fetch(`${apiBase()}/api/v1/trends/${entityId}/export`);
+  async function downloadExport(format: "json" | "csv" = "json") {
+    const res = await fetch(
+      `${apiBase()}/api/v1/trends/${entityId}/export?format=${format}&window=90d`,
+    );
     if (!res.ok) return;
+    if (format === "csv") {
+      const text = await res.text();
+      const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `trends-${entityId}-export.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
     const json = await res.json();
     const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -198,6 +212,18 @@ export default function TrendsPage() {
     a.download = `trends-${entityId}-export.json`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  const demoCurl = `curl -s -X POST ${apiBase()}/api/v1/trends/collect -H 'Content-Type: application/json' -d '{"entity_id":"${entityId}","provider":"fixture"}'`;
+
+  async function copyDemoCurl() {
+    try {
+      await navigator.clipboard.writeText(demoCurl);
+      setCopiedCurl(true);
+      window.setTimeout(() => setCopiedCurl(false), 2000);
+    } catch {
+      /* ignore */
+    }
   }
 
   return (
@@ -312,10 +338,17 @@ export default function TrendsPage() {
           </button>
           <button
             type="button"
-            onClick={downloadExport}
+            onClick={() => downloadExport("json")}
             className="rounded-xl border border-canvas-border px-4 py-2 text-sm text-ink hover:border-accent/40"
           >
-            Export score JSON
+            Export JSON
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadExport("csv")}
+            className="rounded-xl border border-canvas-border px-4 py-2 text-sm text-ink hover:border-accent/40"
+          >
+            Export CSV
           </button>
         </div>
       </section>
@@ -434,7 +467,17 @@ export default function TrendsPage() {
             >
               Refresh after collect
             </button>
+            <button
+              type="button"
+              onClick={copyDemoCurl}
+              className="rounded-xl border border-accent/30 px-4 py-2 text-sm text-accent hover:border-accent/60"
+            >
+              {copiedCurl ? "Copied curl" : "Copy collect curl"}
+            </button>
           </div>
+          <pre className="mt-4 overflow-x-auto rounded-xl border border-canvas-border bg-canvas/50 p-3 text-[11px] text-ink-muted">
+            {demoCurl}
+          </pre>
           <p className="mt-4 text-[11px] text-ink-faint">
             Inventory: {JSON.stringify(dash.inventory || {})} · Never absolute volume
           </p>

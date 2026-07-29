@@ -142,10 +142,63 @@ def test_trends_http_flow() -> None:
     ex = client.get("/api/v1/trends/dmart/export")
     assert ex.status_code == 200
     assert ex.json()["is_absolute_volume"] is False
+    assert ex.json()["export_format"] == "json"
+
+    csv_ex = client.get("/api/v1/trends/dmart/export?format=csv")
+    assert csv_ex.status_code == 200
+    assert "text/csv" in csv_ex.headers.get("content-type", "")
+    csv_body = csv_ex.text
+    assert "search_demand_score" in csv_body
+    assert "relative_index_not_absolute_volume" in csv_body
+    assert "is_absolute_volume" in csv_body.splitlines()[0]
 
     ents = client.get("/api/v1/trends/entities")
     assert ents.status_code == 200
     assert len(ents.json()["entities"]) >= 9
+
+
+def test_export_empty_entity_fails_soft() -> None:
+    r = client.get("/api/v1/trends/not_a_real_entity_xyz/export")
+    assert r.status_code in {400, 404}
+    csv_r = client.get("/api/v1/trends/not_a_real_entity_xyz/export?format=csv")
+    assert csv_r.status_code in {400, 404}
+
+
+def test_pytrends_backoff_retries_rate_limit() -> None:
+    from quant_os_api.trends.collector import call_with_backoff
+
+    sleeps: list[float] = []
+    attempts = {"n": 0}
+
+    def flaky() -> str:
+        attempts["n"] += 1
+        if attempts["n"] < 3:
+            raise RuntimeError("429 Too Many Requests")
+        return "ok"
+
+    out = call_with_backoff(
+        flaky,
+        retries=4,
+        base_delay_sec=0.5,
+        sleep_fn=sleeps.append,
+        label="test",
+    )
+    assert out == "ok"
+    assert attempts["n"] == 3
+    assert sleeps == [0.5, 1.0]
+
+
+def test_pytrends_backoff_exhausts() -> None:
+    from quant_os_api.trends.collector import call_with_backoff
+
+    def always_fail() -> None:
+        raise RuntimeError("rate limit exceeded")
+
+    try:
+        call_with_backoff(always_fail, retries=2, base_delay_sec=0.1, sleep_fn=lambda _d: None)
+        assert False, "expected RuntimeError"
+    except RuntimeError as exc:
+        assert "failed after 2 attempts" in str(exc)
 
 
 def test_trends_modeling_http() -> None:
