@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import math
+import time
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 import pandas as pd
@@ -318,6 +319,37 @@ def collect_entity(
     raise ValueError(f"Unknown trends provider: {provider}")
 
 
+def _is_rate_limit_error(exc: BaseException) -> bool:
+    text = str(exc).lower()
+    markers = ("429", "rate limit", "too many requests", "quota", "response code 429")
+    return any(m in text for m in markers)
+
+
+def call_with_backoff(
+    fn: Callable[[], Any],
+    *,
+    retries: int = 3,
+    base_delay_sec: float = 2.0,
+    sleep_fn: Callable[[float], None] = time.sleep,
+    label: str = "pytrends",
+) -> Any:
+    """Retry callable on rate-limit / transient failures with exponential backoff."""
+    last_exc: BaseException | None = None
+    attempts = max(1, int(retries))
+    for attempt in range(attempts):
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001 — live provider surface is noisy
+            last_exc = exc
+            retryable = _is_rate_limit_error(exc) or attempt < attempts - 1
+            if not retryable or attempt >= attempts - 1:
+                break
+            delay = float(base_delay_sec) * (2**attempt)
+            sleep_fn(delay)
+    assert last_exc is not None
+    raise RuntimeError(f"{label} failed after {attempts} attempts: {last_exc}") from last_exc
+
+
 def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> dict[str, Any]:
     """Optional live path — requires optional dependency pytrends."""
     try:
@@ -330,6 +362,9 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
     geo = str(cfg.get("geo", "IN"))
     run_id = trends_store.new_run_id()
     collected_at = datetime.now(UTC).isoformat()
+    retries = int(cfg.get("pytrends_retries", 3))
+    base_delay = float(cfg.get("pytrends_backoff_sec", 2.0))
+    inter_request_delay = float(cfg.get("pytrends_request_gap_sec", 1.0))
     pytrends = TrendReq(hl="en-IN", tz=330)
     groups = comparison_groups(entity_id)
     queries = iter_queries(entity_id)
@@ -345,13 +380,26 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
     interest_rows: list[dict[str, Any]] = []
     region_rows: list[dict[str, Any]] = []
     related_rows: list[dict[str, Any]] = []
+    request_count = 0
 
     for group in groups:
         for window in windows:
+            if request_count > 0 and inter_request_delay > 0:
+                time.sleep(inter_request_delay)
             tf = timeframe_map.get(window, "today 3-m")
             terms = group["terms"][:5]  # Trends comparison limit
-            pytrends.build_payload(terms, timeframe=tf, geo=geo)
-            iot = pytrends.interest_over_time()
+
+            def _fetch_iot() -> Any:
+                pytrends.build_payload(terms, timeframe=tf, geo=geo)
+                return pytrends.interest_over_time()
+
+            iot = call_with_backoff(
+                _fetch_iot,
+                retries=retries,
+                base_delay_sec=base_delay,
+                label=f"pytrends interest_over_time[{group['group_id']}/{window}]",
+            )
+            request_count += 1
             if iot is None or iot.empty:
                 continue
             for term in terms:
@@ -377,7 +425,13 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
                         }
                     )
             try:
-                ibr = pytrends.interest_by_region(resolution="REGION", inc_low_vol=True)
+                ibr = call_with_backoff(
+                    lambda: pytrends.interest_by_region(resolution="REGION", inc_low_vol=True),
+                    retries=retries,
+                    base_delay_sec=base_delay,
+                    label="pytrends interest_by_region",
+                )
+                request_count += 1
                 brand_term = terms[0]
                 if ibr is not None and not ibr.empty and brand_term in ibr.columns:
                     for region, row in ibr.iterrows():
@@ -399,7 +453,13 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
             except Exception:  # noqa: BLE001
                 pass
             try:
-                related = pytrends.related_queries()
+                related = call_with_backoff(
+                    pytrends.related_queries,
+                    retries=retries,
+                    base_delay_sec=base_delay,
+                    label="pytrends related_queries",
+                )
+                request_count += 1
                 seed = terms[0]
                 if related and seed in related:
                     for mode in ("top", "rising"):
@@ -444,6 +504,8 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
         "interest_rows": len(interest_rows),
         "region_rows": len(region_rows),
         "related_rows": len(related_rows),
+        "pytrends_requests": request_count,
+        "pytrends_retries": retries,
         "caveats": CAVEATS,
         "is_absolute_volume": False,
     }

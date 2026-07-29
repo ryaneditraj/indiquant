@@ -25,7 +25,7 @@ Phase 1 (DMart) + Phase 2 multi-entity framework + modeling layer. Confirmatory 
 | Search Demand Score + alerts + pre-earnings + PIT backtest | ✅ |
 | Cross-signal fixture adapters (satellite / app / pricing / hiring) | ✅ |
 | GB modeling (rev / SSS / beat-miss / nowcast / ranking) + conformal bands | ✅ `artifacts/trends/` |
-| Export JSON | ✅ |
+| Export JSON + CSV | ✅ `?format=json|csv` |
 | `/trends` multi-entity UI + ranking | ✅ |
 
 ## Weekly automated pulls
@@ -45,10 +45,14 @@ celery -A quant_os_api.workers.celery_app beat -l info
 
 ```bash
 make trends-collect ENTITY=dmart
+make trends-demo                 # dmart + trent fixture collect + rank
+make demo                        # sample OHLCV seed + trends-demo
 make trends-collect-all          # scripts/trends_weekly.sh
 # crontab example:
 # 30 2 * * 0 cd /path/to/quant-os && bash scripts/trends_weekly.sh >> logs/trends_cron.log 2>&1
 ```
+
+Empty `/trends` after clone is expected — run `make trends-demo`, then Refresh. Ranking `side_hint` is a relative tertile label (`long` / `neutral` / `short` / `watch`); unreliable quality → `watch`. Not trade advice.
 
 ## API
 
@@ -70,6 +74,8 @@ curl -X POST localhost:8000/api/v1/trends/score \
   -H 'Content-Type: application/json' \
   -d '{"entity_id":"blinkit","window":"90d"}'
 curl localhost:8000/api/v1/trends/dmart/export > dmart-trends.json
+curl localhost:8000/api/v1/trends/dmart/export?format=csv > dmart-trends.csv
+# CSV is relative index rows only — never absolute volume
 
 # Modeling (proxy labels until fundamentals wired)
 curl -X POST localhost:8000/api/v1/trends/models/train -H 'Content-Type: application/json' -d '{}'
@@ -86,7 +92,10 @@ curl -X POST localhost:8000/api/v1/trends/dmart/backtest
 ```bash
 pip install 'quant-os-api[trends]'   # pytrends
 # config: google_trends.default_provider: pytrends
+# optional: pytrends_retries / pytrends_backoff_sec / pytrends_request_gap_sec
 ```
+
+Live collector uses request gaps + exponential backoff on 429s; on hard failure it falls back to fixture with `live_error` set.
 
 ## Score subcomponents
 

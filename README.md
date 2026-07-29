@@ -19,7 +19,7 @@
 <p align="center">
   <a href="https://github.com/ryaneditraj/indiquant/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ryaneditraj/indiquant?style=for-the-badge&color=3dff9a&labelColor=030712" /></a>
   <a href="https://github.com/ryaneditraj/indiquant/network/members"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ryaneditraj/indiquant?style=for-the-badge&color=22d3ee&labelColor=030712" /></a>
-  <a href="https://github.com/ryaneditraj/indiquant/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/ryaneditraj/indiquant/ci.yml?branch=main&style=for-the-badge&label=CI&labelColor=030712" /></a>
+  <a href="#quick-start"><img alt="Local tests" src="https://img.shields.io/badge/tests-pytest%20%2B%20tsc%20local-3dff9a?style=for-the-badge&labelColor=030712" /></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-PolyForm%20NC-fb7185?style=for-the-badge&labelColor=030712" /></a>
 </p>
 
@@ -77,12 +77,32 @@ Retail **search demand** as confirmatory alt-data for Indian consumer names — 
 - Modeling / ranking / pre-earnings panel / PIT backtest
 - Explicit caveat: Trends is a **relative index**, never absolute volume
 
+### 60-second Trends demo (offline)
+
 ```bash
-make trends-collect ENTITY=dmart   # fixture offline
-# then open http://localhost:3000/trends
+cp .env.example .env
+make api-install          # once
+make trends-demo          # fixture collect + score for dmart + trent
+# terminals: make api-dev   &&   make web-dev
+# open http://localhost:3000/trends
 ```
 
+Or one-shot market + Trends fixtures: `make demo`
+
+Empty `/trends` after a fresh clone is expected — run `make trends-demo`, then Refresh.
+
+Export: JSON or CSV (`/api/v1/trends/{id}/export?format=csv`) — relative indices only.
+
 Full module docs: **[docs/trends.md](docs/trends.md)**
+
+### Screenshots / GIF (for stars)
+
+Hero OG image already ships at `apps/web/public/og.png`. For README GIFs after a local demo:
+
+1. `make demo && make api-dev` + `make web-dev`
+2. Capture `/trends` entity dashboard (score + chart) and multi-entity ranking
+3. Prefer short looped GIF (~8s) showing Collect → Refresh → Export CSV
+4. Drop files under `apps/web/public/` (e.g. `trends-demo.gif`) and link here — do **not** paste brokerage P&L or return claims
 
 ---
 
@@ -137,6 +157,17 @@ npm run dev
 
 Open **http://localhost:3000** → **AI Lab → Start research loop** · or **`/trends`**
 
+**Faster path (Makefile):**
+
+```bash
+make api-install && make web-install
+make demo                 # sample OHLCV + Trends fixtures
+make api-dev              # terminal 1
+make web-dev              # terminal 2 → http://localhost:3000/trends
+make api-test             # pytest
+cd apps/web && npm run typecheck
+```
+
 ```bash
 curl -X POST http://localhost:8000/api/v1/ai/cycle \
   -H 'Content-Type: application/json' \
@@ -144,6 +175,8 @@ curl -X POST http://localhost:8000/api/v1/ai/cycle \
 ```
 
 Docker: `docker compose up` (see `docker-compose.yml`).
+
+> **CI note:** GitHub Actions workflow lives locally at `.github/workflows/ci.yml` but is not on `origin/main` yet — pushing workflow files needs a token with the `workflow` scope. Until then, trust `make api-test` + `npm run typecheck`.
 
 ---
 
