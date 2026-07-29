@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/experiments",
     "/strategies",
     "/datasets",
+    "/trends",
     "/backtests",
     "/validation",
     "/portfolio",

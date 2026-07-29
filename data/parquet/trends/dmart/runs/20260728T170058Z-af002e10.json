@@ -1,0 +1,19 @@
+{
+  "run_id": "20260728T170058Z-af002e10",
+  "entity_id": "dmart",
+  "collected_at": "2026-07-28T17:00:58.700945+00:00",
+  "channels": {
+    "interest_over_time": {
+      "rows": 8050,
+      "written_at": "2026-07-28T17:00:58.700954+00:00"
+    },
+    "interest_by_region": {
+      "rows": 60,
+      "written_at": "2026-07-28T17:00:58.705503+00:00"
+    },
+    "related_queries": {
+      "rows": 10,
+      "written_at": "2026-07-28T17:00:58.708793+00:00"
+    }
+  }
+}

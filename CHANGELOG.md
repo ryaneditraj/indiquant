@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.5.0] — 2026-07-28
+
+### Added
+
+- **Google Trends Intelligence Module** (Phase 1 + Phase 2 + modeling)
+  - Configurable brand / transactional / category / competitor / risk query universe
+  - Entities: DMart, Trent, Reliance Smart, JioMart, BigBasket, Blinkit, Zepto, Nykaa, Titan
+  - Fixture collector + optional `pytrends` live pulls with repeat averaging
+  - Weekly automation via Celery Beat (`quant_os.trends_collect_all`) + `make trends-collect-all` / cron script
+  - Point-in-time raw parquet store + Search Demand Score (QoQ/YoY/festival/cross-signal features)
+  - Cross-signal fixture adapters (satellite, app rank, pricing/promo, hiring)
+  - Gradient-boosting models (rev / SSS / beat-miss / nowcast / ranking) with conformal bands → `artifacts/trends/`
+  - Pre-earnings panel, alerts, PIT backtest, JSON export, multi-entity `/trends` UI
+  - Explicit relative-index caveats (never absolute volume); proxy labels until fundamentals wired
+
+### Changed
+
+- OSS packaging polish: README Trends callout + CI badge + OG preview, topics/homepage ready for `ryaneditraj/indiquant`
+
 ## [0.4.2] — 2026-07-25
 
 ### Changed

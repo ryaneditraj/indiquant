@@ -1,0 +1,19 @@
+{
+  "run_id": "20260728T170044Z-4a8cc81d",
+  "entity_id": "blinkit",
+  "collected_at": "2026-07-28T17:00:44.675374+00:00",
+  "channels": {
+    "interest_over_time": {
+      "rows": 7700,
+      "written_at": "2026-07-28T17:00:44.675382+00:00"
+    },
+    "interest_by_region": {
+      "rows": 60,
+      "written_at": "2026-07-28T17:00:44.677251+00:00"
+    },
+    "related_queries": {
+      "rows": 10,
+      "written_at": "2026-07-28T17:00:44.679029+00:00"
+    }
+  }
+}

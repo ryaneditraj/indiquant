@@ -13,6 +13,7 @@ const FALLBACK_NAV = [
   { id: "experiments", label: "Experiments", href: "/experiments" },
   { id: "strategies", label: "Strategies", href: "/strategies" },
   { id: "datasets", label: "Datasets", href: "/datasets" },
+  { id: "trends", label: "Trends", href: "/trends" },
   { id: "backtests", label: "Backtests", href: "/backtests" },
   { id: "validation", label: "Validation", href: "/validation" },
   { id: "optimization", label: "Optimization", href: "/optimization" },

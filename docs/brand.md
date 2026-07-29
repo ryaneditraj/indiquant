@@ -34,8 +34,9 @@ Chosen for GitHub discoverability:
 
 - Precise, confident, zero hype
 - “Scan”, “prove”, “reject”, “evidence”
-- Never claim guaranteed returns
+- Never claim guaranteed returns or absolute Google Trends volume
 - Always non-commercial unless separately licensed
+- Lockup on public surfaces: **Indiquant · Money Radar · Thugir Group**
 
 ## Visual
 

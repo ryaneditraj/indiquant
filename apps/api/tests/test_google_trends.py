@@ -1,0 +1,183 @@
+"""Google Trends Intelligence — Phase 1+2 + modeling tests."""
+
+from __future__ import annotations
+
+from fastapi.testclient import TestClient
+
+from quant_os_api.main import app
+from quant_os_api.trends.collector import collect_fixture
+from quant_os_api.trends.cross_signals import load_cross_signals
+from quant_os_api.trends.features import compute_features
+from quant_os_api.trends.modeling import predict_entity, rank_entities, train_models
+from quant_os_api.trends.score import score_entity
+from quant_os_api.trends.universe import comparison_groups, iter_queries, list_entities
+
+
+client = TestClient(app)
+
+
+def test_query_universe_buckets() -> None:
+    qs = iter_queries("dmart")
+    types = {q["query_type"] for q in qs}
+    assert types == {"brand", "transactional", "category", "competitor", "risk"}
+    assert any(q["term"] == "DMart" for q in qs)
+    assert any(q["term"] == "Blinkit" for q in qs)
+    groups = comparison_groups("dmart")
+    assert any(g["group_id"] == "competitor_basket" for g in groups)
+
+
+def test_phase2_entities_configured() -> None:
+    ids = set(list_entities())
+    expected = {
+        "dmart",
+        "trent",
+        "reliance_smart",
+        "jiomart",
+        "bigbasket",
+        "blinkit",
+        "zepto",
+        "nykaa",
+        "titan",
+    }
+    assert expected <= ids
+    for eid in ("trent", "blinkit", "nykaa"):
+        qs = iter_queries(eid)
+        assert {q["query_type"] for q in qs} == {
+            "brand",
+            "transactional",
+            "category",
+            "competitor",
+            "risk",
+        }
+
+
+def test_collect_and_score_fixture() -> None:
+    collected = collect_fixture("dmart", windows=["90d"], repeats=2)
+    assert collected["is_absolute_volume"] is False
+    assert collected["interest_rows"] > 0
+    assert collected["region_rows"] > 0
+    scored = score_entity("dmart", window="90d")
+    assert scored["ok"] is True
+    assert scored["is_absolute_volume"] is False
+    assert 0 <= scored["search_demand_score"] <= 100
+    assert scored["quality_badge"] in {"high", "medium", "low", "unreliable"}
+    assert set(scored["components"]) >= {
+        "brand_attention",
+        "purchase_intent",
+        "regional_strength",
+        "competitive_share",
+        "risk_friction",
+        "signal_quality",
+    }
+    f = scored["features"]
+    assert "qoq_growth" in f
+    assert "yoy_seasonal" in f
+    assert "festival_adjusted_change" in f
+    assert "search_confirmation_composite" in f
+    assert f.get("corr_satellite") is not None or f.get("corr_app_rank") is not None
+
+
+def test_cross_signal_fixtures() -> None:
+    collect_fixture("dmart", windows=["90d"], repeats=1)
+    xs = load_cross_signals("dmart", window="90d")
+    assert xs["is_absolute_volume"] is False
+    assert "panel" in xs
+    for key in ("satellite", "app_rank", "pricing_promo", "hiring"):
+        assert key in xs["panel"]
+        assert xs["panel"][key]["latest"] is not None
+
+
+def test_multi_entity_collect_score() -> None:
+    for eid in ("trent", "blinkit"):
+        c = collect_fixture(eid, windows=["90d"], repeats=1)
+        assert c["interest_rows"] > 0
+        s = score_entity(eid, window="90d")
+        assert s["ok"] is True
+        assert s["entity_id"] == eid
+
+
+def test_modeling_train_predict_rank() -> None:
+    collect_fixture("dmart", windows=["90d", "5y"], repeats=1)
+    collect_fixture("trent", windows=["90d", "5y"], repeats=1)
+    trained = train_models(entity_ids=["dmart", "trent"])
+    assert trained["ok"] is True
+    assert trained["meta"]["proxy_labels"] is True
+    pred = predict_entity("dmart", window="90d")
+    assert pred["ok"] is True
+    assert pred["proxy_labels"] is True
+    assert "revenue_growth" in pred["predictions"]
+    assert "nowcast_momentum" in pred["predictions"]
+    assert pred["predictions"]["revenue_growth"]["confidence_interval"]["method"]
+    ranked = rank_entities(["dmart", "trent"], window="90d")
+    assert ranked["ok"] is True
+    assert len(ranked["rankings"]) >= 1
+
+
+def test_trends_http_flow() -> None:
+    r = client.post(
+        "/api/v1/trends/collect",
+        json={"entity_id": "dmart", "provider": "fixture", "windows": ["90d", "5y"]},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["is_absolute_volume"] is False
+
+    d = client.get("/api/v1/trends/dmart/dashboard")
+    assert d.status_code == 200
+    dash = d.json()
+    assert dash["ok"] is True
+    assert "caveats" in dash
+    assert dash["score"]["search_demand_score"] is not None
+    assert dash["cross_signal"]["panel"]["satellite"]["latest"] is not None
+
+    a = client.get("/api/v1/trends/dmart/alerts")
+    assert a.status_code == 200
+
+    b = client.post("/api/v1/trends/dmart/backtest")
+    assert b.status_code == 200
+    bt = b.json()
+    assert bt["ok"] is True
+    assert "guards" in bt
+
+    ex = client.get("/api/v1/trends/dmart/export")
+    assert ex.status_code == 200
+    assert ex.json()["is_absolute_volume"] is False
+
+    ents = client.get("/api/v1/trends/entities")
+    assert ents.status_code == 200
+    assert len(ents.json()["entities"]) >= 9
+
+
+def test_trends_modeling_http() -> None:
+    client.post(
+        "/api/v1/trends/collect",
+        json={"entity_id": "dmart", "provider": "fixture", "windows": ["90d", "5y"]},
+    )
+    client.post(
+        "/api/v1/trends/collect",
+        json={"entity_id": "nykaa", "provider": "fixture", "windows": ["90d", "5y"]},
+    )
+    tr = client.post("/api/v1/trends/models/train", json={"entity_ids": ["dmart", "nykaa"]})
+    assert tr.status_code == 200
+    assert tr.json()["ok"] is True
+
+    pred = client.get("/api/v1/trends/dmart/predict")
+    assert pred.status_code == 200
+    assert pred.json()["ok"] is True
+
+    nc = client.get("/api/v1/trends/dmart/nowcast")
+    assert nc.status_code == 200
+    assert nc.json()["ok"] is True
+
+    cmp_ = client.get("/api/v1/trends/comparison")
+    assert cmp_.status_code == 200
+    assert cmp_.json()["ok"] is True
+
+
+def test_features_missing_data_message() -> None:
+    # Unknown entity raises
+    try:
+        compute_features("not_a_real_entity_xyz")
+        assert False, "expected KeyError"
+    except KeyError:
+        pass

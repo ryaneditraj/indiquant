@@ -1,0 +1,19 @@
+{
+  "run_id": "20260728T170044Z-2d9a0faa",
+  "entity_id": "trent",
+  "collected_at": "2026-07-28T17:00:44.598773+00:00",
+  "channels": {
+    "interest_over_time": {
+      "rows": 8050,
+      "written_at": "2026-07-28T17:00:44.598780+00:00"
+    },
+    "interest_by_region": {
+      "rows": 60,
+      "written_at": "2026-07-28T17:00:44.600387+00:00"
+    },
+    "related_queries": {
+      "rows": 10,
+      "written_at": "2026-07-28T17:00:44.601911+00:00"
+    }
+  }
+}

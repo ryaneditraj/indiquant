@@ -1,0 +1,1408 @@
+{
+  "entity_id": "dmart",
+  "label": "DMart",
+  "ticker": "DMART",
+  "as_of": "2024-01-17",
+  "window": "5y",
+  "ok": true,
+  "is_absolute_volume": false,
+  "search_demand_score": 73.18,
+  "components": {
+    "brand_attention": 0.4848,
+    "purchase_intent": 1.0,
+    "regional_strength": 0.9967,
+    "competitive_share": 0.4474,
+    "risk_friction": 0.3356,
+    "signal_quality": 0.95
+  },
+  "weights": {
+    "brand_attention": 0.22,
+    "purchase_intent": 0.28,
+    "regional_strength": 0.15,
+    "competitive_share": 0.15,
+    "risk_friction": 0.1,
+    "signal_quality": 0.1
+  },
+  "quality_badge": "high",
+  "quality_badges_allowed": [
+    "high",
+    "medium",
+    "low",
+    "unreliable"
+  ],
+  "confidence_interval": {
+    "low": 69.18,
+    "high": 77.18,
+    "method": "heuristic_sampling_band"
+  },
+  "regime": "bearish",
+  "regime_reason": "Negative search momentum and/or elevated risk/friction query pressure.",
+  "features": {
+    "wow_growth": 0.024431146572103928,
+    "growth_2w": -0.01942870073436601,
+    "growth_4w": 0.05137974304441941,
+    "growth_8w": 0.07137917846533041,
+    "mom_growth": 0.05137974304441941,
+    "ma_4w": 68.82962500000001,
+    "ma_8w": 67.52765625,
+    "trend_slope": 0.4959970238095224,
+    "trend_acceleration": -0.04096726190476763,
+    "zscore_1y": -0.14008458676075913,
+    "volatility": 3.6617093590185776,
+    "spike_detected": false,
+    "spike_z": -0.14008458676075913,
+    "post_spike_decay": null,
+    "relative_strength_vs_competitors": 0.2667947337417973,
+    "relative_search_share": 0.21060612791920272,
+    "brand_to_category_ratio": 0.9382789839545658,
+    "transactional_to_brand_ratio": 1.142026100898796,
+    "risk_query_ratio": 0.4429412429297045,
+    "state_weighted_search_score": 55.04392307692308,
+    "core_vs_noncore_spread": 37.650555555555556,
+    "search_dispersion": 22.50740802491482,
+    "search_concentration_hhi": 0.08400994604791336,
+    "related_query_breadth": 51,
+    "related_query_intensity": 101.66666666666667,
+    "qoq_growth": 0.137898166370169,
+    "yoy_seasonal": -0.1089413964904149,
+    "festival_adjusted_change": 0.08602129484232503,
+    "pre_earn_7d": 0.024431146572103928,
+    "pre_earn_14d": -0.01942870073436601,
+    "pre_earn_21d": 0.02567762980276704,
+    "pre_earn_30d": 0.05137974304441941,
+    "brand_last": 69.3335,
+    "tx_last": 79.18066666666667,
+    "risk_last": 30.71066666666667,
+    "sparsity": {
+      "sparse": false,
+      "zero_share": 0.0,
+      "unstable": false
+    },
+    "corr_app_rank": -0.3378069249321979,
+    "corr_satellite": -0.3328301093965506,
+    "corr_pricing_promo": 0.07654185756085896,
+    "corr_hiring": 0.7996773135396522,
+    "divergence_satellite": 0.20742694532749195,
+    "divergence_app_rank": 0.19560090887897738,
+    "divergence_pricing": -0.040923105748125084,
+    "divergence_hiring": -0.06170528733374186,
+    "search_confirmation_composite": 0.02551395252028632
+  },
+  "chart": {
+    "brand": [
+      {
+        "date": "2023-04-19",
+        "interest": 79.6215
+      },
+      {
+        "date": "2023-04-26",
+        "interest": 79.52924999999999
+      },
+      {
+        "date": "2023-05-03",
+        "interest": 76.69675000000001
+      },
+      {
+        "date": "2023-05-10",
+        "interest": 77.53975
+      },
+      {
+        "date": "2023-05-17",
+        "interest": 73.314
+      },
+      {
+        "date": "2023-05-24",
+        "interest": 71.44375
+      },
+      {
+        "date": "2023-05-31",
+        "interest": 73.10375
+      },
+      {
+        "date": "2023-06-07",
+        "interest": 69.66125
+      },
+      {
+        "date": "2023-06-14",
+        "interest": 69.108
+      },
+      {
+        "date": "2023-06-21",
+        "interest": 75.60300000000001
+      },
+      {
+        "date": "2023-06-28",
+        "interest": 69.21675
+      },
+      {
+        "date": "2023-07-05",
+        "interest": 65.72425
+      },
+      {
+        "date": "2023-07-12",
+        "interest": 66.5815
+      },
+      {
+        "date": "2023-07-19",
+        "interest": 67.29975
+      },
+      {
+        "date": "2023-07-26",
+        "interest": 72.65975
+      },
+      {
+        "date": "2023-08-02",
+        "interest": 63.84175
+      },
+      {
+        "date": "2023-08-09",
+        "interest": 62.328
+      },
+      {
+        "date": "2023-08-16",
+        "interest": 64.48975
+      },
+      {
+        "date": "2023-08-23",
+        "interest": 64.36475
+      },
+      {
+        "date": "2023-08-30",
+        "interest": 62.74825
+      },
+      {
+        "date": "2023-09-06",
+        "interest": 66.75325
+      },
+      {
+        "date": "2023-09-13",
+        "interest": 62.93475
+      },
+      {
+        "date": "2023-09-20",
+        "interest": 64.65174999999999
+      },
+      {
+        "date": "2023-09-27",
+        "interest": 64.33075
+      },
+      {
+        "date": "2023-10-04",
+        "interest": 62.7515
+      },
+      {
+        "date": "2023-10-11",
+        "interest": 58.947
+      },
+      {
+        "date": "2023-10-18",
+        "interest": 64.32825
+      },
+      {
+        "date": "2023-10-25",
+        "interest": 63.594
+      },
+      {
+        "date": "2023-11-01",
+        "interest": 63.1785
+      },
+      {
+        "date": "2023-11-08",
+        "interest": 74.32575
+      },
+      {
+        "date": "2023-11-15",
+        "interest": 61.073750000000004
+      },
+      {
+        "date": "2023-11-22",
+        "interest": 64.71424999999999
+      },
+      {
+        "date": "2023-11-29",
+        "interest": 64.93825
+      },
+      {
+        "date": "2023-12-06",
+        "interest": 69.60975
+      },
+      {
+        "date": "2023-12-13",
+        "interest": 64.40950000000001
+      },
+      {
+        "date": "2023-12-20",
+        "interest": 65.94525
+      },
+      {
+        "date": "2023-12-27",
+        "interest": 67.59775
+      },
+      {
+        "date": "2024-01-03",
+        "interest": 70.70725
+      },
+      {
+        "date": "2024-01-10",
+        "interest": 67.68
+      },
+      {
+        "date": "2024-01-17",
+        "interest": 69.3335
+      }
+    ],
+    "transactional": [
+      {
+        "date": "2023-04-19",
+        "interest": 85.623
+      },
+      {
+        "date": "2023-04-26",
+        "interest": 84.81966666666666
+      },
+      {
+        "date": "2023-05-03",
+        "interest": 85.31
+      },
+      {
+        "date": "2023-05-10",
+        "interest": 78.73666666666666
+      },
+      {
+        "date": "2023-05-17",
+        "interest": 79.59033333333333
+      },
+      {
+        "date": "2023-05-24",
+        "interest": 77.19066666666667
+      },
+      {
+        "date": "2023-05-31",
+        "interest": 74.38366666666667
+      },
+      {
+        "date": "2023-06-07",
+        "interest": 76.21833333333332
+      },
+      {
+        "date": "2023-06-14",
+        "interest": 77.48266666666667
+      },
+      {
+        "date": "2023-06-21",
+        "interest": 75.96499999999999
+      },
+      {
+        "date": "2023-06-28",
+        "interest": 74.64466666666667
+      },
+      {
+        "date": "2023-07-05",
+        "interest": 70.002
+      },
+      {
+        "date": "2023-07-12",
+        "interest": 66.89133333333332
+      },
+      {
+        "date": "2023-07-19",
+        "interest": 73.56733333333334
+      },
+      {
+        "date": "2023-07-26",
+        "interest": 71.141
+      },
+      {
+        "date": "2023-08-02",
+        "interest": 70.33966666666667
+      },
+      {
+        "date": "2023-08-09",
+        "interest": 71.51933333333334
+      },
+      {
+        "date": "2023-08-16",
+        "interest": 71.65666666666667
+      },
+      {
+        "date": "2023-08-23",
+        "interest": 68.853
+      },
+      {
+        "date": "2023-08-30",
+        "interest": 67.36233333333332
+      },
+      {
+        "date": "2023-09-06",
+        "interest": 69.99466666666666
+      },
+      {
+        "date": "2023-09-13",
+        "interest": 66.59066666666666
+      },
+      {
+        "date": "2023-09-20",
+        "interest": 69.931
+      },
+      {
+        "date": "2023-09-27",
+        "interest": 62.458
+      },
+      {
+        "date": "2023-10-04",
+        "interest": 65.39366666666666
+      },
+      {
+        "date": "2023-10-11",
+        "interest": 60.910000000000004
+      },
+      {
+        "date": "2023-10-18",
+        "interest": 65.19466666666666
+      },
+      {
+        "date": "2023-10-25",
+        "interest": 64.803
+      },
+      {
+        "date": "2023-11-01",
+        "interest": 63.70566666666667
+      },
+      {
+        "date": "2023-11-08",
+        "interest": 85.903
+      },
+      {
+        "date": "2023-11-15",
+        "interest": 66.16666666666667
+      },
+      {
+        "date": "2023-11-22",
+        "interest": 70.20233333333333
+      },
+      {
+        "date": "2023-11-29",
+        "interest": 66.53533333333333
+      },
+      {
+        "date": "2023-12-06",
+        "interest": 69.59933333333333
+      },
+      {
+        "date": "2023-12-13",
+        "interest": 67.12233333333334
+      },
+      {
+        "date": "2023-12-20",
+        "interest": 69.252
+      },
+      {
+        "date": "2023-12-27",
+        "interest": 72.04533333333335
+      },
+      {
+        "date": "2024-01-03",
+        "interest": 72.14766666666667
+      },
+      {
+        "date": "2024-01-10",
+        "interest": 66.85133333333333
+      },
+      {
+        "date": "2024-01-17",
+        "interest": 79.18066666666667
+      }
+    ]
+  },
+  "heatmap": [
+    {
+      "region": "Maharashtra",
+      "interest": 100.0
+    },
+    {
+      "region": "Gujarat",
+      "interest": 61.62
+    },
+    {
+      "region": "Karnataka",
+      "interest": 58.91
+    },
+    {
+      "region": "Telangana",
+      "interest": 54.32
+    },
+    {
+      "region": "Rajasthan",
+      "interest": 40.73
+    },
+    {
+      "region": "Madhya Pradesh",
+      "interest": 35.39
+    },
+    {
+      "region": "Uttar Pradesh",
+      "interest": 32.25
+    },
+    {
+      "region": "Tamil Nadu",
+      "interest": 27.29
+    },
+    {
+      "region": "Other",
+      "interest": 27.06
+    },
+    {
+      "region": "Kerala",
+      "interest": 25.88
+    },
+    {
+      "region": "West Bengal",
+      "interest": 24.83
+    },
+    {
+      "region": "Andhra Pradesh",
+      "interest": 23.4
+    },
+    {
+      "region": "Punjab",
+      "interest": 22.68
+    },
+    {
+      "region": "Haryana",
+      "interest": 22.5
+    },
+    {
+      "region": "Delhi",
+      "interest": 20.36
+    }
+  ],
+  "rising_queries": [
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    }
+  ],
+  "cross_signal": {
+    "entity_id": "dmart",
+    "window": "5y",
+    "as_of": "2024-01-17",
+    "source": "fixture",
+    "note": "Fixture adapters generate correlated/divergent series offline. Swap for live feeds when available \u2014 same schema.",
+    "is_absolute_volume": false,
+    "metrics": {
+      "corr_satellite": -0.3328301093965506,
+      "corr_app_rank": -0.3378069249321979,
+      "corr_pricing_promo": 0.07654185756085896,
+      "corr_hiring": 0.7996773135396522,
+      "divergence_satellite": 0.20742694532749195,
+      "divergence_app_rank": 0.19560090887897738,
+      "divergence_pricing": -0.040923105748125084,
+      "divergence_hiring": -0.06170528733374186
+    },
+    "search_confirmation_composite": 0.02551395252028632,
+    "panel": {
+      "satellite": {
+        "label": "Satellite parking",
+        "source": "fixture",
+        "corr_with_search": -0.3328301093965506,
+        "divergence": 0.20742694532749195,
+        "latest": 60.51553927821322,
+        "series": [
+          {
+            "date": "2023-04-19",
+            "value": 52.48
+          },
+          {
+            "date": "2023-04-26",
+            "value": 59.98
+          },
+          {
+            "date": "2023-05-03",
+            "value": 74.91
+          },
+          {
+            "date": "2023-05-10",
+            "value": 56.97
+          },
+          {
+            "date": "2023-05-17",
+            "value": 59.91
+          },
+          {
+            "date": "2023-05-24",
+            "value": 64.72
+          },
+          {
+            "date": "2023-05-31",
+            "value": 61.93
+          },
+          {
+            "date": "2023-06-07",
+            "value": 70.69
+          },
+          {
+            "date": "2023-06-14",
+            "value": 70.06
+          },
+          {
+            "date": "2023-06-21",
+            "value": 58.29
+          },
+          {
+            "date": "2023-06-28",
+            "value": 68.83
+          },
+          {
+            "date": "2023-07-05",
+            "value": 74.86
+          },
+          {
+            "date": "2023-07-12",
+            "value": 53.6
+          },
+          {
+            "date": "2023-07-19",
+            "value": 69.3
+          },
+          {
+            "date": "2023-07-26",
+            "value": 75.47
+          },
+          {
+            "date": "2023-08-02",
+            "value": 81.44
+          },
+          {
+            "date": "2023-08-09",
+            "value": 65.62
+          },
+          {
+            "date": "2023-08-16",
+            "value": 76.05
+          },
+          {
+            "date": "2023-08-23",
+            "value": 70.3
+          },
+          {
+            "date": "2023-08-30",
+            "value": 64.13
+          },
+          {
+            "date": "2023-09-06",
+            "value": 74.45
+          },
+          {
+            "date": "2023-09-13",
+            "value": 81.94
+          },
+          {
+            "date": "2023-09-20",
+            "value": 74.34
+          },
+          {
+            "date": "2023-09-27",
+            "value": 79.18
+          },
+          {
+            "date": "2023-10-04",
+            "value": 62.7
+          },
+          {
+            "date": "2023-10-11",
+            "value": 62.95
+          },
+          {
+            "date": "2023-10-18",
+            "value": 71.89
+          },
+          {
+            "date": "2023-10-25",
+            "value": 56.5
+          },
+          {
+            "date": "2023-11-01",
+            "value": 65.4
+          },
+          {
+            "date": "2023-11-08",
+            "value": 61.05
+          },
+          {
+            "date": "2023-11-15",
+            "value": 77.29
+          },
+          {
+            "date": "2023-11-22",
+            "value": 71.51
+          },
+          {
+            "date": "2023-11-29",
+            "value": 68.1
+          },
+          {
+            "date": "2023-12-06",
+            "value": 86.7
+          },
+          {
+            "date": "2023-12-13",
+            "value": 66.39
+          },
+          {
+            "date": "2023-12-20",
+            "value": 63.07
+          },
+          {
+            "date": "2023-12-27",
+            "value": 59.16
+          },
+          {
+            "date": "2024-01-03",
+            "value": 70.62
+          },
+          {
+            "date": "2024-01-10",
+            "value": 65.22
+          },
+          {
+            "date": "2024-01-17",
+            "value": 60.52
+          }
+        ]
+      },
+      "app_rank": {
+        "label": "App rank / reviews",
+        "source": "fixture",
+        "corr_with_search": -0.3378069249321979,
+        "divergence": 0.19560090887897738,
+        "latest": 60.26337045844558,
+        "series": [
+          {
+            "date": "2023-04-19",
+            "value": 55.98
+          },
+          {
+            "date": "2023-04-26",
+            "value": 52.36
+          },
+          {
+            "date": "2023-05-03",
+            "value": 59.25
+          },
+          {
+            "date": "2023-05-10",
+            "value": 59.08
+          },
+          {
+            "date": "2023-05-17",
+            "value": 57.18
+          },
+          {
+            "date": "2023-05-24",
+            "value": 64.12
+          },
+          {
+            "date": "2023-05-31",
+            "value": 68.46
+          },
+          {
+            "date": "2023-06-07",
+            "value": 68.16
+          },
+          {
+            "date": "2023-06-14",
+            "value": 53.97
+          },
+          {
+            "date": "2023-06-21",
+            "value": 56.77
+          },
+          {
+            "date": "2023-06-28",
+            "value": 57.08
+          },
+          {
+            "date": "2023-07-05",
+            "value": 51.01
+          },
+          {
+            "date": "2023-07-12",
+            "value": 70.44
+          },
+          {
+            "date": "2023-07-19",
+            "value": 65.94
+          },
+          {
+            "date": "2023-07-26",
+            "value": 57.57
+          },
+          {
+            "date": "2023-08-02",
+            "value": 60.56
+          },
+          {
+            "date": "2023-08-09",
+            "value": 59.47
+          },
+          {
+            "date": "2023-08-16",
+            "value": 70.26
+          },
+          {
+            "date": "2023-08-23",
+            "value": 69.93
+          },
+          {
+            "date": "2023-08-30",
+            "value": 68.9
+          },
+          {
+            "date": "2023-09-06",
+            "value": 77.12
+          },
+          {
+            "date": "2023-09-13",
+            "value": 61.55
+          },
+          {
+            "date": "2023-09-20",
+            "value": 59.36
+          },
+          {
+            "date": "2023-09-27",
+            "value": 62.09
+          },
+          {
+            "date": "2023-10-04",
+            "value": 66.55
+          },
+          {
+            "date": "2023-10-11",
+            "value": 74.92
+          },
+          {
+            "date": "2023-10-18",
+            "value": 70.6
+          },
+          {
+            "date": "2023-10-25",
+            "value": 59.73
+          },
+          {
+            "date": "2023-11-01",
+            "value": 67.92
+          },
+          {
+            "date": "2023-11-08",
+            "value": 72.37
+          },
+          {
+            "date": "2023-11-15",
+            "value": 47.57
+          },
+          {
+            "date": "2023-11-22",
+            "value": 68.96
+          },
+          {
+            "date": "2023-11-29",
+            "value": 57.92
+          },
+          {
+            "date": "2023-12-06",
+            "value": 60.98
+          },
+          {
+            "date": "2023-12-13",
+            "value": 63.96
+          },
+          {
+            "date": "2023-12-20",
+            "value": 60.78
+          },
+          {
+            "date": "2023-12-27",
+            "value": 60.49
+          },
+          {
+            "date": "2024-01-03",
+            "value": 57.81
+          },
+          {
+            "date": "2024-01-10",
+            "value": 58.83
+          },
+          {
+            "date": "2024-01-17",
+            "value": 60.26
+          }
+        ]
+      },
+      "pricing_promo": {
+        "label": "Pricing / promo",
+        "source": "fixture",
+        "corr_with_search": 0.07654185756085896,
+        "divergence": -0.040923105748125084,
+        "latest": 67.23338075021697,
+        "series": [
+          {
+            "date": "2023-04-19",
+            "value": 72.85
+          },
+          {
+            "date": "2023-04-26",
+            "value": 77.24
+          },
+          {
+            "date": "2023-05-03",
+            "value": 63.05
+          },
+          {
+            "date": "2023-05-10",
+            "value": 51.56
+          },
+          {
+            "date": "2023-05-17",
+            "value": 62.95
+          },
+          {
+            "date": "2023-05-24",
+            "value": 87.35
+          },
+          {
+            "date": "2023-05-31",
+            "value": 77.84
+          },
+          {
+            "date": "2023-06-07",
+            "value": 78.2
+          },
+          {
+            "date": "2023-06-14",
+            "value": 61.87
+          },
+          {
+            "date": "2023-06-21",
+            "value": 57.02
+          },
+          {
+            "date": "2023-06-28",
+            "value": 67.3
+          },
+          {
+            "date": "2023-07-05",
+            "value": 76.07
+          },
+          {
+            "date": "2023-07-12",
+            "value": 81.93
+          },
+          {
+            "date": "2023-07-19",
+            "value": 73.35
+          },
+          {
+            "date": "2023-07-26",
+            "value": 65.13
+          },
+          {
+            "date": "2023-08-02",
+            "value": 76.56
+          },
+          {
+            "date": "2023-08-09",
+            "value": 66.83
+          },
+          {
+            "date": "2023-08-16",
+            "value": 71.55
+          },
+          {
+            "date": "2023-08-23",
+            "value": 58.72
+          },
+          {
+            "date": "2023-08-30",
+            "value": 72.71
+          },
+          {
+            "date": "2023-09-06",
+            "value": 77.42
+          },
+          {
+            "date": "2023-09-13",
+            "value": 66.39
+          },
+          {
+            "date": "2023-09-20",
+            "value": 54.25
+          },
+          {
+            "date": "2023-09-27",
+            "value": 55.71
+          },
+          {
+            "date": "2023-10-04",
+            "value": 74.76
+          },
+          {
+            "date": "2023-10-11",
+            "value": 74.94
+          },
+          {
+            "date": "2023-10-18",
+            "value": 61.68
+          },
+          {
+            "date": "2023-10-25",
+            "value": 50.59
+          },
+          {
+            "date": "2023-11-01",
+            "value": 77.36
+          },
+          {
+            "date": "2023-11-08",
+            "value": 66.46
+          },
+          {
+            "date": "2023-11-15",
+            "value": 64.75
+          },
+          {
+            "date": "2023-11-22",
+            "value": 69.87
+          },
+          {
+            "date": "2023-11-29",
+            "value": 70.05
+          },
+          {
+            "date": "2023-12-06",
+            "value": 62.41
+          },
+          {
+            "date": "2023-12-13",
+            "value": 65.16
+          },
+          {
+            "date": "2023-12-20",
+            "value": 66.39
+          },
+          {
+            "date": "2023-12-27",
+            "value": 67.18
+          },
+          {
+            "date": "2024-01-03",
+            "value": 62.04
+          },
+          {
+            "date": "2024-01-10",
+            "value": 73.21
+          },
+          {
+            "date": "2024-01-17",
+            "value": 67.23
+          }
+        ]
+      },
+      "hiring": {
+        "label": "Hiring",
+        "source": "fixture",
+        "corr_with_search": 0.7996773135396522,
+        "divergence": -0.06170528733374186,
+        "latest": 77.66048063549789,
+        "series": [
+          {
+            "date": "2023-04-19",
+            "value": 79.01
+          },
+          {
+            "date": "2023-04-26",
+            "value": 75.24
+          },
+          {
+            "date": "2023-05-03",
+            "value": 75.26
+          },
+          {
+            "date": "2023-05-10",
+            "value": 76.6
+          },
+          {
+            "date": "2023-05-17",
+            "value": 64.3
+          },
+          {
+            "date": "2023-05-24",
+            "value": 74.28
+          },
+          {
+            "date": "2023-05-31",
+            "value": 59.08
+          },
+          {
+            "date": "2023-06-07",
+            "value": 65.87
+          },
+          {
+            "date": "2023-06-14",
+            "value": 62.74
+          },
+          {
+            "date": "2023-06-21",
+            "value": 82.69
+          },
+          {
+            "date": "2023-06-28",
+            "value": 68.85
+          },
+          {
+            "date": "2023-07-05",
+            "value": 57.43
+          },
+          {
+            "date": "2023-07-12",
+            "value": 59.19
+          },
+          {
+            "date": "2023-07-19",
+            "value": 58.9
+          },
+          {
+            "date": "2023-07-26",
+            "value": 65.12
+          },
+          {
+            "date": "2023-08-02",
+            "value": 57.77
+          },
+          {
+            "date": "2023-08-09",
+            "value": 64.2
+          },
+          {
+            "date": "2023-08-16",
+            "value": 62.89
+          },
+          {
+            "date": "2023-08-23",
+            "value": 61.31
+          },
+          {
+            "date": "2023-08-30",
+            "value": 69.33
+          },
+          {
+            "date": "2023-09-06",
+            "value": 63.91
+          },
+          {
+            "date": "2023-09-13",
+            "value": 62.18
+          },
+          {
+            "date": "2023-09-20",
+            "value": 70.93
+          },
+          {
+            "date": "2023-09-27",
+            "value": 66.39
+          },
+          {
+            "date": "2023-10-04",
+            "value": 58.9
+          },
+          {
+            "date": "2023-10-11",
+            "value": 51.23
+          },
+          {
+            "date": "2023-10-18",
+            "value": 69.91
+          },
+          {
+            "date": "2023-10-25",
+            "value": 62.39
+          },
+          {
+            "date": "2023-11-01",
+            "value": 56.46
+          },
+          {
+            "date": "2023-11-08",
+            "value": 73.57
+          },
+          {
+            "date": "2023-11-15",
+            "value": 66.07
+          },
+          {
+            "date": "2023-11-22",
+            "value": 65.9
+          },
+          {
+            "date": "2023-11-29",
+            "value": 66.03
+          },
+          {
+            "date": "2023-12-06",
+            "value": 69.01
+          },
+          {
+            "date": "2023-12-13",
+            "value": 61.75
+          },
+          {
+            "date": "2023-12-20",
+            "value": 66.17
+          },
+          {
+            "date": "2023-12-27",
+            "value": 73.4
+          },
+          {
+            "date": "2024-01-03",
+            "value": 68.25
+          },
+          {
+            "date": "2024-01-10",
+            "value": 65.68
+          },
+          {
+            "date": "2024-01-17",
+            "value": 77.66
+          }
+        ]
+      }
+    },
+    "brand_series": [
+      {
+        "date": "2023-04-19",
+        "value": 77.7
+      },
+      {
+        "date": "2023-04-26",
+        "value": 77.67
+      },
+      {
+        "date": "2023-05-03",
+        "value": 76.55
+      },
+      {
+        "date": "2023-05-10",
+        "value": 83.15
+      },
+      {
+        "date": "2023-05-17",
+        "value": 74.5
+      },
+      {
+        "date": "2023-05-24",
+        "value": 72.18
+      },
+      {
+        "date": "2023-05-31",
+        "value": 70.07
+      },
+      {
+        "date": "2023-06-07",
+        "value": 72.09
+      },
+      {
+        "date": "2023-06-14",
+        "value": 65.91
+      },
+      {
+        "date": "2023-06-21",
+        "value": 80.48
+      },
+      {
+        "date": "2023-06-28",
+        "value": 74.11
+      },
+      {
+        "date": "2023-07-05",
+        "value": 62.84
+      },
+      {
+        "date": "2023-07-12",
+        "value": 67.01
+      },
+      {
+        "date": "2023-07-19",
+        "value": 65.15
+      },
+      {
+        "date": "2023-07-26",
+        "value": 72.0
+      },
+      {
+        "date": "2023-08-02",
+        "value": 59.93
+      },
+      {
+        "date": "2023-08-09",
+        "value": 63.3
+      },
+      {
+        "date": "2023-08-16",
+        "value": 64.39
+      },
+      {
+        "date": "2023-08-23",
+        "value": 64.05
+      },
+      {
+        "date": "2023-08-30",
+        "value": 60.46
+      },
+      {
+        "date": "2023-09-06",
+        "value": 67.34
+      },
+      {
+        "date": "2023-09-13",
+        "value": 62.05
+      },
+      {
+        "date": "2023-09-20",
+        "value": 65.09
+      },
+      {
+        "date": "2023-09-27",
+        "value": 64.45
+      },
+      {
+        "date": "2023-10-04",
+        "value": 61.07
+      },
+      {
+        "date": "2023-10-11",
+        "value": 57.41
+      },
+      {
+        "date": "2023-10-18",
+        "value": 66.99
+      },
+      {
+        "date": "2023-10-25",
+        "value": 64.2
+      },
+      {
+        "date": "2023-11-01",
+        "value": 62.64
+      },
+      {
+        "date": "2023-11-08",
+        "value": 75.17
+      },
+      {
+        "date": "2023-11-15",
+        "value": 59.07
+      },
+      {
+        "date": "2023-11-22",
+        "value": 69.14
+      },
+      {
+        "date": "2023-11-29",
+        "value": 64.24
+      },
+      {
+        "date": "2023-12-06",
+        "value": 68.8
+      },
+      {
+        "date": "2023-12-13",
+        "value": 63.59
+      },
+      {
+        "date": "2023-12-20",
+        "value": 67.42
+      },
+      {
+        "date": "2023-12-27",
+        "value": 70.63
+      },
+      {
+        "date": "2024-01-03",
+        "value": 67.3
+      },
+      {
+        "date": "2024-01-10",
+        "value": 65.78
+      },
+      {
+        "date": "2024-01-17",
+        "value": 70.28
+      }
+    ]
+  },
+  "caveats": [
+    "Google Trends is a relative 0\u2013100 index within the selected time and geography \u2014 not absolute search volume.",
+    "Values are sampled and can vary slightly across repeated pulls; we average repeats and expose confidence.",
+    "Terms pulled in the same request are normalized relative to each other; preserve query-group context.",
+    "Sparse or frequently-zero series are flagged unreliable and down-weighted in the Search Demand Score.",
+    "Trends is a confirmatory alt-data channel \u2014 combine with satellite, app, pricing, and hiring signals."
+  ],
+  "raw_feature_path_hint": "data/parquet/trends/dmart/features/"
+}

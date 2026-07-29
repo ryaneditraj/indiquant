@@ -1,0 +1,19 @@
+{
+  "run_id": "20260728T170101Z-e284fd4f",
+  "entity_id": "nykaa",
+  "collected_at": "2026-07-28T17:01:01.143791+00:00",
+  "channels": {
+    "interest_over_time": {
+      "rows": 7700,
+      "written_at": "2026-07-28T17:01:01.143799+00:00"
+    },
+    "interest_by_region": {
+      "rows": 60,
+      "written_at": "2026-07-28T17:01:01.145504+00:00"
+    },
+    "related_queries": {
+      "rows": 10,
+      "written_at": "2026-07-28T17:01:01.147088+00:00"
+    }
+  }
+}

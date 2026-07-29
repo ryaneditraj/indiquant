@@ -17,7 +17,7 @@ This project uses **PolyForm Noncommercial 1.0.0**. Contributions are accepted u
 
 ## Setup
 
-See [README.md](README.md).
+See [README.md](README.md). Trends module overview: [docs/trends.md](docs/trends.md).
 
 ```bash
 make api-test
@@ -27,6 +27,9 @@ cd apps/web && npm run typecheck
 ## PRs
 
 Focused PRs. Update CHANGELOG for user-facing changes. Pass the edge test.
+
+- Prefer fixture-backed tests for Google Trends / providers (no live keys in CI).
+- Keep PolyForm NC language intact in README and docs.
 
 ## Code of conduct
 

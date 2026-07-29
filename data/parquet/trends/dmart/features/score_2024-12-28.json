@@ -1,0 +1,1408 @@
+{
+  "entity_id": "dmart",
+  "label": "DMart",
+  "ticker": "DMART",
+  "as_of": "2024-12-28",
+  "window": "5y",
+  "ok": true,
+  "is_absolute_volume": false,
+  "search_demand_score": 70.06,
+  "components": {
+    "brand_attention": 0.1095,
+    "purchase_intent": 1.0,
+    "regional_strength": 0.9967,
+    "competitive_share": 0.4605,
+    "risk_friction": 0.8298,
+    "signal_quality": 0.95
+  },
+  "weights": {
+    "brand_attention": 0.22,
+    "purchase_intent": 0.28,
+    "regional_strength": 0.15,
+    "competitive_share": 0.15,
+    "risk_friction": 0.1,
+    "signal_quality": 0.1
+  },
+  "quality_badge": "high",
+  "quality_badges_allowed": [
+    "high",
+    "medium",
+    "low",
+    "unreliable"
+  ],
+  "confidence_interval": {
+    "low": 66.06,
+    "high": 74.06,
+    "method": "heuristic_sampling_band"
+  },
+  "regime": "neutral",
+  "regime_reason": "Search demand near baseline; no clear pre-earnings skew.",
+  "features": {
+    "wow_growth": -0.0053313792420169055,
+    "growth_2w": 0.012760044919012666,
+    "growth_4w": 0.011093460217080811,
+    "growth_8w": 0.0026493909792572336,
+    "mom_growth": 0.011093460217080811,
+    "ma_4w": 66.85425,
+    "ma_8w": 67.5498125,
+    "trend_slope": -0.4643214285714238,
+    "trend_acceleration": -0.2123720238095243,
+    "zscore_1y": -1.4876130990939505,
+    "volatility": 2.177444377377288,
+    "spike_detected": false,
+    "spike_z": -1.4876130990939505,
+    "post_spike_decay": null,
+    "relative_strength_vs_competitors": 0.2974126481750774,
+    "relative_search_share": 0.2292352002220835,
+    "brand_to_category_ratio": 0.9713573233245222,
+    "transactional_to_brand_ratio": 1.0132745968444172,
+    "risk_query_ratio": 0.11345864953686127,
+    "state_weighted_search_score": 55.04392307692308,
+    "core_vs_noncore_spread": 37.650555555555556,
+    "search_dispersion": 22.50740802491482,
+    "search_concentration_hhi": 0.08400994604791336,
+    "related_query_breadth": 51,
+    "related_query_intensity": 101.66666666666667,
+    "qoq_growth": -0.1424903520381171,
+    "yoy_seasonal": 0.006253049468153689,
+    "festival_adjusted_change": -0.2145298301952799,
+    "pre_earn_7d": -0.0053313792420169055,
+    "pre_earn_14d": 0.012760044919012666,
+    "pre_earn_21d": -0.027083264765791377,
+    "pre_earn_30d": 0.011093460217080811,
+    "brand_last": 66.51175,
+    "tx_last": 67.39466666666668,
+    "risk_last": 7.546333333333333,
+    "sparsity": {
+      "sparse": false,
+      "zero_share": 0.0,
+      "unstable": false
+    },
+    "corr_app_rank": -0.4970049504103537,
+    "corr_satellite": -0.36611550354176675,
+    "corr_pricing_promo": 0.27671900042889397,
+    "corr_hiring": 0.7850055346842867,
+    "divergence_satellite": -0.5675195508669069,
+    "divergence_app_rank": -0.4897737809346078,
+    "divergence_pricing": -0.16744849038889673,
+    "divergence_hiring": 0.06642045237383593,
+    "search_confirmation_composite": 0.09223966680963132
+  },
+  "chart": {
+    "brand": [
+      {
+        "date": "2024-03-27",
+        "interest": 81.84774999999999
+      },
+      {
+        "date": "2024-04-03",
+        "interest": 81.397
+      },
+      {
+        "date": "2024-04-10",
+        "interest": 83.48625
+      },
+      {
+        "date": "2024-04-17",
+        "interest": 80.293
+      },
+      {
+        "date": "2024-04-24",
+        "interest": 83.29825
+      },
+      {
+        "date": "2024-05-01",
+        "interest": 80.34475
+      },
+      {
+        "date": "2024-05-08",
+        "interest": 85.441
+      },
+      {
+        "date": "2024-05-15",
+        "interest": 84.8155
+      },
+      {
+        "date": "2024-05-22",
+        "interest": 83.6505
+      },
+      {
+        "date": "2024-05-29",
+        "interest": 85.32075
+      },
+      {
+        "date": "2024-06-05",
+        "interest": 83.07425
+      },
+      {
+        "date": "2024-06-12",
+        "interest": 84.56925
+      },
+      {
+        "date": "2024-06-19",
+        "interest": 79.28725
+      },
+      {
+        "date": "2024-06-26",
+        "interest": 84.5425
+      },
+      {
+        "date": "2024-07-03",
+        "interest": 83.92099999999999
+      },
+      {
+        "date": "2024-07-10",
+        "interest": 83.61075
+      },
+      {
+        "date": "2024-07-17",
+        "interest": 83.98875
+      },
+      {
+        "date": "2024-07-24",
+        "interest": 84.57975
+      },
+      {
+        "date": "2024-07-31",
+        "interest": 85.42224999999999
+      },
+      {
+        "date": "2024-08-07",
+        "interest": 80.903
+      },
+      {
+        "date": "2024-08-14",
+        "interest": 80.733
+      },
+      {
+        "date": "2024-08-21",
+        "interest": 80.55625
+      },
+      {
+        "date": "2024-08-28",
+        "interest": 76.529
+      },
+      {
+        "date": "2024-09-04",
+        "interest": 80.50675
+      },
+      {
+        "date": "2024-09-11",
+        "interest": 71.58775
+      },
+      {
+        "date": "2024-09-18",
+        "interest": 69.0595
+      },
+      {
+        "date": "2024-09-25",
+        "interest": 73.5415
+      },
+      {
+        "date": "2024-10-02",
+        "interest": 72.88875
+      },
+      {
+        "date": "2024-10-09",
+        "interest": 71.4755
+      },
+      {
+        "date": "2024-10-16",
+        "interest": 69.93575
+      },
+      {
+        "date": "2024-10-23",
+        "interest": 72.074
+      },
+      {
+        "date": "2024-10-30",
+        "interest": 66.336
+      },
+      {
+        "date": "2024-11-06",
+        "interest": 69.91275
+      },
+      {
+        "date": "2024-11-13",
+        "interest": 68.63974999999999
+      },
+      {
+        "date": "2024-11-20",
+        "interest": 68.64699999999999
+      },
+      {
+        "date": "2024-11-27",
+        "interest": 65.782
+      },
+      {
+        "date": "2024-12-04",
+        "interest": 68.36325
+      },
+      {
+        "date": "2024-12-11",
+        "interest": 65.67375
+      },
+      {
+        "date": "2024-12-18",
+        "interest": 66.86825
+      },
+      {
+        "date": "2024-12-25",
+        "interest": 66.51175
+      }
+    ],
+    "transactional": [
+      {
+        "date": "2024-03-27",
+        "interest": 81.91533333333334
+      },
+      {
+        "date": "2024-04-03",
+        "interest": 78.575
+      },
+      {
+        "date": "2024-04-10",
+        "interest": 83.06733333333334
+      },
+      {
+        "date": "2024-04-17",
+        "interest": 91.56433333333332
+      },
+      {
+        "date": "2024-04-24",
+        "interest": 82.22866666666665
+      },
+      {
+        "date": "2024-05-01",
+        "interest": 84.54466666666667
+      },
+      {
+        "date": "2024-05-08",
+        "interest": 90.41733333333333
+      },
+      {
+        "date": "2024-05-15",
+        "interest": 89.73733333333332
+      },
+      {
+        "date": "2024-05-22",
+        "interest": 88.399
+      },
+      {
+        "date": "2024-05-29",
+        "interest": 85.53333333333335
+      },
+      {
+        "date": "2024-06-05",
+        "interest": 87.59100000000001
+      },
+      {
+        "date": "2024-06-12",
+        "interest": 86.11733333333332
+      },
+      {
+        "date": "2024-06-19",
+        "interest": 87.30466666666666
+      },
+      {
+        "date": "2024-06-26",
+        "interest": 88.93166666666667
+      },
+      {
+        "date": "2024-07-03",
+        "interest": 88.18133333333333
+      },
+      {
+        "date": "2024-07-10",
+        "interest": 84.27266666666667
+      },
+      {
+        "date": "2024-07-17",
+        "interest": 87.84233333333333
+      },
+      {
+        "date": "2024-07-24",
+        "interest": 86.04433333333334
+      },
+      {
+        "date": "2024-07-31",
+        "interest": 85.36166666666666
+      },
+      {
+        "date": "2024-08-07",
+        "interest": 83.07933333333334
+      },
+      {
+        "date": "2024-08-14",
+        "interest": 81.17233333333333
+      },
+      {
+        "date": "2024-08-21",
+        "interest": 84.67733333333332
+      },
+      {
+        "date": "2024-08-28",
+        "interest": 82.95100000000001
+      },
+      {
+        "date": "2024-09-04",
+        "interest": 76.94966666666666
+      },
+      {
+        "date": "2024-09-11",
+        "interest": 80.02266666666667
+      },
+      {
+        "date": "2024-09-18",
+        "interest": 80.69633333333333
+      },
+      {
+        "date": "2024-09-25",
+        "interest": 78.57466666666666
+      },
+      {
+        "date": "2024-10-02",
+        "interest": 71.672
+      },
+      {
+        "date": "2024-10-09",
+        "interest": 70.64033333333333
+      },
+      {
+        "date": "2024-10-16",
+        "interest": 74.15166666666667
+      },
+      {
+        "date": "2024-10-23",
+        "interest": 70.92766666666667
+      },
+      {
+        "date": "2024-10-30",
+        "interest": 73.98966666666666
+      },
+      {
+        "date": "2024-11-06",
+        "interest": 68.32766666666667
+      },
+      {
+        "date": "2024-11-13",
+        "interest": 75.53566666666667
+      },
+      {
+        "date": "2024-11-20",
+        "interest": 71.84100000000001
+      },
+      {
+        "date": "2024-11-27",
+        "interest": 74.93400000000001
+      },
+      {
+        "date": "2024-12-04",
+        "interest": 69.09066666666666
+      },
+      {
+        "date": "2024-12-11",
+        "interest": 66.77933333333333
+      },
+      {
+        "date": "2024-12-18",
+        "interest": 69.45133333333332
+      },
+      {
+        "date": "2024-12-25",
+        "interest": 67.39466666666668
+      }
+    ]
+  },
+  "heatmap": [
+    {
+      "region": "Maharashtra",
+      "interest": 100.0
+    },
+    {
+      "region": "Gujarat",
+      "interest": 61.62
+    },
+    {
+      "region": "Karnataka",
+      "interest": 58.91
+    },
+    {
+      "region": "Telangana",
+      "interest": 54.32
+    },
+    {
+      "region": "Rajasthan",
+      "interest": 40.73
+    },
+    {
+      "region": "Madhya Pradesh",
+      "interest": 35.39
+    },
+    {
+      "region": "Uttar Pradesh",
+      "interest": 32.25
+    },
+    {
+      "region": "Tamil Nadu",
+      "interest": 27.29
+    },
+    {
+      "region": "Other",
+      "interest": 27.06
+    },
+    {
+      "region": "Kerala",
+      "interest": 25.88
+    },
+    {
+      "region": "West Bengal",
+      "interest": 24.83
+    },
+    {
+      "region": "Andhra Pradesh",
+      "interest": 23.4
+    },
+    {
+      "region": "Punjab",
+      "interest": 22.68
+    },
+    {
+      "region": "Haryana",
+      "interest": 22.5
+    },
+    {
+      "region": "Delhi",
+      "interest": 20.36
+    }
+  ],
+  "rising_queries": [
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "DMart offers today",
+      "value": 140.0,
+      "window": "90d"
+    }
+  ],
+  "cross_signal": {
+    "entity_id": "dmart",
+    "window": "5y",
+    "as_of": "2024-12-28",
+    "source": "fixture",
+    "note": "Fixture adapters generate correlated/divergent series offline. Swap for live feeds when available \u2014 same schema.",
+    "is_absolute_volume": false,
+    "metrics": {
+      "corr_satellite": -0.36611550354176675,
+      "corr_app_rank": -0.4970049504103537,
+      "corr_pricing_promo": 0.27671900042889397,
+      "corr_hiring": 0.7850055346842867,
+      "divergence_satellite": -0.5675195508669069,
+      "divergence_app_rank": -0.4897737809346078,
+      "divergence_pricing": -0.16744849038889673,
+      "divergence_hiring": 0.06642045237383593
+    },
+    "search_confirmation_composite": 0.09223966680963132,
+    "panel": {
+      "satellite": {
+        "label": "Satellite parking",
+        "source": "fixture",
+        "corr_with_search": -0.36611550354176675,
+        "divergence": -0.5675195508669069,
+        "latest": 77.21406089708579,
+        "series": [
+          {
+            "date": "2024-03-27",
+            "value": 63.49
+          },
+          {
+            "date": "2024-04-03",
+            "value": 58.56
+          },
+          {
+            "date": "2024-04-10",
+            "value": 65.71
+          },
+          {
+            "date": "2024-04-17",
+            "value": 64.75
+          },
+          {
+            "date": "2024-04-24",
+            "value": 63.59
+          },
+          {
+            "date": "2024-05-01",
+            "value": 50.58
+          },
+          {
+            "date": "2024-05-08",
+            "value": 78.32
+          },
+          {
+            "date": "2024-05-15",
+            "value": 64.06
+          },
+          {
+            "date": "2024-05-22",
+            "value": 72.07
+          },
+          {
+            "date": "2024-05-29",
+            "value": 77.13
+          },
+          {
+            "date": "2024-06-05",
+            "value": 55.32
+          },
+          {
+            "date": "2024-06-12",
+            "value": 75.09
+          },
+          {
+            "date": "2024-06-19",
+            "value": 72.2
+          },
+          {
+            "date": "2024-06-26",
+            "value": 70.65
+          },
+          {
+            "date": "2024-07-03",
+            "value": 61.18
+          },
+          {
+            "date": "2024-07-10",
+            "value": 56.91
+          },
+          {
+            "date": "2024-07-17",
+            "value": 56.15
+          },
+          {
+            "date": "2024-07-24",
+            "value": 71.48
+          },
+          {
+            "date": "2024-07-31",
+            "value": 69.67
+          },
+          {
+            "date": "2024-08-07",
+            "value": 73.15
+          },
+          {
+            "date": "2024-08-14",
+            "value": 74.72
+          },
+          {
+            "date": "2024-08-21",
+            "value": 72.46
+          },
+          {
+            "date": "2024-08-28",
+            "value": 64.88
+          },
+          {
+            "date": "2024-09-04",
+            "value": 70.35
+          },
+          {
+            "date": "2024-09-11",
+            "value": 78.75
+          },
+          {
+            "date": "2024-09-18",
+            "value": 77.04
+          },
+          {
+            "date": "2024-09-25",
+            "value": 53.84
+          },
+          {
+            "date": "2024-10-02",
+            "value": 64.04
+          },
+          {
+            "date": "2024-10-09",
+            "value": 65.44
+          },
+          {
+            "date": "2024-10-16",
+            "value": 64.49
+          },
+          {
+            "date": "2024-10-23",
+            "value": 60.32
+          },
+          {
+            "date": "2024-10-30",
+            "value": 69.22
+          },
+          {
+            "date": "2024-11-06",
+            "value": 62.88
+          },
+          {
+            "date": "2024-11-13",
+            "value": 74.36
+          },
+          {
+            "date": "2024-11-20",
+            "value": 68.11
+          },
+          {
+            "date": "2024-11-27",
+            "value": 65.89
+          },
+          {
+            "date": "2024-12-04",
+            "value": 70.94
+          },
+          {
+            "date": "2024-12-11",
+            "value": 94.83
+          },
+          {
+            "date": "2024-12-18",
+            "value": 65.18
+          },
+          {
+            "date": "2024-12-25",
+            "value": 77.21
+          }
+        ]
+      },
+      "app_rank": {
+        "label": "App rank / reviews",
+        "source": "fixture",
+        "corr_with_search": -0.4970049504103537,
+        "divergence": -0.4897737809346078,
+        "latest": 61.073060895316985,
+        "series": [
+          {
+            "date": "2024-03-27",
+            "value": 51.61
+          },
+          {
+            "date": "2024-04-03",
+            "value": 58.62
+          },
+          {
+            "date": "2024-04-10",
+            "value": 46.97
+          },
+          {
+            "date": "2024-04-17",
+            "value": 49.77
+          },
+          {
+            "date": "2024-04-24",
+            "value": 58.89
+          },
+          {
+            "date": "2024-05-01",
+            "value": 70.07
+          },
+          {
+            "date": "2024-05-08",
+            "value": 61.42
+          },
+          {
+            "date": "2024-05-15",
+            "value": 50.38
+          },
+          {
+            "date": "2024-05-22",
+            "value": 52.97
+          },
+          {
+            "date": "2024-05-29",
+            "value": 67.18
+          },
+          {
+            "date": "2024-06-05",
+            "value": 42.99
+          },
+          {
+            "date": "2024-06-12",
+            "value": 42.67
+          },
+          {
+            "date": "2024-06-19",
+            "value": 54.31
+          },
+          {
+            "date": "2024-06-26",
+            "value": 72.17
+          },
+          {
+            "date": "2024-07-03",
+            "value": 47.24
+          },
+          {
+            "date": "2024-07-10",
+            "value": 51.09
+          },
+          {
+            "date": "2024-07-17",
+            "value": 46.98
+          },
+          {
+            "date": "2024-07-24",
+            "value": 42.3
+          },
+          {
+            "date": "2024-07-31",
+            "value": 57.05
+          },
+          {
+            "date": "2024-08-07",
+            "value": 59.92
+          },
+          {
+            "date": "2024-08-14",
+            "value": 53.98
+          },
+          {
+            "date": "2024-08-21",
+            "value": 55.73
+          },
+          {
+            "date": "2024-08-28",
+            "value": 43.67
+          },
+          {
+            "date": "2024-09-04",
+            "value": 61.38
+          },
+          {
+            "date": "2024-09-11",
+            "value": 52.08
+          },
+          {
+            "date": "2024-09-18",
+            "value": 52.97
+          },
+          {
+            "date": "2024-09-25",
+            "value": 45.03
+          },
+          {
+            "date": "2024-10-02",
+            "value": 62.43
+          },
+          {
+            "date": "2024-10-09",
+            "value": 59.83
+          },
+          {
+            "date": "2024-10-16",
+            "value": 62.62
+          },
+          {
+            "date": "2024-10-23",
+            "value": 61.68
+          },
+          {
+            "date": "2024-10-30",
+            "value": 63.41
+          },
+          {
+            "date": "2024-11-06",
+            "value": 59.93
+          },
+          {
+            "date": "2024-11-13",
+            "value": 57.25
+          },
+          {
+            "date": "2024-11-20",
+            "value": 54.21
+          },
+          {
+            "date": "2024-11-27",
+            "value": 56.85
+          },
+          {
+            "date": "2024-12-04",
+            "value": 61.85
+          },
+          {
+            "date": "2024-12-11",
+            "value": 62.45
+          },
+          {
+            "date": "2024-12-18",
+            "value": 78.53
+          },
+          {
+            "date": "2024-12-25",
+            "value": 61.07
+          }
+        ]
+      },
+      "pricing_promo": {
+        "label": "Pricing / promo",
+        "source": "fixture",
+        "corr_with_search": 0.27671900042889397,
+        "divergence": -0.16744849038889673,
+        "latest": 71.73481201801724,
+        "series": [
+          {
+            "date": "2024-03-27",
+            "value": 73.18
+          },
+          {
+            "date": "2024-04-03",
+            "value": 78.3
+          },
+          {
+            "date": "2024-04-10",
+            "value": 82.36
+          },
+          {
+            "date": "2024-04-17",
+            "value": 69.88
+          },
+          {
+            "date": "2024-04-24",
+            "value": 63.09
+          },
+          {
+            "date": "2024-05-01",
+            "value": 67.45
+          },
+          {
+            "date": "2024-05-08",
+            "value": 74.01
+          },
+          {
+            "date": "2024-05-15",
+            "value": 60.12
+          },
+          {
+            "date": "2024-05-22",
+            "value": 75.42
+          },
+          {
+            "date": "2024-05-29",
+            "value": 84.05
+          },
+          {
+            "date": "2024-06-05",
+            "value": 77.91
+          },
+          {
+            "date": "2024-06-12",
+            "value": 72.58
+          },
+          {
+            "date": "2024-06-19",
+            "value": 59.9
+          },
+          {
+            "date": "2024-06-26",
+            "value": 77.06
+          },
+          {
+            "date": "2024-07-03",
+            "value": 69.18
+          },
+          {
+            "date": "2024-07-10",
+            "value": 76.32
+          },
+          {
+            "date": "2024-07-17",
+            "value": 80.35
+          },
+          {
+            "date": "2024-07-24",
+            "value": 80.1
+          },
+          {
+            "date": "2024-07-31",
+            "value": 82.05
+          },
+          {
+            "date": "2024-08-07",
+            "value": 77.09
+          },
+          {
+            "date": "2024-08-14",
+            "value": 66.27
+          },
+          {
+            "date": "2024-08-21",
+            "value": 72.02
+          },
+          {
+            "date": "2024-08-28",
+            "value": 70.49
+          },
+          {
+            "date": "2024-09-04",
+            "value": 73.24
+          },
+          {
+            "date": "2024-09-11",
+            "value": 76.95
+          },
+          {
+            "date": "2024-09-18",
+            "value": 78.78
+          },
+          {
+            "date": "2024-09-25",
+            "value": 69.38
+          },
+          {
+            "date": "2024-10-02",
+            "value": 59.77
+          },
+          {
+            "date": "2024-10-09",
+            "value": 59.81
+          },
+          {
+            "date": "2024-10-16",
+            "value": 64.34
+          },
+          {
+            "date": "2024-10-23",
+            "value": 68.31
+          },
+          {
+            "date": "2024-10-30",
+            "value": 68.44
+          },
+          {
+            "date": "2024-11-06",
+            "value": 74.4
+          },
+          {
+            "date": "2024-11-13",
+            "value": 58.81
+          },
+          {
+            "date": "2024-11-20",
+            "value": 65.77
+          },
+          {
+            "date": "2024-11-27",
+            "value": 80.27
+          },
+          {
+            "date": "2024-12-04",
+            "value": 82.4
+          },
+          {
+            "date": "2024-12-11",
+            "value": 54.39
+          },
+          {
+            "date": "2024-12-18",
+            "value": 65.24
+          },
+          {
+            "date": "2024-12-25",
+            "value": 71.73
+          }
+        ]
+      },
+      "hiring": {
+        "label": "Hiring",
+        "source": "fixture",
+        "corr_with_search": 0.7850055346842867,
+        "divergence": 0.06642045237383593,
+        "latest": 59.79449756035195,
+        "series": [
+          {
+            "date": "2024-03-27",
+            "value": 75.34
+          },
+          {
+            "date": "2024-04-03",
+            "value": 76.43
+          },
+          {
+            "date": "2024-04-10",
+            "value": 84.88
+          },
+          {
+            "date": "2024-04-17",
+            "value": 76.13
+          },
+          {
+            "date": "2024-04-24",
+            "value": 72.4
+          },
+          {
+            "date": "2024-05-01",
+            "value": 78.36
+          },
+          {
+            "date": "2024-05-08",
+            "value": 87.64
+          },
+          {
+            "date": "2024-05-15",
+            "value": 90.12
+          },
+          {
+            "date": "2024-05-22",
+            "value": 79.86
+          },
+          {
+            "date": "2024-05-29",
+            "value": 79.02
+          },
+          {
+            "date": "2024-06-05",
+            "value": 72.6
+          },
+          {
+            "date": "2024-06-12",
+            "value": 80.85
+          },
+          {
+            "date": "2024-06-19",
+            "value": 87.06
+          },
+          {
+            "date": "2024-06-26",
+            "value": 83.48
+          },
+          {
+            "date": "2024-07-03",
+            "value": 78.87
+          },
+          {
+            "date": "2024-07-10",
+            "value": 76.52
+          },
+          {
+            "date": "2024-07-17",
+            "value": 86.0
+          },
+          {
+            "date": "2024-07-24",
+            "value": 73.28
+          },
+          {
+            "date": "2024-07-31",
+            "value": 79.94
+          },
+          {
+            "date": "2024-08-07",
+            "value": 74.72
+          },
+          {
+            "date": "2024-08-14",
+            "value": 75.98
+          },
+          {
+            "date": "2024-08-21",
+            "value": 77.66
+          },
+          {
+            "date": "2024-08-28",
+            "value": 79.99
+          },
+          {
+            "date": "2024-09-04",
+            "value": 67.71
+          },
+          {
+            "date": "2024-09-11",
+            "value": 60.03
+          },
+          {
+            "date": "2024-09-18",
+            "value": 60.34
+          },
+          {
+            "date": "2024-09-25",
+            "value": 74.73
+          },
+          {
+            "date": "2024-10-02",
+            "value": 69.81
+          },
+          {
+            "date": "2024-10-09",
+            "value": 66.2
+          },
+          {
+            "date": "2024-10-16",
+            "value": 73.9
+          },
+          {
+            "date": "2024-10-23",
+            "value": 66.21
+          },
+          {
+            "date": "2024-10-30",
+            "value": 62.51
+          },
+          {
+            "date": "2024-11-06",
+            "value": 69.2
+          },
+          {
+            "date": "2024-11-13",
+            "value": 74.1
+          },
+          {
+            "date": "2024-11-20",
+            "value": 79.67
+          },
+          {
+            "date": "2024-11-27",
+            "value": 69.0
+          },
+          {
+            "date": "2024-12-04",
+            "value": 70.19
+          },
+          {
+            "date": "2024-12-11",
+            "value": 63.74
+          },
+          {
+            "date": "2024-12-18",
+            "value": 55.63
+          },
+          {
+            "date": "2024-12-25",
+            "value": 59.79
+          }
+        ]
+      }
+    },
+    "brand_series": [
+      {
+        "date": "2024-03-27",
+        "value": 82.64
+      },
+      {
+        "date": "2024-04-03",
+        "value": 84.43
+      },
+      {
+        "date": "2024-04-10",
+        "value": 84.42
+      },
+      {
+        "date": "2024-04-17",
+        "value": 77.27
+      },
+      {
+        "date": "2024-04-24",
+        "value": 80.4
+      },
+      {
+        "date": "2024-05-01",
+        "value": 77.92
+      },
+      {
+        "date": "2024-05-08",
+        "value": 84.85
+      },
+      {
+        "date": "2024-05-15",
+        "value": 86.87
+      },
+      {
+        "date": "2024-05-22",
+        "value": 84.06
+      },
+      {
+        "date": "2024-05-29",
+        "value": 87.25
+      },
+      {
+        "date": "2024-06-05",
+        "value": 82.55
+      },
+      {
+        "date": "2024-06-12",
+        "value": 80.8
+      },
+      {
+        "date": "2024-06-19",
+        "value": 77.96
+      },
+      {
+        "date": "2024-06-26",
+        "value": 82.05
+      },
+      {
+        "date": "2024-07-03",
+        "value": 82.82
+      },
+      {
+        "date": "2024-07-10",
+        "value": 84.04
+      },
+      {
+        "date": "2024-07-17",
+        "value": 87.03
+      },
+      {
+        "date": "2024-07-24",
+        "value": 85.59
+      },
+      {
+        "date": "2024-07-31",
+        "value": 86.28
+      },
+      {
+        "date": "2024-08-07",
+        "value": 81.38
+      },
+      {
+        "date": "2024-08-14",
+        "value": 81.1
+      },
+      {
+        "date": "2024-08-21",
+        "value": 80.79
+      },
+      {
+        "date": "2024-08-28",
+        "value": 77.82
+      },
+      {
+        "date": "2024-09-04",
+        "value": 80.55
+      },
+      {
+        "date": "2024-09-11",
+        "value": 72.16
+      },
+      {
+        "date": "2024-09-18",
+        "value": 72.09
+      },
+      {
+        "date": "2024-09-25",
+        "value": 76.56
+      },
+      {
+        "date": "2024-10-02",
+        "value": 74.45
+      },
+      {
+        "date": "2024-10-09",
+        "value": 70.67
+      },
+      {
+        "date": "2024-10-16",
+        "value": 75.01
+      },
+      {
+        "date": "2024-10-23",
+        "value": 72.91
+      },
+      {
+        "date": "2024-10-30",
+        "value": 64.96
+      },
+      {
+        "date": "2024-11-06",
+        "value": 71.25
+      },
+      {
+        "date": "2024-11-13",
+        "value": 70.94
+      },
+      {
+        "date": "2024-11-20",
+        "value": 69.25
+      },
+      {
+        "date": "2024-11-27",
+        "value": 66.49
+      },
+      {
+        "date": "2024-12-04",
+        "value": 70.03
+      },
+      {
+        "date": "2024-12-11",
+        "value": 62.8
+      },
+      {
+        "date": "2024-12-18",
+        "value": 66.78
+      },
+      {
+        "date": "2024-12-25",
+        "value": 66.35
+      }
+    ]
+  },
+  "caveats": [
+    "Google Trends is a relative 0\u2013100 index within the selected time and geography \u2014 not absolute search volume.",
+    "Values are sampled and can vary slightly across repeated pulls; we average repeats and expose confidence.",
+    "Terms pulled in the same request are normalized relative to each other; preserve query-group context.",
+    "Sparse or frequently-zero series are flagged unreliable and down-weighted in the Search Demand Score.",
+    "Trends is a confirmatory alt-data channel \u2014 combine with satellite, app, pricing, and hiring signals."
+  ],
+  "raw_feature_path_hint": "data/parquet/trends/dmart/features/"
+}

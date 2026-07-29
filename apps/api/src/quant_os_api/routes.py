@@ -42,6 +42,11 @@ from quant_os_api.schemas import (
     SettingsPublicResponse,
     StrategyCreate,
     StrategyOut,
+    TrendsCollectRequest,
+    TrendsPredictRequest,
+    TrendsRankRequest,
+    TrendsScoreRequest,
+    TrendsTrainRequest,
 )
 from quant_os_api.services import parquet_store
 from quant_os_api.services.ai_loop import llm_chat, run_research_cycle
@@ -157,6 +162,12 @@ def navigation() -> dict[str, Any]:
         {"id": "experiments", "label": "Experiments", "href": "/experiments"},
         {"id": "strategies", "label": "Strategies", "href": "/strategies"},
         {"id": "datasets", "label": "Datasets", "href": "/datasets"},
+        {
+            "id": "trends",
+            "label": "Trends",
+            "href": "/trends",
+            "enabled": bool(features.get("google_trends_enabled", False)),
+        },
         {"id": "backtests", "label": "Backtests", "href": "/backtests"},
         {"id": "validation", "label": "Validation", "href": "/validation"},
         {"id": "optimization", "label": "Optimization", "href": "/optimization"},
@@ -599,3 +610,278 @@ def security_encrypt(body: EncryptRequest) -> dict[str, Any]:
 @router.post("/security/decrypt")
 def security_decrypt(body: EncryptRequest) -> dict[str, Any]:
     return decrypt_secret(body.value)
+
+
+# --- Google Trends Intelligence (relative 0–100 index; not absolute volume) ---
+
+
+@router.get("/trends/entities")
+def trends_entities() -> dict[str, Any]:
+    from quant_os_api.trends.universe import entity_config, iter_queries, list_entities
+
+    entities = []
+    for eid in list_entities():
+        cfg = entity_config(eid)
+        entities.append(
+            {
+                "id": eid,
+                "label": cfg.get("label"),
+                "ticker": cfg.get("ticker"),
+                "query_count": len(iter_queries(eid)),
+            }
+        )
+    return {"entities": entities, "is_absolute_volume": False}
+
+
+@router.get("/trends/{entity_id}/universe")
+def trends_universe(entity_id: str) -> dict[str, Any]:
+    from quant_os_api.trends.universe import anchor_terms, comparison_groups, entity_config, iter_queries
+
+    try:
+        cfg = entity_config(entity_id)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    return {
+        "entity_id": entity_id,
+        "config": {
+            "label": cfg.get("label"),
+            "ticker": cfg.get("ticker"),
+            "core_states": cfg.get("core_states"),
+            "earnings_calendar": cfg.get("earnings_calendar"),
+        },
+        "queries": iter_queries(entity_id),
+        "anchors": anchor_terms(entity_id),
+        "comparison_groups": comparison_groups(entity_id),
+        "is_absolute_volume": False,
+        "caveats": __import__("quant_os_api.trends", fromlist=["CAVEATS"]).CAVEATS,
+    }
+
+
+@router.post("/trends/collect")
+def trends_collect(body: TrendsCollectRequest) -> dict[str, Any]:
+    from quant_os_api.trends.collector import collect_entity
+
+    features = get_settings().yaml_config.get("features", {})
+    if not bool(features.get("google_trends_enabled", False)):
+        raise HTTPException(400, "google_trends_enabled is false in config")
+    try:
+        result = collect_entity(body.entity_id, provider=body.provider, windows=body.windows)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    write_audit("trends_collected", details={"entity_id": body.entity_id, "run_id": result.get("run_id")})
+    return result
+
+
+@router.get("/trends/{entity_id}/inventory")
+def trends_inventory(entity_id: str) -> dict[str, Any]:
+    from quant_os_api.trends import store as trends_store
+
+    return trends_store.inventory(entity_id)
+
+
+@router.get("/trends/{entity_id}/runs")
+def trends_runs(entity_id: str) -> dict[str, Any]:
+    from quant_os_api.trends import store as trends_store
+
+    return {"entity_id": entity_id, "runs": trends_store.list_runs(entity_id)}
+
+
+@router.post("/trends/score")
+def trends_score(body: TrendsScoreRequest) -> dict[str, Any]:
+    from quant_os_api.trends.score import score_entity
+
+    try:
+        return score_entity(body.entity_id, as_of=body.as_of, window=body.window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.get("/trends/{entity_id}/dashboard")
+def trends_dashboard(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.alerts import build_alerts
+    from quant_os_api.trends.backtest import pre_earnings_panel
+    from quant_os_api.trends.cross_signals import load_cross_signals
+    from quant_os_api.trends.score import score_entity
+    from quant_os_api.trends import store as trends_store
+
+    inv = trends_store.inventory(entity_id)
+    if inv["interest_rows"] == 0:
+        return {
+            "ok": False,
+            "entity_id": entity_id,
+            "error": "No Trends data — POST /api/v1/trends/collect first",
+            "inventory": inv,
+            "is_absolute_volume": False,
+        }
+    scored = score_entity(entity_id, window=window)
+    alerts = build_alerts(entity_id, window=window)
+    panel = pre_earnings_panel(entity_id)
+    cross = scored.get("cross_signal") or load_cross_signals(entity_id, window=window)
+    return {
+        "ok": True,
+        "entity_id": entity_id,
+        "label": scored.get("label"),
+        "ticker": scored.get("ticker"),
+        "inventory": inv,
+        "score": scored,
+        "alerts": alerts.get("alerts", []),
+        "pre_earnings": panel,
+        "cross_signal": cross,
+        "is_absolute_volume": False,
+        "caveats": scored.get("caveats", []),
+    }
+
+
+@router.get("/trends/{entity_id}/alerts")
+def trends_alerts(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.alerts import build_alerts
+
+    return build_alerts(entity_id, window=window)
+
+
+@router.get("/trends/{entity_id}/pre-earnings")
+def trends_pre_earnings(entity_id: str, next_earnings: str | None = None) -> dict[str, Any]:
+    from quant_os_api.trends.backtest import pre_earnings_panel
+
+    return pre_earnings_panel(entity_id, next_earnings=next_earnings)
+
+
+@router.post("/trends/{entity_id}/backtest")
+def trends_backtest(entity_id: str) -> dict[str, Any]:
+    from quant_os_api.trends.backtest import run_pre_earnings_backtest
+
+    result = run_pre_earnings_backtest(entity_id)
+    write_audit("trends_backtest", details={"entity_id": entity_id, "ok": result.get("ok")})
+    return result
+
+
+@router.post("/trends/collect-all")
+def trends_collect_all(provider: str | None = None) -> dict[str, Any]:
+    from quant_os_api.trends.collector import collect_entity
+    from quant_os_api.trends.score import score_entity
+    from quant_os_api.trends.universe import list_entities
+
+    features = get_settings().yaml_config.get("features", {})
+    if not bool(features.get("google_trends_enabled", False)):
+        raise HTTPException(400, "google_trends_enabled is false in config")
+    results = []
+    for eid in list_entities():
+        try:
+            collected = collect_entity(eid, provider=provider)
+            scored = score_entity(eid)
+            results.append(
+                {
+                    "entity_id": eid,
+                    "ok": True,
+                    "run_id": collected.get("run_id"),
+                    "interest_rows": collected.get("interest_rows"),
+                    "search_demand_score": scored.get("search_demand_score"),
+                    "quality_badge": scored.get("quality_badge"),
+                }
+            )
+        except Exception as exc:  # noqa: BLE001
+            results.append({"entity_id": eid, "ok": False, "error": str(exc)})
+    write_audit("trends_collect_all", details={"n": len(results)})
+    return {"ok": True, "n": len(results), "results": results, "is_absolute_volume": False}
+
+
+@router.post("/trends/models/train")
+def trends_models_train(body: TrendsTrainRequest) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import train_models
+
+    result = train_models(entity_ids=body.entity_ids, entity_id=body.entity_id)
+    write_audit("trends_models_train", details={"ok": result.get("ok"), "n_rows": (result.get("meta") or {}).get("n_rows")})
+    return result
+
+
+@router.post("/trends/models/predict")
+def trends_models_predict(body: TrendsPredictRequest) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import predict_entity
+
+    try:
+        return predict_entity(body.entity_id, as_of=body.as_of, window=body.window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.get("/trends/{entity_id}/nowcast")
+def trends_nowcast(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import nowcast_entity
+
+    try:
+        return nowcast_entity(entity_id, window=window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.get("/trends/{entity_id}/predict")
+def trends_predict_get(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import predict_entity
+
+    try:
+        return predict_entity(entity_id, window=window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@router.post("/trends/rank")
+def trends_rank(body: TrendsRankRequest) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import rank_entities
+
+    return rank_entities(body.entity_ids, window=body.window)
+
+
+@router.get("/trends/comparison")
+def trends_comparison(window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.modeling import rank_entities
+
+    return rank_entities(window=window)
+
+
+@router.get("/trends/{entity_id}/export")
+def trends_export(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    """JSON export of score, chart series, features — relative indices only."""
+    from quant_os_api.trends.alerts import build_alerts
+    from quant_os_api.trends.score import score_entity
+
+    try:
+        scored = score_entity(entity_id, window=window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    if not scored.get("ok"):
+        raise HTTPException(400, scored.get("error") or "export unavailable")
+    alerts = build_alerts(entity_id, window=window)
+    return {
+        "ok": True,
+        "entity_id": entity_id,
+        "label": scored.get("label"),
+        "ticker": scored.get("ticker"),
+        "as_of": scored.get("as_of"),
+        "window": window,
+        "search_demand_score": scored.get("search_demand_score"),
+        "quality_badge": scored.get("quality_badge"),
+        "confidence_interval": scored.get("confidence_interval"),
+        "components": scored.get("components"),
+        "regime": scored.get("regime"),
+        "features": scored.get("features"),
+        "chart": scored.get("chart"),
+        "heatmap": scored.get("heatmap"),
+        "rising_queries": scored.get("rising_queries"),
+        "cross_signal": scored.get("cross_signal"),
+        "alerts": alerts.get("alerts", []),
+        "is_absolute_volume": False,
+        "caveats": scored.get("caveats", []),
+        "export_format": "json",
+    }
+
+
+@router.get("/trends/{entity_id}/cross-signals")
+def trends_cross_signals(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends.cross_signals import load_cross_signals
+
+    try:
+        return load_cross_signals(entity_id, window=window)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc

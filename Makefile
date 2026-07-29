@@ -1,4 +1,4 @@
-.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke
+.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke trends-collect trends-collect-all trends-train
 
 help:
 	@echo "Indiquant · Money Radar · Thugir Group"
@@ -12,6 +12,9 @@ help:
 	@echo "  make migrate      - Alembic upgrade head"
 	@echo "  make seed         - Seed sample CSV + parquet"
 	@echo "  make smoke        - curl smoke against :8000"
+	@echo "  make trends-collect ENTITY=dmart - Fixture Trends pull + score"
+	@echo "  make trends-collect-all - All configured Trends entities"
+	@echo "  make trends-train - Train Trends GB models (proxy labels)"
 
 up:
 	docker compose up -d postgres redis
@@ -42,3 +45,12 @@ seed:
 
 smoke:
 	bash scripts/smoke.sh
+
+trends-collect:
+	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml python -c "from quant_os_api.trends.collector import collect_entity; from quant_os_api.trends.score import score_entity; e='$(or $(ENTITY),dmart)'; c=collect_entity(e, provider='fixture'); s=score_entity(e); print({'entity':e,'run':c.get('run_id'),'score':s.get('search_demand_score'),'badge':s.get('quality_badge'),'is_absolute_volume':False})"
+
+trends-collect-all:
+	bash scripts/trends_weekly.sh
+
+trends-train:
+	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml python -c "from quant_os_api.trends.modeling import train_models; print(train_models())"

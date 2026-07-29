@@ -1,0 +1,887 @@
+{
+  "entity_id": "trent",
+  "label": "Trent",
+  "ticker": "TRENT",
+  "as_of": "2026-06-29",
+  "window": "12m",
+  "ok": true,
+  "is_absolute_volume": false,
+  "features": {
+    "wow_growth": null,
+    "growth_2w": null,
+    "growth_4w": null,
+    "growth_8w": null,
+    "mom_growth": null,
+    "ma_4w": null,
+    "ma_8w": null,
+    "trend_slope": null,
+    "trend_acceleration": null,
+    "zscore_1y": null,
+    "volatility": null,
+    "spike_detected": false,
+    "spike_z": null,
+    "post_spike_decay": null,
+    "relative_strength_vs_competitors": null,
+    "relative_search_share": null,
+    "brand_to_category_ratio": null,
+    "transactional_to_brand_ratio": null,
+    "risk_query_ratio": null,
+    "state_weighted_search_score": 63.62699999999997,
+    "core_vs_noncore_spread": 34.121111111111105,
+    "search_dispersion": 19.180525036261827,
+    "search_concentration_hhi": 0.07424498987600753,
+    "related_query_breadth": 12,
+    "related_query_intensity": 101.66666666666667,
+    "qoq_growth": null,
+    "yoy_seasonal": null,
+    "festival_adjusted_change": null,
+    "pre_earn_7d": null,
+    "pre_earn_14d": null,
+    "pre_earn_21d": null,
+    "pre_earn_30d": null,
+    "brand_last": null,
+    "tx_last": null,
+    "risk_last": null,
+    "sparsity": {
+      "sparse": true,
+      "zero_share": 1.0,
+      "unstable": true
+    },
+    "corr_app_rank": null,
+    "corr_satellite": null,
+    "corr_pricing_promo": null,
+    "corr_hiring": null,
+    "divergence_satellite": null,
+    "divergence_app_rank": null,
+    "divergence_pricing": null,
+    "divergence_hiring": null,
+    "search_confirmation_composite": null
+  },
+  "chart": {
+    "brand": [],
+    "transactional": []
+  },
+  "heatmap": [
+    {
+      "region": "Karnataka",
+      "interest": 94.81
+    },
+    {
+      "region": "Maharashtra",
+      "interest": 94.2
+    },
+    {
+      "region": "Delhi",
+      "interest": 74.62
+    },
+    {
+      "region": "Tamil Nadu",
+      "interest": 72.38
+    },
+    {
+      "region": "Telangana",
+      "interest": 67.83
+    },
+    {
+      "region": "Gujarat",
+      "interest": 60.34
+    },
+    {
+      "region": "Andhra Pradesh",
+      "interest": 50.52
+    },
+    {
+      "region": "Other",
+      "interest": 49.4
+    },
+    {
+      "region": "Kerala",
+      "interest": 48.31
+    },
+    {
+      "region": "West Bengal",
+      "interest": 45.45
+    },
+    {
+      "region": "Haryana",
+      "interest": 45.08
+    },
+    {
+      "region": "Punjab",
+      "interest": 41.76
+    },
+    {
+      "region": "Rajasthan",
+      "interest": 39.88
+    },
+    {
+      "region": "Madhya Pradesh",
+      "interest": 38.31
+    },
+    {
+      "region": "Uttar Pradesh",
+      "interest": 30.46
+    }
+  ],
+  "rising_queries": [
+    {
+      "query": "Westside offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside offers today",
+      "value": 140.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside coupon",
+      "value": 90.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside coupon",
+      "value": 90.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside coupon",
+      "value": 90.0,
+      "window": "90d"
+    },
+    {
+      "query": "Westside coupon",
+      "value": 90.0,
+      "window": "90d"
+    },
+    {
+      "query": "grocery delivery near me",
+      "value": 75.0,
+      "window": "90d"
+    },
+    {
+      "query": "grocery delivery near me",
+      "value": 75.0,
+      "window": "90d"
+    },
+    {
+      "query": "grocery delivery near me",
+      "value": 75.0,
+      "window": "90d"
+    },
+    {
+      "query": "grocery delivery near me",
+      "value": 75.0,
+      "window": "90d"
+    }
+  ],
+  "cross_signal": {
+    "entity_id": "trent",
+    "window": "12m",
+    "as_of": "2026-06-29",
+    "source": "fixture",
+    "note": "Fixture adapters generate correlated/divergent series offline. Swap for live feeds when available \u2014 same schema.",
+    "is_absolute_volume": false,
+    "metrics": {
+      "corr_satellite": null,
+      "corr_app_rank": null,
+      "corr_pricing_promo": null,
+      "corr_hiring": null,
+      "divergence_satellite": null,
+      "divergence_app_rank": null,
+      "divergence_pricing": null,
+      "divergence_hiring": null
+    },
+    "search_confirmation_composite": null,
+    "panel": {
+      "satellite": {
+        "label": "Satellite parking",
+        "source": "fixture",
+        "corr_with_search": null,
+        "divergence": null,
+        "latest": 51.643082200010646,
+        "series": [
+          {
+            "date": "2026-06-20",
+            "value": 50.18
+          },
+          {
+            "date": "2026-06-21",
+            "value": 50.31
+          },
+          {
+            "date": "2026-06-22",
+            "value": 50.1
+          },
+          {
+            "date": "2026-06-23",
+            "value": 49.59
+          },
+          {
+            "date": "2026-06-24",
+            "value": 50.5
+          },
+          {
+            "date": "2026-06-25",
+            "value": 50.07
+          },
+          {
+            "date": "2026-06-26",
+            "value": 50.17
+          },
+          {
+            "date": "2026-06-27",
+            "value": 50.35
+          },
+          {
+            "date": "2026-06-28",
+            "value": 50.41
+          },
+          {
+            "date": "2026-06-29",
+            "value": 49.93
+          },
+          {
+            "date": "2026-06-30",
+            "value": 50.32
+          },
+          {
+            "date": "2026-07-01",
+            "value": 50.04
+          },
+          {
+            "date": "2026-07-02",
+            "value": 49.96
+          },
+          {
+            "date": "2026-07-03",
+            "value": 51.0
+          },
+          {
+            "date": "2026-07-04",
+            "value": 50.89
+          },
+          {
+            "date": "2026-07-05",
+            "value": 50.85
+          },
+          {
+            "date": "2026-07-06",
+            "value": 50.55
+          },
+          {
+            "date": "2026-07-07",
+            "value": 50.23
+          },
+          {
+            "date": "2026-07-08",
+            "value": 50.4
+          },
+          {
+            "date": "2026-07-09",
+            "value": 51.31
+          },
+          {
+            "date": "2026-07-10",
+            "value": 50.92
+          },
+          {
+            "date": "2026-07-11",
+            "value": 51.08
+          },
+          {
+            "date": "2026-07-12",
+            "value": 50.86
+          },
+          {
+            "date": "2026-07-13",
+            "value": 51.18
+          },
+          {
+            "date": "2026-07-14",
+            "value": 51.88
+          },
+          {
+            "date": "2026-07-15",
+            "value": 51.51
+          },
+          {
+            "date": "2026-07-16",
+            "value": 51.8
+          },
+          {
+            "date": "2026-07-17",
+            "value": 51.41
+          },
+          {
+            "date": "2026-07-18",
+            "value": 50.3
+          },
+          {
+            "date": "2026-07-19",
+            "value": 50.25
+          },
+          {
+            "date": "2026-07-20",
+            "value": 50.21
+          },
+          {
+            "date": "2026-07-21",
+            "value": 50.5
+          },
+          {
+            "date": "2026-07-22",
+            "value": 49.81
+          },
+          {
+            "date": "2026-07-23",
+            "value": 50.43
+          },
+          {
+            "date": "2026-07-24",
+            "value": 50.82
+          },
+          {
+            "date": "2026-07-25",
+            "value": 51.03
+          },
+          {
+            "date": "2026-07-26",
+            "value": 51.81
+          },
+          {
+            "date": "2026-07-27",
+            "value": 51.94
+          },
+          {
+            "date": "2026-07-28",
+            "value": 51.33
+          },
+          {
+            "date": "2026-07-29",
+            "value": 51.64
+          }
+        ]
+      },
+      "app_rank": {
+        "label": "App rank / reviews",
+        "source": "fixture",
+        "corr_with_search": null,
+        "divergence": null,
+        "latest": 52.00737213914082,
+        "series": [
+          {
+            "date": "2026-06-20",
+            "value": 50.35
+          },
+          {
+            "date": "2026-06-21",
+            "value": 49.56
+          },
+          {
+            "date": "2026-06-22",
+            "value": 49.11
+          },
+          {
+            "date": "2026-06-23",
+            "value": 49.63
+          },
+          {
+            "date": "2026-06-24",
+            "value": 50.13
+          },
+          {
+            "date": "2026-06-25",
+            "value": 50.72
+          },
+          {
+            "date": "2026-06-26",
+            "value": 50.19
+          },
+          {
+            "date": "2026-06-27",
+            "value": 49.81
+          },
+          {
+            "date": "2026-06-28",
+            "value": 50.3
+          },
+          {
+            "date": "2026-06-29",
+            "value": 50.39
+          },
+          {
+            "date": "2026-06-30",
+            "value": 50.88
+          },
+          {
+            "date": "2026-07-01",
+            "value": 50.44
+          },
+          {
+            "date": "2026-07-02",
+            "value": 51.27
+          },
+          {
+            "date": "2026-07-03",
+            "value": 51.36
+          },
+          {
+            "date": "2026-07-04",
+            "value": 51.66
+          },
+          {
+            "date": "2026-07-05",
+            "value": 51.59
+          },
+          {
+            "date": "2026-07-06",
+            "value": 51.94
+          },
+          {
+            "date": "2026-07-07",
+            "value": 52.23
+          },
+          {
+            "date": "2026-07-08",
+            "value": 52.46
+          },
+          {
+            "date": "2026-07-09",
+            "value": 52.19
+          },
+          {
+            "date": "2026-07-10",
+            "value": 51.93
+          },
+          {
+            "date": "2026-07-11",
+            "value": 51.6
+          },
+          {
+            "date": "2026-07-12",
+            "value": 51.39
+          },
+          {
+            "date": "2026-07-13",
+            "value": 51.24
+          },
+          {
+            "date": "2026-07-14",
+            "value": 51.03
+          },
+          {
+            "date": "2026-07-15",
+            "value": 51.04
+          },
+          {
+            "date": "2026-07-16",
+            "value": 51.3
+          },
+          {
+            "date": "2026-07-17",
+            "value": 50.87
+          },
+          {
+            "date": "2026-07-18",
+            "value": 51.41
+          },
+          {
+            "date": "2026-07-19",
+            "value": 51.48
+          },
+          {
+            "date": "2026-07-20",
+            "value": 51.74
+          },
+          {
+            "date": "2026-07-21",
+            "value": 51.52
+          },
+          {
+            "date": "2026-07-22",
+            "value": 52.01
+          },
+          {
+            "date": "2026-07-23",
+            "value": 51.74
+          },
+          {
+            "date": "2026-07-24",
+            "value": 52.01
+          },
+          {
+            "date": "2026-07-25",
+            "value": 52.03
+          },
+          {
+            "date": "2026-07-26",
+            "value": 51.85
+          },
+          {
+            "date": "2026-07-27",
+            "value": 51.36
+          },
+          {
+            "date": "2026-07-28",
+            "value": 51.61
+          },
+          {
+            "date": "2026-07-29",
+            "value": 52.01
+          }
+        ]
+      },
+      "pricing_promo": {
+        "label": "Pricing / promo",
+        "source": "fixture",
+        "corr_with_search": null,
+        "divergence": null,
+        "latest": 47.34284548229812,
+        "series": [
+          {
+            "date": "2026-06-20",
+            "value": 49.21
+          },
+          {
+            "date": "2026-06-21",
+            "value": 49.84
+          },
+          {
+            "date": "2026-06-22",
+            "value": 49.81
+          },
+          {
+            "date": "2026-06-23",
+            "value": 49.69
+          },
+          {
+            "date": "2026-06-24",
+            "value": 50.18
+          },
+          {
+            "date": "2026-06-25",
+            "value": 51.0
+          },
+          {
+            "date": "2026-06-26",
+            "value": 51.07
+          },
+          {
+            "date": "2026-06-27",
+            "value": 50.6
+          },
+          {
+            "date": "2026-06-28",
+            "value": 49.86
+          },
+          {
+            "date": "2026-06-29",
+            "value": 49.76
+          },
+          {
+            "date": "2026-06-30",
+            "value": 49.53
+          },
+          {
+            "date": "2026-07-01",
+            "value": 49.5
+          },
+          {
+            "date": "2026-07-02",
+            "value": 49.55
+          },
+          {
+            "date": "2026-07-03",
+            "value": 50.33
+          },
+          {
+            "date": "2026-07-04",
+            "value": 50.73
+          },
+          {
+            "date": "2026-07-05",
+            "value": 50.78
+          },
+          {
+            "date": "2026-07-06",
+            "value": 50.71
+          },
+          {
+            "date": "2026-07-07",
+            "value": 51.16
+          },
+          {
+            "date": "2026-07-08",
+            "value": 50.78
+          },
+          {
+            "date": "2026-07-09",
+            "value": 50.11
+          },
+          {
+            "date": "2026-07-10",
+            "value": 50.33
+          },
+          {
+            "date": "2026-07-11",
+            "value": 50.67
+          },
+          {
+            "date": "2026-07-12",
+            "value": 50.42
+          },
+          {
+            "date": "2026-07-13",
+            "value": 50.22
+          },
+          {
+            "date": "2026-07-14",
+            "value": 50.14
+          },
+          {
+            "date": "2026-07-15",
+            "value": 49.81
+          },
+          {
+            "date": "2026-07-16",
+            "value": 50.02
+          },
+          {
+            "date": "2026-07-17",
+            "value": 49.8
+          },
+          {
+            "date": "2026-07-18",
+            "value": 49.82
+          },
+          {
+            "date": "2026-07-19",
+            "value": 49.22
+          },
+          {
+            "date": "2026-07-20",
+            "value": 49.09
+          },
+          {
+            "date": "2026-07-21",
+            "value": 48.42
+          },
+          {
+            "date": "2026-07-22",
+            "value": 48.06
+          },
+          {
+            "date": "2026-07-23",
+            "value": 47.77
+          },
+          {
+            "date": "2026-07-24",
+            "value": 47.52
+          },
+          {
+            "date": "2026-07-25",
+            "value": 47.61
+          },
+          {
+            "date": "2026-07-26",
+            "value": 46.97
+          },
+          {
+            "date": "2026-07-27",
+            "value": 46.6
+          },
+          {
+            "date": "2026-07-28",
+            "value": 46.38
+          },
+          {
+            "date": "2026-07-29",
+            "value": 47.34
+          }
+        ]
+      },
+      "hiring": {
+        "label": "Hiring",
+        "source": "fixture",
+        "corr_with_search": null,
+        "divergence": null,
+        "latest": 49.80992480348474,
+        "series": [
+          {
+            "date": "2026-06-20",
+            "value": 50.26
+          },
+          {
+            "date": "2026-06-21",
+            "value": 50.79
+          },
+          {
+            "date": "2026-06-22",
+            "value": 50.99
+          },
+          {
+            "date": "2026-06-23",
+            "value": 51.06
+          },
+          {
+            "date": "2026-06-24",
+            "value": 51.21
+          },
+          {
+            "date": "2026-06-25",
+            "value": 51.17
+          },
+          {
+            "date": "2026-06-26",
+            "value": 51.37
+          },
+          {
+            "date": "2026-06-27",
+            "value": 51.32
+          },
+          {
+            "date": "2026-06-28",
+            "value": 51.22
+          },
+          {
+            "date": "2026-06-29",
+            "value": 51.19
+          },
+          {
+            "date": "2026-06-30",
+            "value": 50.96
+          },
+          {
+            "date": "2026-07-01",
+            "value": 51.15
+          },
+          {
+            "date": "2026-07-02",
+            "value": 50.81
+          },
+          {
+            "date": "2026-07-03",
+            "value": 50.95
+          },
+          {
+            "date": "2026-07-04",
+            "value": 50.54
+          },
+          {
+            "date": "2026-07-05",
+            "value": 49.96
+          },
+          {
+            "date": "2026-07-06",
+            "value": 49.79
+          },
+          {
+            "date": "2026-07-07",
+            "value": 49.44
+          },
+          {
+            "date": "2026-07-08",
+            "value": 49.22
+          },
+          {
+            "date": "2026-07-09",
+            "value": 49.67
+          },
+          {
+            "date": "2026-07-10",
+            "value": 49.07
+          },
+          {
+            "date": "2026-07-11",
+            "value": 48.33
+          },
+          {
+            "date": "2026-07-12",
+            "value": 48.91
+          },
+          {
+            "date": "2026-07-13",
+            "value": 49.34
+          },
+          {
+            "date": "2026-07-14",
+            "value": 49.34
+          },
+          {
+            "date": "2026-07-15",
+            "value": 48.68
+          },
+          {
+            "date": "2026-07-16",
+            "value": 49.3
+          },
+          {
+            "date": "2026-07-17",
+            "value": 49.37
+          },
+          {
+            "date": "2026-07-18",
+            "value": 49.31
+          },
+          {
+            "date": "2026-07-19",
+            "value": 48.66
+          },
+          {
+            "date": "2026-07-20",
+            "value": 48.65
+          },
+          {
+            "date": "2026-07-21",
+            "value": 48.65
+          },
+          {
+            "date": "2026-07-22",
+            "value": 48.8
+          },
+          {
+            "date": "2026-07-23",
+            "value": 49.23
+          },
+          {
+            "date": "2026-07-24",
+            "value": 49.71
+          },
+          {
+            "date": "2026-07-25",
+            "value": 49.69
+          },
+          {
+            "date": "2026-07-26",
+            "value": 49.85
+          },
+          {
+            "date": "2026-07-27",
+            "value": 49.91
+          },
+          {
+            "date": "2026-07-28",
+            "value": 49.68
+          },
+          {
+            "date": "2026-07-29",
+            "value": 49.81
+          }
+        ]
+      }
+    },
+    "brand_series": []
+  },
+  "feature_attribution_note": "All interest features are relative indices within shared query groups/windows."
+}

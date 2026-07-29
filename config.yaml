@@ -52,6 +52,9 @@ redis:
 
 celery:
   task_always_eager: false
+  # Beat schedule is defined in quant_os_api.workers (Sunday 02:30 Asia/Kolkata).
+  # Task: quant_os.trends_collect_all → per-entity quant_os.trends_collect
+  # Cron alternative without Redis: make trends-collect-all  (see docs/trends.md)
 
 ai:
   default_provider: "openai_compatible"
@@ -106,6 +109,566 @@ features:
   notebook_enabled: true
   live_data_enabled: false
   auto_seed_on_boot: true
+  google_trends_enabled: true
+
+# Google Trends Intelligence — relative 0–100 index, NOT absolute volume.
+# Always use shared windows + anchors; never compare separate exports naïvely.
+google_trends:
+  geo: "IN"
+  timezone: "Asia/Kolkata"
+  default_provider: "fixture"  # fixture | pytrends
+  collect_repeats: 3           # average repeated pulls (sampling noise)
+  windows:
+    - "30d"
+    - "90d"
+    - "12m"
+    - "5y"
+  pull_frequencies:
+    daily: false
+    weekly: true
+  anchors:
+    fixed:
+      - "news"
+      - "weather"
+    category:
+      - "online grocery"
+    competitor_basket: true
+  entities:
+    dmart:
+      label: "DMart"
+      ticker: "DMART"
+      exchange: "NSE"
+      parent: "Avenue Supermarts"
+      earnings_calendar:
+        # Point-in-time backtest anchors (result dates). Extend as needed.
+        - "2024-01-20"
+        - "2024-04-27"
+        - "2024-07-20"
+        - "2024-10-19"
+        - "2025-01-18"
+        - "2025-04-26"
+        - "2025-07-19"
+      core_states:
+        - "Maharashtra"
+        - "Gujarat"
+        - "Telangana"
+        - "Karnataka"
+        - "Rajasthan"
+        - "Madhya Pradesh"
+      store_weights:
+        Maharashtra: 0.22
+        Gujarat: 0.14
+        Telangana: 0.12
+        Karnataka: 0.11
+        Rajasthan: 0.09
+        Madhya Pradesh: 0.08
+        Tamil Nadu: 0.07
+        Andhra Pradesh: 0.06
+        Delhi: 0.05
+        Other: 0.06
+      queries:
+        brand:
+          - { term: "DMart", kind: "search_term" }
+          - { term: "DMart Ready", kind: "search_term" }
+          - { term: "DMart online", kind: "search_term" }
+          - { term: "Avenue Supermarts", kind: "search_term" }
+        transactional:
+          - { term: "DMart near me", kind: "search_term" }
+          - { term: "DMart offers", kind: "search_term" }
+          - { term: "DMart delivery", kind: "search_term" }
+          - { term: "DMart Ready app", kind: "search_term" }
+          - { term: "DMart online grocery", kind: "search_term" }
+        category:
+          - { term: "online grocery", kind: "search_term" }
+          - { term: "grocery delivery", kind: "search_term" }
+          - { term: "ration online", kind: "search_term" }
+          - { term: "supermarket near me", kind: "search_term" }
+        competitor:
+          - { term: "Blinkit", kind: "search_term" }
+          - { term: "Zepto", kind: "search_term" }
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "JioMart", kind: "search_term" }
+          - { term: "Reliance Smart", kind: "search_term" }
+        risk:
+          - { term: "DMart complaint", kind: "search_term" }
+          - { term: "DMart delivery late", kind: "search_term" }
+          - { term: "DMart app not working", kind: "search_term" }
+          - { term: "DMart return", kind: "search_term" }
+          - { term: "DMart job", kind: "search_term" }
+
+    trent:
+      label: "Trent"
+      ticker: "TRENT"
+      exchange: "NSE"
+      parent: "Tata"
+      earnings_calendar:
+        - "2024-02-05"
+        - "2024-05-06"
+        - "2024-08-05"
+        - "2024-11-07"
+        - "2025-02-04"
+        - "2025-05-05"
+        - "2025-08-04"
+      core_states:
+        - "Maharashtra"
+        - "Karnataka"
+        - "Delhi"
+        - "Tamil Nadu"
+        - "Telangana"
+        - "Gujarat"
+      store_weights:
+        Maharashtra: 0.18
+        Karnataka: 0.14
+        Delhi: 0.12
+        Tamil Nadu: 0.11
+        Telangana: 0.10
+        Gujarat: 0.09
+        West Bengal: 0.07
+        Rajasthan: 0.06
+        Uttar Pradesh: 0.06
+        Other: 0.07
+      queries:
+        brand:
+          - { term: "Westside", kind: "search_term" }
+          - { term: "Zudio", kind: "search_term" }
+          - { term: "Trent Limited", kind: "search_term" }
+          - { term: "Westside store", kind: "search_term" }
+        transactional:
+          - { term: "Westside near me", kind: "search_term" }
+          - { term: "Zudio near me", kind: "search_term" }
+          - { term: "Westside offers", kind: "search_term" }
+          - { term: "Zudio sale", kind: "search_term" }
+          - { term: "Westside online", kind: "search_term" }
+        category:
+          - { term: "fashion store near me", kind: "search_term" }
+          - { term: "affordable fashion India", kind: "search_term" }
+          - { term: "value fashion", kind: "search_term" }
+          - { term: "apparel retail", kind: "search_term" }
+        competitor:
+          - { term: "Reliance Trends", kind: "search_term" }
+          - { term: "Max Fashion", kind: "search_term" }
+          - { term: "H&M India", kind: "search_term" }
+          - { term: "Pantaloons", kind: "search_term" }
+          - { term: "Lifestyle stores", kind: "search_term" }
+        risk:
+          - { term: "Westside complaint", kind: "search_term" }
+          - { term: "Zudio quality issue", kind: "search_term" }
+          - { term: "Westside return", kind: "search_term" }
+          - { term: "Zudio job", kind: "search_term" }
+    reliance_smart:
+      label: "Reliance Smart"
+      ticker: "RELIANCE"
+      exchange: "NSE"
+      parent: "Reliance Retail"
+      proxy_for: "Reliance Retail grocery"
+      earnings_calendar:
+        - "2024-01-19"
+        - "2024-04-22"
+        - "2024-07-19"
+        - "2024-10-14"
+        - "2025-01-16"
+        - "2025-04-25"
+        - "2025-07-18"
+      core_states:
+        - "Maharashtra"
+        - "Gujarat"
+        - "Telangana"
+        - "Karnataka"
+        - "Andhra Pradesh"
+        - "Tamil Nadu"
+      store_weights:
+        Maharashtra: 0.16
+        Gujarat: 0.12
+        Telangana: 0.11
+        Karnataka: 0.10
+        Andhra Pradesh: 0.09
+        Tamil Nadu: 0.09
+        Delhi: 0.08
+        Rajasthan: 0.07
+        Uttar Pradesh: 0.08
+        Other: 0.10
+      queries:
+        brand:
+          - { term: "Reliance Smart", kind: "search_term" }
+          - { term: "Smart Bazaar", kind: "search_term" }
+          - { term: "Reliance Fresh", kind: "search_term" }
+          - { term: "Reliance Retail", kind: "search_term" }
+        transactional:
+          - { term: "Reliance Smart near me", kind: "search_term" }
+          - { term: "Smart Bazaar offers", kind: "search_term" }
+          - { term: "Reliance Smart delivery", kind: "search_term" }
+          - { term: "Smart Bazaar online", kind: "search_term" }
+        category:
+          - { term: "supermarket near me", kind: "search_term" }
+          - { term: "grocery store near me", kind: "search_term" }
+          - { term: "online grocery", kind: "search_term" }
+          - { term: "hypermarket India", kind: "search_term" }
+        competitor:
+          - { term: "DMart", kind: "search_term" }
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "JioMart", kind: "search_term" }
+          - { term: "Spencer's", kind: "search_term" }
+          - { term: "More supermarket", kind: "search_term" }
+        risk:
+          - { term: "Reliance Smart complaint", kind: "search_term" }
+          - { term: "Smart Bazaar billing issue", kind: "search_term" }
+          - { term: "Reliance Fresh closed", kind: "search_term" }
+          - { term: "Reliance Smart job", kind: "search_term" }
+    jiomart:
+      label: "JioMart"
+      ticker: "RELIANCE"
+      exchange: "NSE"
+      parent: "Reliance Retail"
+      proxy_for: "Reliance Retail online grocery"
+      earnings_calendar:
+        - "2024-01-19"
+        - "2024-04-22"
+        - "2024-07-19"
+        - "2024-10-14"
+        - "2025-01-16"
+        - "2025-04-25"
+        - "2025-07-18"
+      core_states:
+        - "Maharashtra"
+        - "Gujarat"
+        - "Uttar Pradesh"
+        - "Bihar"
+        - "West Bengal"
+        - "Rajasthan"
+      store_weights:
+        Maharashtra: 0.15
+        Gujarat: 0.10
+        Uttar Pradesh: 0.14
+        Bihar: 0.08
+        West Bengal: 0.09
+        Rajasthan: 0.08
+        Madhya Pradesh: 0.08
+        Delhi: 0.08
+        Karnataka: 0.08
+        Other: 0.12
+      queries:
+        brand:
+          - { term: "JioMart", kind: "search_term" }
+          - { term: "JioMart grocery", kind: "search_term" }
+          - { term: "JioMart app", kind: "search_term" }
+        transactional:
+          - { term: "JioMart offers", kind: "search_term" }
+          - { term: "JioMart delivery", kind: "search_term" }
+          - { term: "JioMart coupon", kind: "search_term" }
+          - { term: "order on JioMart", kind: "search_term" }
+        category:
+          - { term: "online grocery", kind: "search_term" }
+          - { term: "grocery delivery", kind: "search_term" }
+          - { term: "kirana online", kind: "search_term" }
+          - { term: "ration online", kind: "search_term" }
+        competitor:
+          - { term: "Blinkit", kind: "search_term" }
+          - { term: "Zepto", kind: "search_term" }
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "Amazon Fresh", kind: "search_term" }
+          - { term: "DMart Ready", kind: "search_term" }
+        risk:
+          - { term: "JioMart complaint", kind: "search_term" }
+          - { term: "JioMart delivery late", kind: "search_term" }
+          - { term: "JioMart app not working", kind: "search_term" }
+          - { term: "JioMart refund", kind: "search_term" }
+    bigbasket:
+      label: "BigBasket"
+      ticker: null
+      exchange: null
+      parent: "Tata Digital"
+      ecosystem: "quick_commerce_grocery"
+      earnings_calendar:
+        - "2024-02-15"
+        - "2024-05-15"
+        - "2024-08-15"
+        - "2024-11-15"
+        - "2025-02-15"
+        - "2025-05-15"
+        - "2025-08-15"
+      core_states:
+        - "Karnataka"
+        - "Maharashtra"
+        - "Telangana"
+        - "Tamil Nadu"
+        - "Delhi"
+        - "Gujarat"
+      store_weights:
+        Karnataka: 0.18
+        Maharashtra: 0.16
+        Telangana: 0.12
+        Tamil Nadu: 0.11
+        Delhi: 0.10
+        Gujarat: 0.08
+        Andhra Pradesh: 0.07
+        Kerala: 0.06
+        Other: 0.12
+      queries:
+        brand:
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "bbnow", kind: "search_term" }
+          - { term: "BigBasket app", kind: "search_term" }
+        transactional:
+          - { term: "BigBasket offers", kind: "search_term" }
+          - { term: "BigBasket delivery", kind: "search_term" }
+          - { term: "bbnow near me", kind: "search_term" }
+          - { term: "BigBasket coupon", kind: "search_term" }
+        category:
+          - { term: "online grocery", kind: "search_term" }
+          - { term: "grocery delivery", kind: "search_term" }
+          - { term: "10 minute grocery", kind: "search_term" }
+          - { term: "supermarket online", kind: "search_term" }
+        competitor:
+          - { term: "Blinkit", kind: "search_term" }
+          - { term: "Zepto", kind: "search_term" }
+          - { term: "JioMart", kind: "search_term" }
+          - { term: "DMart Ready", kind: "search_term" }
+          - { term: "Swiggy Instamart", kind: "search_term" }
+        risk:
+          - { term: "BigBasket complaint", kind: "search_term" }
+          - { term: "BigBasket delivery late", kind: "search_term" }
+          - { term: "BigBasket app not working", kind: "search_term" }
+          - { term: "BigBasket refund", kind: "search_term" }
+    blinkit:
+      label: "Blinkit"
+      ticker: null
+      exchange: null
+      parent: "Zomato"
+      ecosystem: "quick_commerce"
+      earnings_calendar:
+        - "2024-02-08"
+        - "2024-05-13"
+        - "2024-08-12"
+        - "2024-11-11"
+        - "2025-02-10"
+        - "2025-05-12"
+        - "2025-08-11"
+      core_states:
+        - "Delhi"
+        - "Haryana"
+        - "Uttar Pradesh"
+        - "Maharashtra"
+        - "Karnataka"
+        - "Telangana"
+      store_weights:
+        Delhi: 0.16
+        Haryana: 0.10
+        Uttar Pradesh: 0.12
+        Maharashtra: 0.14
+        Karnataka: 0.12
+        Telangana: 0.10
+        Gujarat: 0.08
+        Rajasthan: 0.06
+        Other: 0.12
+      queries:
+        brand:
+          - { term: "Blinkit", kind: "search_term" }
+          - { term: "Blinkit app", kind: "search_term" }
+          - { term: "Grofers", kind: "search_term" }
+        transactional:
+          - { term: "Blinkit near me", kind: "search_term" }
+          - { term: "Blinkit offers", kind: "search_term" }
+          - { term: "Blinkit delivery", kind: "search_term" }
+          - { term: "order Blinkit", kind: "search_term" }
+        category:
+          - { term: "10 minute grocery", kind: "search_term" }
+          - { term: "quick commerce", kind: "search_term" }
+          - { term: "grocery delivery", kind: "search_term" }
+          - { term: "instant delivery grocery", kind: "search_term" }
+        competitor:
+          - { term: "Zepto", kind: "search_term" }
+          - { term: "Swiggy Instamart", kind: "search_term" }
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "bbnow", kind: "search_term" }
+          - { term: "JioMart", kind: "search_term" }
+        risk:
+          - { term: "Blinkit complaint", kind: "search_term" }
+          - { term: "Blinkit delivery late", kind: "search_term" }
+          - { term: "Blinkit app not working", kind: "search_term" }
+          - { term: "Blinkit refund", kind: "search_term" }
+    zepto:
+      label: "Zepto"
+      ticker: null
+      exchange: null
+      parent: "Zepto"
+      ecosystem: "quick_commerce"
+      earnings_calendar:
+        - "2024-03-01"
+        - "2024-06-01"
+        - "2024-09-01"
+        - "2024-12-01"
+        - "2025-03-01"
+        - "2025-06-01"
+        - "2025-09-01"
+      core_states:
+        - "Maharashtra"
+        - "Karnataka"
+        - "Telangana"
+        - "Delhi"
+        - "Gujarat"
+        - "Tamil Nadu"
+      store_weights:
+        Maharashtra: 0.18
+        Karnataka: 0.14
+        Telangana: 0.12
+        Delhi: 0.12
+        Gujarat: 0.10
+        Tamil Nadu: 0.09
+        Haryana: 0.07
+        Rajasthan: 0.06
+        Other: 0.12
+      queries:
+        brand:
+          - { term: "Zepto", kind: "search_term" }
+          - { term: "Zepto app", kind: "search_term" }
+          - { term: "Zepto grocery", kind: "search_term" }
+        transactional:
+          - { term: "Zepto near me", kind: "search_term" }
+          - { term: "Zepto offers", kind: "search_term" }
+          - { term: "Zepto delivery", kind: "search_term" }
+          - { term: "order Zepto", kind: "search_term" }
+        category:
+          - { term: "10 minute grocery", kind: "search_term" }
+          - { term: "quick commerce", kind: "search_term" }
+          - { term: "grocery delivery", kind: "search_term" }
+          - { term: "instant delivery grocery", kind: "search_term" }
+        competitor:
+          - { term: "Blinkit", kind: "search_term" }
+          - { term: "Swiggy Instamart", kind: "search_term" }
+          - { term: "BigBasket", kind: "search_term" }
+          - { term: "JioMart", kind: "search_term" }
+          - { term: "DMart Ready", kind: "search_term" }
+        risk:
+          - { term: "Zepto complaint", kind: "search_term" }
+          - { term: "Zepto delivery late", kind: "search_term" }
+          - { term: "Zepto app not working", kind: "search_term" }
+          - { term: "Zepto refund", kind: "search_term" }
+    nykaa:
+      label: "Nykaa"
+      ticker: "NYKAA"
+      exchange: "NSE"
+      parent: "FSN E-Commerce"
+      earnings_calendar:
+        - "2024-02-09"
+        - "2024-05-22"
+        - "2024-08-09"
+        - "2024-11-08"
+        - "2025-02-07"
+        - "2025-05-21"
+        - "2025-08-08"
+      core_states:
+        - "Maharashtra"
+        - "Delhi"
+        - "Karnataka"
+        - "Tamil Nadu"
+        - "Telangana"
+        - "Gujarat"
+      store_weights:
+        Maharashtra: 0.18
+        Delhi: 0.14
+        Karnataka: 0.13
+        Tamil Nadu: 0.11
+        Telangana: 0.10
+        Gujarat: 0.08
+        West Bengal: 0.07
+        Uttar Pradesh: 0.07
+        Other: 0.12
+      queries:
+        brand:
+          - { term: "Nykaa", kind: "search_term" }
+          - { term: "Nykaa Fashion", kind: "search_term" }
+          - { term: "Nykaa app", kind: "search_term" }
+        transactional:
+          - { term: "Nykaa offers", kind: "search_term" }
+          - { term: "Nykaa sale", kind: "search_term" }
+          - { term: "Nykaa coupon", kind: "search_term" }
+          - { term: "order Nykaa", kind: "search_term" }
+        category:
+          - { term: "buy cosmetics online", kind: "search_term" }
+          - { term: "beauty products online", kind: "search_term" }
+          - { term: "skincare online India", kind: "search_term" }
+          - { term: "makeup store near me", kind: "search_term" }
+        competitor:
+          - { term: "Purplle", kind: "search_term" }
+          - { term: "Amazon beauty", kind: "search_term" }
+          - { term: "Sephora India", kind: "search_term" }
+          - { term: "Flipkart beauty", kind: "search_term" }
+          - { term: "Tira beauty", kind: "search_term" }
+        risk:
+          - { term: "Nykaa complaint", kind: "search_term" }
+          - { term: "Nykaa fake product", kind: "search_term" }
+          - { term: "Nykaa return", kind: "search_term" }
+          - { term: "Nykaa delivery late", kind: "search_term" }
+    titan:
+      label: "Titan"
+      ticker: "TITAN"
+      exchange: "NSE"
+      parent: "Tata"
+      earnings_calendar:
+        - "2024-02-01"
+        - "2024-05-03"
+        - "2024-08-01"
+        - "2024-11-04"
+        - "2025-01-31"
+        - "2025-05-05"
+        - "2025-08-01"
+      core_states:
+        - "Tamil Nadu"
+        - "Karnataka"
+        - "Maharashtra"
+        - "Delhi"
+        - "Gujarat"
+        - "Telangana"
+      store_weights:
+        Tamil Nadu: 0.14
+        Karnataka: 0.13
+        Maharashtra: 0.15
+        Delhi: 0.12
+        Gujarat: 0.09
+        Telangana: 0.09
+        Kerala: 0.07
+        West Bengal: 0.07
+        Other: 0.14
+      queries:
+        brand:
+          - { term: "Titan", kind: "search_term" }
+          - { term: "Tanishq", kind: "search_term" }
+          - { term: "Titan watches", kind: "search_term" }
+          - { term: "Mia by Tanishq", kind: "search_term" }
+        transactional:
+          - { term: "Tanishq near me", kind: "search_term" }
+          - { term: "Titan showroom near me", kind: "search_term" }
+          - { term: "Tanishq offers", kind: "search_term" }
+          - { term: "buy Titan watch online", kind: "search_term" }
+        category:
+          - { term: "jewellery store near me", kind: "search_term" }
+          - { term: "gold jewellery India", kind: "search_term" }
+          - { term: "watches online India", kind: "search_term" }
+          - { term: "diamond jewellery", kind: "search_term" }
+        competitor:
+          - { term: "Malabar Gold", kind: "search_term" }
+          - { term: "Kalyan Jewellers", kind: "search_term" }
+          - { term: "CaratLane", kind: "search_term" }
+          - { term: "Fastrack", kind: "search_term" }
+          - { term: "Senco Gold", kind: "search_term" }
+        risk:
+          - { term: "Tanishq complaint", kind: "search_term" }
+          - { term: "Titan watch problem", kind: "search_term" }
+          - { term: "Tanishq return", kind: "search_term" }
+          - { term: "Titan job", kind: "search_term" }
+
+  score_weights:
+    brand_attention: 0.22
+    purchase_intent: 0.28
+    regional_strength: 0.15
+    competitive_share: 0.15
+    risk_friction: 0.10
+    signal_quality: 0.10
+  alert_thresholds:
+    brand_accel: 1.5
+    transactional_surge: 2.0
+    risk_spike: 2.5
+    share_breakout: 0.08
 
 logging:
   level: "INFO"

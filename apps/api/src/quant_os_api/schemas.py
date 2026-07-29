@@ -179,3 +179,31 @@ class DuckDBQueryRequest(BaseModel):
 
 class EncryptRequest(BaseModel):
     value: str
+
+
+class TrendsCollectRequest(BaseModel):
+    entity_id: str = "dmart"
+    provider: str | None = None
+    windows: list[str] | None = None
+
+
+class TrendsScoreRequest(BaseModel):
+    entity_id: str = "dmart"
+    as_of: str | None = None
+    window: str = "90d"
+
+
+class TrendsTrainRequest(BaseModel):
+    entity_id: str | None = None
+    entity_ids: list[str] | None = None
+
+
+class TrendsPredictRequest(BaseModel):
+    entity_id: str = "dmart"
+    as_of: str | None = None
+    window: str = "90d"
+
+
+class TrendsRankRequest(BaseModel):
+    entity_ids: list[str] | None = None
+    window: str = "90d"

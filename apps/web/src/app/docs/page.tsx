@@ -53,6 +53,9 @@ export default function DocsPage() {
             <span className="text-ink">docs/architecture.md</span> — design
           </li>
           <li>
+            <span className="text-ink">docs/trends.md</span> — Google Trends intelligence (multi-entity + modeling)
+          </li>
+          <li>
             <span className="text-ink">ROADMAP.md</span> — what ships next
           </li>
         </ul>
@@ -61,7 +64,8 @@ export default function DocsPage() {
       <section className="panel p-5">
         <SectionTitle title="Try it" />
         <p className="text-sm text-ink-muted">
-          Open <Link href="/ai-lab" className="text-accent">AI Lab</Link> or{" "}
+          Open <Link href="/trends" className="text-accent">Trends</Link>,{" "}
+          <Link href="/ai-lab" className="text-accent">AI Lab</Link>, or{" "}
           <Link href="/research" className="text-accent">Research</Link>.
         </p>
       </section>

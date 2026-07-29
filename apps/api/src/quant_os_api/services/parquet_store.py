@@ -62,6 +62,9 @@ def list_datasets() -> list[dict[str, Any]]:
     for symbol_dir in sorted(root.iterdir() if root.exists() else []):
         if not symbol_dir.is_dir():
             continue
+        # Skip alt-data namespaces (Trends lives under parquet/trends/)
+        if symbol_dir.name.lower() in {"trends"}:
+            continue
         for file in sorted(symbol_dir.glob("*.parquet")):
             frame = pd.read_parquet(file)
             timeframe = file.stem
