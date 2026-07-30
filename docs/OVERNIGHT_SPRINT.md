@@ -4,6 +4,16 @@ Continuous OSS + product grind while the user sleeps (~5h window). Push when saf
 
 ---
 
+## Closing — 2026-07-30 ~08:40 IST
+
+Night window **closed**. Overnight loop pid 51695 stopped (no new loop started).
+
+- **PR #2** squash-merged into `main` (`ea61f2b`) — comparison CSV, Beat smoke, fundamentals stub
+- Local `main` fast-forwarded to `origin/main`
+- **CI still blocked**: `gh` token lacks `workflow` scope; `.github/workflows/ci.yml` remains untracked locally; `backup/local-ci` kept
+
+---
+
 ## Sync + catch-up — 2026-07-30 ~08:30 IST
 
 ### Overnight loop status
