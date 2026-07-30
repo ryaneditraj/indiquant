@@ -848,11 +848,70 @@ def trends_rank(body: TrendsRankRequest) -> dict[str, Any]:
     return rank_entities(body.entity_ids, window=body.window)
 
 
+def _trends_comparison_csv(payload: dict[str, Any]) -> str:
+    """Flatten multi-entity rankings into CSV (relative scores only)."""
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(
+        [
+            "rank",
+            "entity_id",
+            "label",
+            "ticker",
+            "ranking_score",
+            "search_demand_score",
+            "regime",
+            "quality_badge",
+            "ranking_method",
+            "side_hint",
+            "window",
+            "is_absolute_volume",
+            "note",
+        ]
+    )
+    window = payload.get("window") or ""
+    note = "relative_index_not_absolute_volume"
+    for row in payload.get("rankings") or []:
+        writer.writerow(
+            [
+                row.get("rank") if row.get("rank") is not None else "",
+                row.get("entity_id") or "",
+                row.get("label") or "",
+                row.get("ticker") or "",
+                row.get("ranking_score") if row.get("ranking_score") is not None else "",
+                row.get("search_demand_score")
+                if row.get("search_demand_score") is not None
+                else "",
+                row.get("regime") or "",
+                row.get("quality_badge") or "",
+                row.get("ranking_method") or "",
+                row.get("side_hint") or "",
+                window,
+                False,
+                note,
+            ]
+        )
+    return buf.getvalue()
+
+
 @router.get("/trends/comparison")
-def trends_comparison(window: str = Query("90d")) -> dict[str, Any]:
+def trends_comparison(
+    window: str = Query("90d"),
+    format: str = Query("json", pattern="^(json|csv)$"),
+) -> Any:
     from quant_os_api.trends.modeling import rank_entities
 
-    return rank_entities(window=window)
+    payload = rank_entities(window=window)
+    if format == "csv":
+        body = _trends_comparison_csv(payload)
+        return Response(
+            content=body,
+            media_type="text/csv; charset=utf-8",
+            headers={
+                "Content-Disposition": f'attachment; filename="trends-comparison-{window}.csv"'
+            },
+        )
+    return payload
 
 
 def _trends_export_csv(payload: dict[str, Any]) -> str:

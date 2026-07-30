@@ -1,4 +1,4 @@
-.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke trends-collect trends-collect-all trends-train trends-demo demo
+.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke trends-collect trends-collect-all trends-train trends-demo trends-beat-smoke demo
 
 help:
 	@echo "Indiquant · Money Radar · Thugir Group"
@@ -17,6 +17,7 @@ help:
 	@echo "  make trends-collect ENTITY=dmart - Fixture Trends pull + score"
 	@echo "  make trends-collect-all - All configured Trends entities"
 	@echo "  make trends-train     - Train Trends GB models (proxy labels)"
+	@echo "  make trends-beat-smoke - Print Celery Beat weekly Trends schedule"
 
 up:
 	docker compose up -d postgres redis
@@ -60,6 +61,10 @@ trends-train:
 trends-demo:
 	@echo "→ Fixture Trends demo (dmart + trent) — relative index, never absolute volume"
 	bash scripts/trends_demo.sh
+
+trends-beat-smoke:
+	@echo "→ Celery Beat weekly Trends schedule (Sunday 02:30 Asia/Kolkata)"
+	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml python -c "from quant_os_api.workers import celery_app; e=celery_app.conf.beat_schedule['trends-weekly-collect']; print({'key':'trends-weekly-collect','task':e['task'],'schedule':str(e['schedule']),'tz':celery_app.conf.timezone})"
 
 demo: seed trends-demo
 	@echo ""

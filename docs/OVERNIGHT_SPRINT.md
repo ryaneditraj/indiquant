@@ -4,6 +4,38 @@ Continuous OSS + product grind while the user sleeps (~5h window). Push when saf
 
 ---
 
+## Sync + catch-up — 2026-07-30 ~08:30 IST
+
+### Overnight loop status
+
+- Loop terminal `653025` still alive (~5.7h+); **only Tick 1 echoed** in the shell log (Ticks 2–10 never wrote entries despite schedule)
+- Docs had Tick 0 + Tick 1 only → **one catch-up grind** for missed 2–N priorities
+
+### Git sync (no force-push)
+
+- `origin/main` was ahead/divergent: local tip still carried CI commit `0b95cde` while remote had PR merge `f818a5c` (+ later note `151bcd1`)
+- Parked CI on `backup/local-ci` → `0b95cde` (branch kept; **not** deleted)
+- `git reset --hard origin/main` on local `main`; restored `.github/workflows/ci.yml` as **untracked**
+- Local `main` matches `origin/main` at catch-up start (`151bcd1`)
+
+### Catch-up shipped (branch `overnight/catchup-ticks2-n` → PR)
+
+- Comparison ranking **CSV/JSON export** (`GET /trends/comparison?format=csv`) + view-aware Export buttons
+- Comparison empty_state / next_steps + export error surfacing + copy-curl on empty ranking
+- Celery Beat smoke test + `make trends-beat-smoke`
+- Thin `trends/fundamentals.py` stub (`load_labels` → None) + `label_source` in train/predict meta
+- Docs/README: comparison CSV + Beat smoke; no fake CI badge
+- Verify: **38** pytest passed; `tsc` green
+- CI still **auth-blocked** (token scopes: gist, read:org, repo — no `workflow`)
+
+### Tree left for remaining ticks
+
+- On feature branch until PR merges; `main` stays aligned with origin after merge
+- `backup/local-ci` intact; `ci.yml` untracked locally
+- Loop may still fire late ticks — prefer small additive work, avoid re-diverging CI onto `main`
+
+---
+
 ## Tick 1 — export + backoff · 2026-07-30 ~02:35 IST
 
 ### Status check

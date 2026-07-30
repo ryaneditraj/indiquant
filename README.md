@@ -91,7 +91,7 @@ Or one-shot market + Trends fixtures: `make demo`
 
 Empty `/trends` after a fresh clone is expected — run `make trends-demo`, then Refresh.
 
-Export: JSON or CSV (`/api/v1/trends/{id}/export?format=csv`) — relative indices only.
+Export: JSON or CSV — entity `/api/v1/trends/{id}/export?format=csv` or comparison ranking `/api/v1/trends/comparison?format=csv` (relative indices only).
 
 Full module docs: **[docs/trends.md](docs/trends.md)**
 
