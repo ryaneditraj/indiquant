@@ -17,6 +17,7 @@ import numpy as np
 from quant_os_api.config import _repo_root, get_settings
 from quant_os_api.trends import CAVEATS, QUALITY_BADGES
 from quant_os_api.trends.features import compute_features
+from quant_os_api.trends.fundamentals import load_labels as load_fundamentals_labels
 from quant_os_api.trends.score import score_entity
 from quant_os_api.trends.universe import entity_config, list_entities
 
@@ -137,8 +138,24 @@ def _build_training_rows(entity_ids: list[str] | None = None) -> list[dict[str, 
                 scored = score_entity(eid, as_of=as_of, window=window)
                 if not scored.get("ok"):
                     continue
-                rng = np.random.default_rng(abs(hash(f"{eid}|{as_of}|{window}")) % (2**32))
-                labels = _proxy_labels(scored, rng=rng)
+                fund = load_fundamentals_labels(eid, as_of=as_of)
+                if fund:
+                    bim_code = int(fund.get("beat_inline_miss_code") or 1)
+                    labels = {
+                        "revenue_growth": float(fund.get("revenue_growth") or 0.0),
+                        "sss_proxy": float(fund.get("sss") or fund.get("sss_proxy") or 0.0),
+                        "beat_inline_miss": fund.get("beat_inline_miss") or "inline",
+                        "beat_inline_miss_code": bim_code,
+                        "nowcast_momentum": float(fund.get("nowcast_momentum") or 0.0),
+                        "proxy": False,
+                        "label_source": "fundamentals",
+                        "proxy_note": None,
+                        "label_confidence": float(fund.get("label_confidence") or 0.8),
+                    }
+                else:
+                    rng = np.random.default_rng(abs(hash(f"{eid}|{as_of}|{window}")) % (2**32))
+                    labels = _proxy_labels(scored, rng=rng)
+                    labels["label_source"] = "proxy"
                 rows.append(
                     {
                         "entity_id": eid,
@@ -228,6 +245,12 @@ def train_models(
         "entities": sorted({r["entity_id"] for r in rows}),
         "proxy_labels": True,
         "proxy_note": "Targets are synthetic proxies from score regimes + noise until fundamentals wired.",
+        "label_source": (
+            "fundamentals"
+            if any(r.get("label_source") == "fundamentals" for r in rows)
+            else "proxy"
+        ),
+        "label_sources_used": sorted({str(r.get("label_source") or "proxy") for r in rows}),
         "is_absolute_volume": False,
         "caveats": CAVEATS,
         "tasks": {},
@@ -352,6 +375,7 @@ def predict_entity(entity_id: str, *, window: str = "90d", as_of: str | None = N
         "quality_badges_allowed": list(QUALITY_BADGES),
         "proxy_labels": True,
         "proxy_note": meta.get("proxy_note"),
+        "label_source": meta.get("label_source") or "proxy",
         "is_absolute_volume": False,
         "caveats": CAVEATS,
         "predictions": {},
@@ -539,7 +563,7 @@ def rank_entities(
             quality_badge=r.get("quality_badge"),
         )
     methods = {r.get("ranking_method") for r in ranked if r.get("ranking_method")}
-    return {
+    out: dict[str, Any] = {
         "ok": True,
         "window": window,
         "n": len(ranked),
@@ -555,3 +579,12 @@ def rank_entities(
         "is_absolute_volume": False,
         "caveats": CAVEATS,
     }
+    if len(ranked) == 0:
+        out["empty_state"] = True
+        out["next_steps"] = [
+            "make trends-demo  # fixture offline seed for dmart + trent",
+            "Open /trends → Multi-entity ranking → Refresh",
+            "Optional: make trends-train for proxy model ranking",
+            "Export: GET /api/v1/trends/comparison?format=csv",
+        ]
+    return out

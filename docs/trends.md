@@ -77,14 +77,23 @@ curl localhost:8000/api/v1/trends/dmart/export > dmart-trends.json
 curl localhost:8000/api/v1/trends/dmart/export?format=csv > dmart-trends.csv
 # CSV is relative index rows only — never absolute volume
 
-# Modeling (proxy labels until fundamentals wired)
+# Modeling (proxy labels until fundamentals wired; label_source in train meta)
 curl -X POST localhost:8000/api/v1/trends/models/train -H 'Content-Type: application/json' -d '{}'
 curl localhost:8000/api/v1/trends/dmart/predict
 curl localhost:8000/api/v1/trends/dmart/nowcast
 curl localhost:8000/api/v1/trends/comparison
+curl localhost:8000/api/v1/trends/comparison?format=csv > trends-comparison.csv
+# Empty rankings → header-only CSV (soft success)
 
 # PIT pre-earnings backtest
 curl -X POST localhost:8000/api/v1/trends/dmart/backtest
+```
+
+## Weekly Beat smoke
+
+```bash
+make trends-beat-smoke   # prints trends-weekly-collect → Sunday 02:30 Asia/Kolkata
+# or: pytest apps/api/tests/test_celery_beat.py -q
 ```
 
 ## Live pulls
@@ -108,7 +117,7 @@ Live collector uses request gaps + exponential backoff on 429s; on hard failure 
 
 ## Modeling notes
 
-Targets are **synthetic proxies** (score regime + noise) until filings / SSS / beat-miss labels are wired. Artifacts: `artifacts/trends/models.pkl`, `train_meta.json`. Predictions include heuristic conformal residual bands because Trends is sampled and noisy.
+Targets are **synthetic proxies** (score regime + noise) until filings / SSS / beat-miss labels are wired via `trends/fundamentals.py` (`load_labels` stub → `None`; train meta exposes `label_source`). Artifacts: `artifacts/trends/models.pkl`, `train_meta.json`. Predictions include heuristic conformal residual bands because Trends is sampled and noisy.
 
 ## Phase 2 entities
 

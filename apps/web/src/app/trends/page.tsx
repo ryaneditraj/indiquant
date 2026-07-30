@@ -127,6 +127,11 @@ export default function TrendsPage() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"entity" | "comparison">("entity");
   const [copiedCurl, setCopiedCurl] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [comparisonMeta, setComparisonMeta] = useState<{
+    empty_state?: boolean;
+    next_steps?: string[];
+  } | null>(null);
 
   const refreshEntities = useCallback(async () => {
     try {
@@ -165,6 +170,10 @@ export default function TrendsPage() {
       if (!res.ok) return;
       const body = await res.json();
       setRankings((body.rankings || []) as RankingRow[]);
+      setComparisonMeta({
+        empty_state: Boolean(body.empty_state) || !(body.rankings || []).length,
+        next_steps: body.next_steps,
+      });
     } catch {
       /* ignore */
     }
@@ -189,29 +198,68 @@ export default function TrendsPage() {
   const crossPanel = dash?.cross_signal?.panel || {};
 
   async function downloadExport(format: "json" | "csv" = "json") {
-    const res = await fetch(
-      `${apiBase()}/api/v1/trends/${entityId}/export?format=${format}&window=90d`,
-    );
-    if (!res.ok) return;
-    if (format === "csv") {
-      const text = await res.text();
-      const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+    setExportError(null);
+    try {
+      if (view === "comparison") {
+        const res = await fetch(
+          `${apiBase()}/api/v1/trends/comparison?format=${format}&window=90d`,
+        );
+        if (!res.ok) {
+          setExportError(`Comparison export failed (HTTP ${res.status})`);
+          return;
+        }
+        if (format === "csv") {
+          const text = await res.text();
+          const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "trends-comparison-export.csv";
+          a.click();
+          URL.revokeObjectURL(url);
+          return;
+        }
+        const json = await res.json();
+        const blob = new Blob([JSON.stringify(json, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "trends-comparison-export.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+      const res = await fetch(
+        `${apiBase()}/api/v1/trends/${entityId}/export?format=${format}&window=90d`,
+      );
+      if (!res.ok) {
+        setExportError(`Entity export failed (HTTP ${res.status})`);
+        return;
+      }
+      if (format === "csv") {
+        const text = await res.text();
+        const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `trends-${entityId}-export.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+      const json = await res.json();
+      const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `trends-${entityId}-export.csv`;
+      a.download = `trends-${entityId}-export.json`;
       a.click();
       URL.revokeObjectURL(url);
-      return;
+    } catch {
+      setExportError("Export failed — is the API reachable?");
     }
-    const json = await res.json();
-    const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `trends-${entityId}-export.json`;
-    a.click();
-    URL.revokeObjectURL(url);
   }
 
   const demoCurl = `curl -s -X POST ${apiBase()}/api/v1/trends/collect -H 'Content-Type: application/json' -d '{"entity_id":"${entityId}","provider":"fixture"}'`;
@@ -341,16 +389,19 @@ export default function TrendsPage() {
             onClick={() => downloadExport("json")}
             className="rounded-xl border border-canvas-border px-4 py-2 text-sm text-ink hover:border-accent/40"
           >
-            Export JSON
+            {view === "comparison" ? "Export ranking JSON" : "Export JSON"}
           </button>
           <button
             type="button"
             onClick={() => downloadExport("csv")}
             className="rounded-xl border border-canvas-border px-4 py-2 text-sm text-ink hover:border-accent/40"
           >
-            Export CSV
+            {view === "comparison" ? "Export ranking CSV" : "Export CSV"}
           </button>
         </div>
+        {exportError ? (
+          <p className="mt-3 text-xs text-accent-bad">{exportError}</p>
+        ) : null}
       </section>
 
       {view === "comparison" && (
@@ -414,10 +465,36 @@ export default function TrendsPage() {
                         Fresh clone? Seed fixture Trends data, then open this view again.
                       </p>
                       <ol className="mx-auto mt-3 max-w-md space-y-1 text-left text-xs text-ink-muted">
-                        <li>1. In the repo root: <code className="text-accent">make trends-demo</code></li>
-                        <li>2. Click <span className="text-ink">Collect all entities</span> or refresh</li>
-                        <li>3. Optional: <code className="text-accent">make trends-train</code> for model ranks</li>
+                        {(
+                          comparisonMeta?.next_steps || [
+                            "make trends-demo  # fixture offline seed for dmart + trent",
+                            "Open /trends → Multi-entity ranking → Refresh",
+                            "Optional: make trends-train for proxy model ranking",
+                            "Export: GET /api/v1/trends/comparison?format=csv",
+                          ]
+                        ).map((step, i) => (
+                          <li key={step}>
+                            {i + 1}.{" "}
+                            <code className="text-accent">{step}</code>
+                          </li>
+                        ))}
                       </ol>
+                      <div className="mt-4 flex flex-wrap justify-center gap-2">
+                        <button
+                          type="button"
+                          onClick={copyDemoCurl}
+                          className="rounded-xl border border-canvas-border px-3 py-2 text-xs text-ink hover:border-accent/40"
+                        >
+                          {copiedCurl ? "Copied collect curl" : "Copy fixture collect curl"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => downloadExport("csv")}
+                          className="rounded-xl border border-canvas-border px-3 py-2 text-xs text-ink hover:border-accent/40"
+                        >
+                          Export empty ranking CSV
+                        </button>
+                      </div>
                       <p className="mt-3 text-[10px] text-ink-faint">
                         Rankings are relative tertiles on proxy scores — not buy/sell advice.
                       </p>

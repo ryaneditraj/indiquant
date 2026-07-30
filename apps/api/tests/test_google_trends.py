@@ -226,6 +226,14 @@ def test_trends_modeling_http() -> None:
     assert cmp_.status_code == 200
     assert cmp_.json()["ok"] is True
 
+    cmp_csv = client.get("/api/v1/trends/comparison?format=csv")
+    assert cmp_csv.status_code == 200
+    assert "text/csv" in cmp_csv.headers.get("content-type", "")
+    header = cmp_csv.text.splitlines()[0]
+    assert "ranking_score" in header
+    assert "side_hint" in header
+    assert "relative_index_not_absolute_volume" in cmp_csv.text
+
 
 def test_features_missing_data_message() -> None:
     # Unknown entity raises
@@ -253,6 +261,8 @@ def test_rank_empty_and_partial_universe() -> None:
     assert empty["n"] == 0
     assert empty["rankings"] == []
     assert empty["is_absolute_volume"] is False
+    assert empty.get("empty_state") is True
+    assert empty.get("next_steps")
     assert any("absolute" in c.lower() or "relative" in c.lower() for c in empty["caveats"])
 
     collect_fixture("dmart", windows=["90d"], repeats=1)
@@ -289,6 +299,26 @@ def test_collect_rejects_bad_provider_softly() -> None:
     )
     assert r.status_code == 400
     assert "provider" in r.json()["detail"].lower() or "Unknown" in r.json()["detail"]
+
+
+def test_comparison_csv_empty_soft() -> None:
+    """Empty rankings still return header-only CSV (soft success)."""
+    r = client.get(
+        "/api/v1/trends/comparison?format=csv&window=90d",
+    )
+    # May have data from prior tests — always soft 200 with relative-index note
+    assert r.status_code == 200
+    assert "text/csv" in r.headers.get("content-type", "")
+    lines = r.text.strip().splitlines()
+    assert lines[0].startswith("rank,entity_id")
+    assert "is_absolute_volume" in lines[0]
+    assert "relative_index_not_absolute_volume" in r.text or len(lines) == 1
+
+
+def test_fundamentals_stub_returns_none() -> None:
+    from quant_os_api.trends.fundamentals import load_labels
+
+    assert load_labels("dmart", as_of="2024-01-01") is None
 
 
 def test_dashboard_missing_entity_soft_failure() -> None:
