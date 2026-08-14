@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Version numbers aligned at **0.5.0** (API package, web package, `__version__`)
+- OpenAPI description for `/docs`
+- Encrypt/decrypt HTTP helpers disabled when `QUANT_OS_ENV` is production/staging
+- DuckDB analytics rejects stacked SQL and comments
+- Internal sprint notes removed from `docs/`
+- `make ci` matches GitHub Actions (ruff + pytest + typecheck)
+
 ## [0.5.0] — 2026-07-28
 
 ### Added
@@ -61,7 +72,3 @@
 ## [0.1.0] — 2026-07-24
 
 - Research OS MVP
-
-## [Unreleased]
-
-- N/A

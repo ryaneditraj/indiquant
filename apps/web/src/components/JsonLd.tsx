@@ -21,7 +21,7 @@ export function JsonLd() {
         url: "https://moneyradar.in/indiquant",
         codeRepository: "https://github.com/ryaneditraj/indiquant",
         description:
-          "Open-source AI quantitative research OS for Indian equity markets (NSE/BSE). Evidence-first — not a trading bot.",
+          "Open-source AI quant research OS for Indian equity markets (NSE/BSE): walk-forward backtesting, hypothesis-first AI agents, Google Trends search-demand scores. Evidence-first — not a trading bot.",
         offers: {
           "@type": "Offer",
           price: "0",

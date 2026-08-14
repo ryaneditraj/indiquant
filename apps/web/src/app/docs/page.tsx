@@ -58,6 +58,9 @@ export default function DocsPage() {
           <li>
             <span className="text-ink">ROADMAP.md</span> — what ships next
           </li>
+          <li>
+            <span className="text-ink">http://localhost:8000/docs</span> — interactive FastAPI (OpenAPI)
+          </li>
         </ul>
       </section>
 

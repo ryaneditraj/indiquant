@@ -18,3 +18,4 @@ Contact Thugir Group / Money Radar via [moneyradar.in](https://moneyradar.in) (o
 - Never commit `.env` or API keys
 - Notebook execute is a restricted research REPL — not a multi-tenant sandbox
 - Rotate `SECRET_KEY` before any networked deployment
+- `/api/v1/security/encrypt` and `/decrypt` are local helpers; they return 403 when `QUANT_OS_ENV` is production or staging

@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     template: `%s · ${appName} · Money Radar`,
   },
   description:
-    "Indiquant is Money Radar's open-source AI quantitative research operating system for NSE/BSE. Hypothesis-first strategy discovery, walk-forward validation, and reproducible experiments. Built by Thugir Group.",
+    "Open-source AI quant research OS for Indian markets (NSE/BSE). Hypothesis-first strategy discovery, walk-forward backtesting, and Google Trends search-demand intel. Not a trading bot. Built by Thugir Group / Money Radar.",
   applicationName: appName,
   authors: [{ name: "Thugir Group", url: parentUrl }],
   creator: "Thugir Group",

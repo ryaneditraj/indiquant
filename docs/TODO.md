@@ -1,24 +1,19 @@
-# TODO — interrupt recovery
+# Public-release checklist
 
-## Status
+**v0.5.x — Indiquant** · Google Trends Intelligence (multi-entity + modeling) is in tree.
 
-**v0.5.x — Indiquant** — Google Trends Intelligence Phase 1+2 shipped (multi-entity + modeling).
+## Before making the GitHub repo public
 
-## Before GitHub push
-
-- [ ] Create public repo `ryaneditraj/indiquant`
-- [ ] Description: `Open-source AI quant research OS for Indian markets (NSE/BSE) — evidence-first, not a trading bot`
-- [ ] Paste topics from README
-- [ ] Confirm `app.github_url` in `config.yaml` matches your username
-- [ ] Wire moneyradar.in/indiquant when ready
-- [ ] Add a short demo GIF to README after first public run
+- [x] Public repo `ryaneditraj/indiquant` exists
+- [ ] Paste GitHub About + topics (see maintainer notes; `gh repo edit` in release pass)
+- [x] `app.github_url` in `config.yaml` is `https://github.com/ryaneditraj/indiquant`
+- [ ] Push `.github/workflows/ci.yml` with a token that has the `workflow` scope (`gh auth refresh -s repo,workflow`)
+- [ ] Capture a demo GIF (`apps/web/public/demo.gif`) after `make demo`
+- [ ] Point moneyradar.in/indiquant at the live docs or dashboard when ready
+- [x] Do not commit `.env`; rotate any real keys (none should be in git)
 
 ## Trends follow-ups (non-blocking)
 
-- [ ] Replace proxy model labels with filings / SSS / beat-miss fundamentals store
+- [ ] Replace proxy model labels with filings / SSS / beat-miss fundamentals
 - [ ] Swap cross-signal fixture adapters for live satellite / app / pricing / hiring feeds
 - [ ] Temporal sequence models once multi-year live history exists
-
-## Notes
-
-Product **Indiquant** · Parent **Money Radar** · Company **Thugir Group** · License **PolyForm NC**

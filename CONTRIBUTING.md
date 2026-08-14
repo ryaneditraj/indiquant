@@ -36,6 +36,7 @@ Useful targets:
 | `make trends-demo` | Fixture collect/score for dmart + trent |
 | `make trends-train` | Proxy GB models (not fundamentals) |
 | `make api-test` | Pytest |
+| `make ci` | Ruff + pytest + web typecheck |
 | `make smoke` | curl smoke vs `:8000` |
 
 ## PRs

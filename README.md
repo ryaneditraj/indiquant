@@ -1,5 +1,3 @@
-# Indiquant
-
 <p align="center">
   <img src="apps/web/public/brand.svg" width="88" height="88" alt="Indiquant" />
 </p>
@@ -7,9 +5,11 @@
 <h1 align="center">Indiquant</h1>
 
 <p align="center">
-  <b>Open-source AI quant research OS for Indian markets (NSE · BSE)</b><br/>
-  Hypothesis → backtest → walk-forward proof → accept or reject.<br/>
-  <em>Not a trading bot. A discovery lab.</em>
+  Open-source AI quant research OS for Indian markets (NSE · BSE) — hypothesis, backtest, walk-forward proof.
+</p>
+
+<p align="center">
+  <em>Not a trading bot. A discovery lab for NSE/BSE strategy research.</em>
 </p>
 
 <p align="center">
@@ -17,156 +17,91 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ryaneditraj/indiquant/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ryaneditraj/indiquant?style=for-the-badge&color=3dff9a&labelColor=030712" /></a>
-  <a href="https://github.com/ryaneditraj/indiquant/network/members"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ryaneditraj/indiquant?style=for-the-badge&color=22d3ee&labelColor=030712" /></a>
-  <a href="#quick-start"><img alt="Local tests" src="https://img.shields.io/badge/tests-pytest%20%2B%20tsc%20local-3dff9a?style=for-the-badge&labelColor=030712" /></a>
+  <a href="https://github.com/ryaneditraj/indiquant/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/ryaneditraj/indiquant/ci.yml?branch=main&style=for-the-badge&label=CI&labelColor=030712" /></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-PolyForm%20NC-fb7185?style=for-the-badge&labelColor=030712" /></a>
+  <a href="apps/web/package.json"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-white?style=for-the-badge&labelColor=030712" /></a>
+  <a href="apps/api/pyproject.toml"><img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-Python%203.12-009688?style=for-the-badge&labelColor=030712" /></a>
 </p>
 
 <p align="center">
   <img alt="NSE" src="https://img.shields.io/badge/NSE-India-3dff9a?style=flat-square&labelColor=030712" />
   <img alt="BSE" src="https://img.shields.io/badge/BSE-India-22d3ee?style=flat-square&labelColor=030712" />
   <img alt="Google Trends" src="https://img.shields.io/badge/Google%20Trends-intel-fbbf24?style=flat-square&labelColor=030712" />
-  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-white?style=flat-square&labelColor=030712" />
-  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-Python-009688?style=flat-square&labelColor=030712" />
-  <img alt="AI" src="https://img.shields.io/badge/AI-research%20loop-8b9dc3?style=flat-square&labelColor=030712" />
+  <img alt="Walk-forward" src="https://img.shields.io/badge/validation-walk--forward-8b9dc3?style=flat-square&labelColor=030712" />
 </p>
-
-<p align="center">
-  <a href="#quick-start"><b>Quick start</b></a> ·
-  <a href="#why-indiquant"><b>Why Indiquant</b></a> ·
-  <a href="#google-trends-intelligence"><b>Trends</b></a> ·
-  <a href="#features"><b>Features</b></a> ·
-  <a href="https://moneyradar.in"><b>Money Radar</b></a>
-</p>
-
-<p align="center">
-  <img src="apps/web/public/og.png" alt="Indiquant — Money Radar research OS preview" width="720" />
-</p>
-
-<p align="center"><sub>Radar UI · evidence store · walk-forward validation · Google Trends earnings intel</sub></p>
 
 ---
 
-## Why Indiquant?
+## Problem
 
-Most “AI trading” repos sell vibes. Indiquant sells **evidence**.
+Most “AI trading” tools for the Indian stock market skip the scientific part. They emit a signal, plot one equity curve, and call it research.
 
-| You get | You don’t get |
-|--------|----------------|
-| Hypothesis-first research loop | Broker auto-trading |
-| Walk-forward · Monte Carlo · leakage checks | One cherry-picked equity curve |
-| Agents that cite experiment IDs | Opaque “AI picks” |
-| Google Trends Search Demand Score (relative 0–100) | Fake “absolute volume” claims |
-| Configurable NSE/BSE data providers | Hardcoded vendor lock-in |
-| Dashboard-first research OS | CLI-only scripts |
+If you are looking for an **open-source quant research platform for NSE/BSE** — walk-forward backtesting, leakage checks, experiment IDs, and optional **Google Trends search-demand** as alt-data — that is the gap Indiquant fills.
 
-> Every feature must answer: *Does this help discover a real market edge?*
+You still have to reject bad ideas. The OS just makes rejection cheap and documented.
 
-No guaranteed returns. No signal theater. Star it if you want Indian market research done the honest way → **[★ ryaneditraj/indiquant](https://github.com/ryaneditraj/indiquant)**
+## Why I built this
 
----
-
-## Google Trends intelligence
-
-Retail **search demand** as confirmatory alt-data for Indian consumer names — not a crystal ball.
-
-- Multi-entity universe (DMart, Trent, Blinkit, Zepto, Nykaa, …)
-- **Search Demand Score** with quality badges + uncertainty warnings
-- Weekly pulls (Celery Beat or `make trends-collect-all`)
-- Modeling / ranking / pre-earnings panel / PIT backtest
-- Explicit caveat: Trends is a **relative index**, never absolute volume
-
-### 60-second Trends demo (offline)
-
-```bash
-cp .env.example .env
-make api-install          # once
-make trends-demo          # fixture collect + score for dmart + trent
-# terminals: make api-dev   &&   make web-dev
-# open http://localhost:3000/trends
-```
-
-Or one-shot market + Trends fixtures: `make demo`
-
-Empty `/trends` after a fresh clone is expected — run `make trends-demo`, then Refresh.
-
-Export: JSON or CSV — entity `/api/v1/trends/{id}/export?format=csv` or comparison ranking `/api/v1/trends/comparison?format=csv` (relative indices only).
-
-Full module docs: **[docs/trends.md](docs/trends.md)**
-
-### Screenshots / GIF (for stars)
-
-Hero OG image already ships at `apps/web/public/og.png`. For README GIFs after a local demo:
-
-1. `make demo && make api-dev` + `make web-dev`
-2. Capture `/trends` entity dashboard (score + chart) and multi-entity ranking
-3. Prefer short looped GIF (~8s) showing Collect → Refresh → Export CSV
-4. Drop files under `apps/web/public/` (e.g. `trends-demo.gif`) and link here — do **not** paste brokerage P&L or return claims
+I wanted a local lab for Indian-market research that treats AI as a hypothesizer, not an oracle. Brokers, vendor APIs, and “alpha” Slack channels are easy to find. A reproducible loop — propose → backtest → walk-forward → accept or reject — was not. Indiquant is that loop, with a dashboard, so the work is inspectable instead of living in a notebook graveyard.
 
 ---
 
 ## Features
 
-- **Forever research loop** — pause / resume / stop AI cycles that propose → test → validate
-- **Google Trends intelligence** — multi-entity Search Demand Score + modeling / ranking
-- **Validation suite** — walk-forward, Monte Carlo, train/test leakage guards
-- **Indian market focus** — NSE/BSE providers, Asia/Kolkata defaults, INR research mindset
-- **Evidence store** — hypotheses, strategies, experiments with full audit trail
-- **Analytics** — Parquet market data + DuckDB queries
-- **Dashboard** — dark radar UI, equity charts, live scan status
-- **Configurable everything** — `config.yaml` + `.env`, no secret hardcoding
-- **Non-commercial OSS** — study & research freely; commercial use needs a license
+- **Hypothesis-first AI research loop** — pause / resume / stop cycles that propose, test, and cite experiment IDs
+- **Validation suite** — walk-forward, Monte Carlo, out-of-sample, lookahead / leakage guards
+- **Google Trends intelligence** — multi-entity Search Demand Score (relative 0–100 index, never absolute volume)
+- **Indian market defaults** — NSE/BSE providers, Asia/Kolkata, INR backtest assumptions
+- **Evidence store** — hypotheses, strategies, experiments, audit log
+- **Analytics plane** — Parquet OHLCV + DuckDB `SELECT` queries
+- **Radar dashboard** — dark UI, equity charts, Trends ranking, live loop status
+- **Config, not hardcoding** — `config.yaml` + `.env`; fixture data so you can demo offline
 
 ---
 
-## Stack
+## Screenshot
+
+<p align="center">
+  <img src="apps/web/public/og.png" alt="Indiquant research OS — dashboard preview" width="720" />
+</p>
+
+<p align="center"><sub>Placeholder: add a short GIF of AI Lab → one cycle → /trends collect after you run <code>make demo</code> locally. Drop it at <code>apps/web/public/demo.gif</code>.</sub></p>
+
+---
+
+## Tech stack
 
 ```
-Next.js + Tailwind  →  FastAPI  →  SQLAlchemy / Parquet / DuckDB
-        ↓                    ↓
-   Research dashboard    AI agents · backtests · Trends · validation
+Next.js 15 + Tailwind     FastAPI (Python 3.12)
+        │                          │
+   Research dashboard        Agents · backtests · Trends
+                                   │
+                    SQLAlchemy · Parquet · DuckDB
+                    optional Redis / Celery Beat
 ```
+
+Interactive API: `http://localhost:8000/docs` after `make api-dev`.
 
 ---
 
 ## Quick start
 
-**Requires:** Python 3.12+ · Node.js 20+ · under ~60s to first page if deps cached
+**Needs:** Python 3.12+ · Node.js 20+ · ~1 minute if deps are cached. No broker keys required.
 
 ```bash
 git clone https://github.com/ryaneditraj/indiquant.git
 cd indiquant
 cp .env.example .env
 
-# API
-cd apps/api && python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-QUANT_OS_CONFIG_PATH=../../config.yaml uvicorn quant_os_api.main:app --reload --port 8000
-
-# Web (new terminal)
-cd apps/web && npm install
-NEXT_PUBLIC_APP_NAME=Indiquant \
-NEXT_PUBLIC_PARENT_BRAND="Money Radar" \
-NEXT_PUBLIC_PARENT_URL=https://moneyradar.in \
-NEXT_PUBLIC_ORG_NAME="Thugir Group" \
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000 \
-NEXT_PUBLIC_SITE_URL=https://moneyradar.in/indiquant \
-npm run dev
-```
-
-Open **http://localhost:3000** → **AI Lab → Start research loop** · or **`/trends`**
-
-**Faster path (Makefile):**
-
-```bash
 make api-install && make web-install
 make demo                 # sample OHLCV + Trends fixtures
-make api-dev              # terminal 1
-make web-dev              # terminal 2 → http://localhost:3000/trends
-make api-test             # pytest
-cd apps/web && npm run typecheck
+make api-dev              # terminal 1 — http://localhost:8000/docs
+make web-dev              # terminal 2 — http://localhost:3000
 ```
+
+Open **http://localhost:3000** → AI Lab (start the research loop) or **/trends**.
+
+One-shot cycle without the UI:
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/ai/cycle \
@@ -174,53 +109,56 @@ curl -X POST http://localhost:8000/api/v1/ai/cycle \
   -d '{"symbol":"RELIANCE","provider":"fixture","persist":true}'
 ```
 
-Docker: `docker compose up` (see `docker-compose.yml`).
+Docker (Postgres + Redis): `docker compose up`. Full API stack: `docker compose --profile full up`.
 
-> **CI note:** GitHub Actions workflow lives locally at `.github/workflows/ci.yml` but is not on `origin/main` yet — pushing workflow files needs a token with the `workflow` scope. Until then, trust `make api-test` + `npm run typecheck`.
+`make ci` runs ruff, pytest, and `tsc`.
 
 ---
 
-## Brand
+## Architecture
 
-| Layer | Name |
+Indiquant is a small monorepo:
+
+| Piece | Role |
 |-------|------|
-| Company | **Thugir Group** |
-| Parent | **[Money Radar](https://moneyradar.in)** |
-| Product / repo | **Indiquant** → [`ryaneditraj/indiquant`](https://github.com/ryaneditraj/indiquant) |
+| `apps/web` | Next.js research cockpit |
+| `apps/api` | FastAPI: CRUD, backtests, AI loop, Trends |
+| `config.yaml` | Non-secret defaults (markets, fees, Trends universe) |
+| `.env` | Secrets and URLs — never commit this |
+| `data/` | Parquet + SQLite (local) |
 
-See [docs/brand.md](docs/brand.md).
+Flow: **data plugin → bars → signals → backtest → validation → persist experiment**. The AI loop wraps that with a critic/risk pass. Trends is a parallel intel module (relative search index, confirmatory — not a crystal ball).
 
----
-
-## Topics
-
-`indiquant` · `money-radar` · `nse` · `bse` · `indian-stock-market` · `quant` · `quantitative-finance` · `algorithmic-trading` · `backtesting` · `google-trends` · `fastapi` · `nextjs` · `ai-agents` · `fintech` · `india` · `open-source`
+Longer write-up: [docs/architecture.md](docs/architecture.md) · Trends: [docs/trends.md](docs/trends.md).
 
 ---
 
-## License — Non-commercial
+## Roadmap
+
+Shipped: research CRUD, fixture NSE/BSE adapters, walk-forward validation, forever AI loop, DuckDB, Google Trends scoring/ranking.
+
+Next (if time): live NSE vendor HTTP, multi-user auth, LangGraph checkpoints, CI that boots the stack + Playwright. See [ROADMAP.md](ROADMAP.md).
+
+---
+
+## License
 
 **[PolyForm Noncommercial License 1.0.0](LICENSE)**
 
-- ✅ Personal research, education, public-interest research
-- ❌ Commercial use (paid products, SaaS, commercial trading desks) without a separate license
-
-Commercial licensing: [moneyradar.in](https://moneyradar.in)
+- Personal research, education, public-interest research: yes
+- Commercial use (paid products, SaaS, commercial desks): separate license from [Money Radar](https://moneyradar.in)
 
 ---
 
-## Contributing · Security · Docs
+## Docs
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [SECURITY.md](SECURITY.md)
-- [docs/trends.md](docs/trends.md) — Google Trends module
-- [ROADMAP.md](ROADMAP.md)
+- [docs/security.md](docs/security.md)
+- [docs/trends.md](docs/trends.md)
 - [docs/brand.md](docs/brand.md)
-
----
 
 <p align="center">
   <b>Indiquant</b> · Money Radar · Thugir Group<br/>
-  <sub>Scan markets. Prove edges. Never invent evidence.</sub><br/><br/>
-  <a href="https://github.com/ryaneditraj/indiquant">★ Star if you’re building Indian market research the honest way</a>
+  <sub>Scan markets. Prove edges. Never invent evidence.</sub>
 </p>
