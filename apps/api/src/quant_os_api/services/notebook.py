@@ -7,31 +7,24 @@ import io
 import traceback
 from typing import Any
 
-ALLOWED_PREFIXES = (
-    "import pandas",
-    "import numpy",
-    "import math",
-    "from quant_os_api",
-    "from datetime",
-    "print(",
-    "bars",
-    "close",
-    "signals",
-    "result",
-    "df",
-    "x",
-    "y",
-    "#",
-)
+_MAX_CODE_CHARS = 8_000
 
 
 def execute_notebook_code(code: str, *, timeout_hint: int = 5) -> dict[str, Any]:
-    """Execute a small whitelist-oriented research snippet.
+    """Execute a small research snippet in a restricted namespace.
 
-    This is intentionally constrained — not a full multi-user kernel.
-    Blocks obvious dangerous builtins.
+    Local single-user sandbox — not a multi-tenant kernel. Dangerous
+    imports/builtins are blocked; this is not a security boundary for
+    untrusted remote users.
     """
     _ = timeout_hint
+    if len(code) > _MAX_CODE_CHARS:
+        return {
+            "ok": False,
+            "error": f"Code exceeds {_MAX_CODE_CHARS} characters",
+            "stdout": "",
+            "result": None,
+        }
     banned = (
         "os.system",
         "subprocess",

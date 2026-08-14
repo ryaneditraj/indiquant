@@ -27,13 +27,35 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     yield
 
 
+_OPENAPI_DESCRIPTION = """
+**Indiquant** is an open-source AI quantitative research operating system for Indian equity markets (NSE / BSE).
+
+It is a discovery lab, not a trading bot: propose a hypothesis, backtest it, walk-forward validate it, then accept or reject with an experiment ID.
+
+| Area | Prefix |
+|------|--------|
+| Health / settings | `/api/v1/health`, `/api/v1/settings/public` |
+| Research objects | `/api/v1/hypotheses`, `/strategies`, `/experiments` |
+| Backtests & validation | `/api/v1/backtests`, `/api/v1/validation` |
+| Google Trends intel | `/api/v1/trends` (relative 0–100 index, not volume) |
+| AI research loop | `/api/v1/ai` |
+
+Interactive docs: this page. JSON OpenAPI: `/openapi.json`.
+"""
+
+
 def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(
         title=settings.app_name,
-        description=settings.app_tagline,
+        description=_OPENAPI_DESCRIPTION.strip(),
         version=__version__,
         lifespan=lifespan,
+        contact={"name": "Thugir Group", "url": "https://moneyradar.in"},
+        license_info={
+            "name": "PolyForm Noncommercial 1.0.0",
+            "url": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+        },
     )
     app.add_middleware(
         CORSMiddleware,

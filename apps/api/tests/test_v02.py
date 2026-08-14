@@ -80,3 +80,23 @@ def test_csv_provider_listed(client) -> None:
     providers = client.get("/api/v1/data/providers").json()["providers"]
     names = {p["name"] for p in providers}
     assert "csv_local" in names
+
+
+def test_duckdb_rejects_stacked_sql(client) -> None:
+    client.post("/api/v1/admin/seed")
+    client.post("/api/v1/analytics/sync")
+    stacked = client.post(
+        "/api/v1/analytics/query",
+        json={"sql": "SELECT 1; DROP TABLE experiment"},
+    )
+    assert stacked.status_code == 400
+
+
+def test_encrypt_helpers_disabled_in_production(client, monkeypatch) -> None:
+    from quant_os_api.config import get_settings
+
+    monkeypatch.setenv("QUANT_OS_ENV", "production")
+    get_settings.cache_clear()
+    response = client.post("/api/v1/security/encrypt", json={"value": "demo"})
+    assert response.status_code == 403
+    get_settings.cache_clear()

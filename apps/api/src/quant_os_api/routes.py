@@ -64,6 +64,18 @@ from quant_os_api.services.seed import seed_sample_data
 
 router = APIRouter()
 
+_PRODUCTION_ENVS = {"production", "prod", "staging"}
+
+
+def _require_dev_tools() -> None:
+    """Crypto helper routes are for local research, not a networked vault."""
+    env = get_settings().quant_os_env.strip().lower()
+    if env in _PRODUCTION_ENVS:
+        raise HTTPException(
+            403,
+            "Encrypt/decrypt helpers are disabled when QUANT_OS_ENV is production/staging.",
+        )
+
 
 @router.get("/health", response_model=HealthResponse)
 def health() -> HealthResponse:
@@ -607,11 +619,13 @@ def admin_seed() -> dict[str, Any]:
 
 @router.post("/security/encrypt")
 def security_encrypt(body: EncryptRequest) -> dict[str, Any]:
+    _require_dev_tools()
     return encrypt_secret(body.value)
 
 
 @router.post("/security/decrypt")
 def security_decrypt(body: EncryptRequest) -> dict[str, Any]:
+    _require_dev_tools()
     return decrypt_secret(body.value)
 
 

@@ -129,4 +129,4 @@ Living document. Updated after every meaningful iteration.
 
 1. Read `README.md`, this file, `CHANGELOG.md`, `docs/TODO.md`
 2. `make api-test` and open dashboard
-3. Pick an item from **Next horizon**
+3. Pick an item from **Next horizon**. Keep `docs/` free of private sprint logs.

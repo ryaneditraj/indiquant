@@ -1,4 +1,4 @@
-.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke trends-collect trends-collect-all trends-train trends-demo trends-beat-smoke demo
+.PHONY: help up down api-install api-test api-dev web-install web-dev migrate seed smoke trends-collect trends-collect-all trends-train trends-demo trends-beat-smoke demo ci
 
 help:
 	@echo "Indiquant · Money Radar · Thugir Group"
@@ -13,6 +13,7 @@ help:
 	@echo "  make seed             - Seed sample CSV + parquet (OHLCV)"
 	@echo "  make trends-demo      - Fixture Trends collect for dmart + trent"
 	@echo "  make demo             - seed + trends-demo (offline star-path)"
+	@echo "  make ci               - API ruff + pytest + web typecheck"
 	@echo "  make smoke            - curl smoke against :8000"
 	@echo "  make trends-collect ENTITY=dmart - Fixture Trends pull + score"
 	@echo "  make trends-collect-all - All configured Trends entities"
@@ -72,3 +73,8 @@ demo: seed trends-demo
 	@echo "  1. make api-dev     # :8000"
 	@echo "  2. make web-dev     # :3000"
 	@echo "  3. Open /trends and AI Lab — fixture only, no live keys required"
+
+ci:
+	cd apps/api && . .venv/bin/activate && ruff check src tests
+	cd apps/api && . .venv/bin/activate && QUANT_OS_CONFIG_PATH=../../config.yaml pytest -q
+	cd apps/web && npm run typecheck

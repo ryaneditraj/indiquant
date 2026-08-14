@@ -57,12 +57,18 @@ def sync_parquet_to_duckdb() -> dict[str, Any]:
 
 
 def query_duckdb(sql: str, *, max_rows: int = 500) -> dict[str, Any]:
-    """Run read-only analytics SQL. Only SELECT allowed."""
+    """Run read-only analytics SQL. Only a single SELECT is allowed."""
     stripped = sql.strip().lower()
     if not stripped.startswith("select"):
         raise ValueError("Only SELECT queries are allowed")
-    forbidden = ("insert", "update", "delete", "drop", "alter", "attach", "copy", "pragma")
-    if any(f" {token} " in f" {stripped} " for token in forbidden):
+    # Reject stacked statements and comment tricks (`SELECT 1; DROP …`).
+    if ";" in stripped.rstrip(";"):
+        raise ValueError("Only a single SELECT statement is allowed")
+    if "--" in stripped or "/*" in stripped:
+        raise ValueError("SQL comments are not allowed")
+    forbidden = ("insert", "update", "delete", "drop", "alter", "attach", "copy", "pragma", "call")
+    padded = f" {stripped} "
+    if any(f" {token} " in padded or f" {token}(" in padded for token in forbidden):
         raise ValueError("Mutating SQL is not allowed")
 
     import duckdb
