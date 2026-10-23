@@ -11,6 +11,7 @@ from uuid import uuid4
 import pandas as pd
 
 from quant_os_api.config import _repo_root, get_settings
+from quant_os_api.safe_ids import ensure_within, safe_entity_id, safe_filename_stem
 
 
 def trends_root() -> Path:
@@ -25,7 +26,8 @@ def trends_root() -> Path:
 
 
 def entity_dir(entity_id: str) -> Path:
-    d = trends_root() / entity_id.lower()
+    root = trends_root()
+    d = ensure_within(root, root / safe_entity_id(entity_id))
     d.mkdir(parents=True, exist_ok=True)
     (d / "raw").mkdir(exist_ok=True)
     (d / "features").mkdir(exist_ok=True)
@@ -83,19 +85,23 @@ def write_raw_related(entity_id: str, *, run_id: str, rows: list[dict[str, Any]]
 
 
 def write_features(entity_id: str, *, as_of: str, payload: dict[str, Any]) -> Path:
-    path = entity_dir(entity_id) / "features" / f"{as_of}.json"
+    root = entity_dir(entity_id)
+    path = ensure_within(root, root / "features" / f"{safe_filename_stem(as_of)}.json")
     path.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
     return path
 
 
 def write_score(entity_id: str, *, as_of: str, payload: dict[str, Any]) -> Path:
-    path = entity_dir(entity_id) / "features" / f"score_{as_of}.json"
+    root = entity_dir(entity_id)
+    stem = safe_filename_stem(as_of)
+    path = ensure_within(root, root / "features" / f"score_{stem}.json")
     path.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
     return path
 
 
 def _append_run_manifest(entity_id: str, run_id: str, *, channel: str, rows: int) -> None:
-    path = entity_dir(entity_id) / "runs" / f"{run_id}.json"
+    root = entity_dir(entity_id)
+    path = ensure_within(root, root / "runs" / f"{safe_filename_stem(run_id)}.json")
     if path.exists():
         data = json.loads(path.read_text(encoding="utf-8"))
     else:

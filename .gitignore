@@ -1,8 +1,17 @@
 # Secrets & local config
 .env
+.env.*
+!.env.example
 .env.local
 .env.*.local
 .env.bak
+.direnv/
+credentials.json
+service-account*.json
+serviceAccount*.json
+*.p12
+*.pfx
+*.pkl
 *.sqlite
 *.sqlite3
 settings.json

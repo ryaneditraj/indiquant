@@ -9,6 +9,7 @@ from typing import Any
 import pandas as pd
 
 from quant_os_api.config import get_settings
+from quant_os_api.safe_ids import UnsafePathError, ensure_within, safe_symbol, safe_timeframe
 
 
 def parquet_root() -> Path:
@@ -25,10 +26,13 @@ def parquet_root() -> Path:
 
 
 def symbol_path(symbol: str, timeframe: str = "1d") -> Path:
-    safe = symbol.upper().replace("/", "_")
-    directory = parquet_root() / safe
+    safe = safe_symbol(symbol)
+    tf = safe_timeframe(timeframe)
+    root = parquet_root()
+    directory = root / safe
+    path = ensure_within(root, directory / f"{tf}.parquet")
     directory.mkdir(parents=True, exist_ok=True)
-    return directory / f"{timeframe}.parquet"
+    return path
 
 
 def write_ohlcv(symbol: str, rows: list[dict[str, Any]], *, timeframe: str = "1d") -> Path:
@@ -65,7 +69,15 @@ def list_datasets() -> list[dict[str, Any]]:
         # Skip alt-data namespaces (Trends lives under parquet/trends/)
         if symbol_dir.name.lower() in {"trends"}:
             continue
+        try:
+            safe_symbol(symbol_dir.name)
+        except UnsafePathError:
+            continue
         for file in sorted(symbol_dir.glob("*.parquet")):
+            try:
+                safe_timeframe(file.stem)
+            except UnsafePathError:
+                continue
             frame = pd.read_parquet(file)
             timeframe = file.stem
             freshness = None

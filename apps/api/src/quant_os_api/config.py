@@ -46,7 +46,9 @@ def load_yaml_config(path: Path | None = None) -> dict[str, Any]:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        # Repo-root .env is what the README tells people to create. A second
+        # ".env" still wins when the process is started from another directory.
+        env_file=(str(_repo_root() / ".env"), ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -142,6 +144,29 @@ class Settings(BaseSettings):
             "validation": self.yaml_config.get("validation", {}),
             "seo_keywords": app.get("seo_keywords", []),
         }
+
+
+_INSECURE_SECRET_KEYS = {
+    "",
+    "change-me",
+    "change-me-to-a-long-random-string",
+    "changeme",
+    "secret",
+    "password",
+}
+
+
+def enforce_production_secrets(settings: Settings) -> None:
+    """Refuse networked deploys that are still using a placeholder SECRET_KEY."""
+    env = settings.quant_os_env.strip().lower()
+    if env not in {"production", "prod", "staging"}:
+        return
+    key = settings.secret_key.strip()
+    if key.lower() in _INSECURE_SECRET_KEYS or len(key) < 32:
+        raise RuntimeError(
+            "Refusing to start: set a random SECRET_KEY of at least 32 characters "
+            "when QUANT_OS_ENV is production or staging."
+        )
 
 
 @lru_cache

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
+from datetime import UTC, datetime
 from typing import Any
 
 import numpy as np
@@ -122,7 +122,7 @@ _FESTIVAL_WINDOWS = (
 
 
 def _in_festival(ts: pd.Timestamp) -> bool:
-    doy = int(ts.dayofyear)
+    doy = int(ts.day_of_year)
     for center, half in _FESTIVAL_WINDOWS:
         lo, hi = center - half, center + half
         if lo <= doy <= hi or (lo < 1 and doy >= 365 + lo):

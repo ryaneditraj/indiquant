@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from quant_os_api.config import get_settings
+from quant_os_api.safe_ids import safe_entity_id
 
 QUERY_TYPES = ("brand", "transactional", "category", "competitor", "risk")
 
@@ -18,6 +19,7 @@ def list_entities() -> list[str]:
 
 
 def entity_config(entity_id: str = "dmart") -> dict[str, Any]:
+    entity_id = safe_entity_id(entity_id)
     entities = trends_config().get("entities") or {}
     if entity_id not in entities:
         raise KeyError(f"Unknown trends entity: {entity_id}")

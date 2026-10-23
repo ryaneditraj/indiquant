@@ -23,3 +23,14 @@
 ## Permissions (roadmap hardening)
 
 Role-based access is planned; current single-user local mode trusts the operator.
+
+## Hardening in tree
+
+- Storage ids (`symbol`, `timeframe`, Trends `entity_id`, feature filenames) are allow-listed and must stay inside the configured root
+- DuckDB queries cannot call `read_parquet`, `read_csv`, or query a file path directly
+- CSV exports neutralize cells that start like spreadsheet formulas
+- `POST /api/v1/notebook/execute` and `POST /api/v1/admin/seed` return 403 in production and staging
+- Startup refuses a placeholder `SECRET_KEY` in those environments
+- Repo-root `.env` is loaded even when Uvicorn is started from `apps/api`
+
+See [SECURITY.md](../SECURITY.md) for reporting and the limits that are still open.

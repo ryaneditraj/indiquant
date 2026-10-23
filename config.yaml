@@ -23,6 +23,7 @@ app:
     - Thugir Group fintech
 
 api:
+  # Container bind. `make api-dev` leaves Uvicorn on 127.0.0.1.
   host: "0.0.0.0"
   port: 8000
   cors_origins:

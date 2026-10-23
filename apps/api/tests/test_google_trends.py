@@ -12,7 +12,6 @@ from quant_os_api.trends.modeling import predict_entity, rank_entities, train_mo
 from quant_os_api.trends.score import score_entity
 from quant_os_api.trends.universe import comparison_groups, iter_queries, list_entities
 
-
 client = TestClient(app)
 
 
@@ -196,7 +195,7 @@ def test_pytrends_backoff_exhausts() -> None:
 
     try:
         call_with_backoff(always_fail, retries=2, base_delay_sec=0.1, sleep_fn=lambda _d: None)
-        assert False, "expected RuntimeError"
+        raise AssertionError("expected RuntimeError")
     except RuntimeError as exc:
         assert "failed after 2 attempts" in str(exc)
 
@@ -239,7 +238,7 @@ def test_features_missing_data_message() -> None:
     # Unknown entity raises
     try:
         compute_features("not_a_real_entity_xyz")
-        assert False, "expected KeyError"
+        raise AssertionError("expected KeyError")
     except KeyError:
         pass
 

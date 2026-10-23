@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- GitHub Actions CI (Ruff, pytest, web typecheck) and Dependabot
+- Real UI screenshots under `docs/screenshots/`
+- FAQ, author links, `llms.txt`, and FAQ structured data for the research site
+- Path, SQL, CSV, and production-secret guards (see SECURITY.md)
+
 ### Changed
 
 - Version numbers aligned at **0.5.0** (API package, web package, `__version__`)
