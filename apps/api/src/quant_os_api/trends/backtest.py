@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Any
 
 import numpy as np
 
 from quant_os_api.trends.score import score_entity
 from quant_os_api.trends.universe import entity_config
-
 
 HORIZONS = (30, 21, 14, 7, 3)
 
@@ -113,7 +112,10 @@ def run_pre_earnings_backtest(entity_id: str = "dmart") -> dict[str, Any]:
         "metrics": {
             "score_dispersion_mae_proxy": mae_proxy,
             "regime_counts_14d": {"bullish": bullish, "neutral": neutral, "bearish": bearish},
-            "hit_rate_note": "Labeled beat/miss and revenue growth targets not yet wired — reporting regime distribution + score stability; model layer uses proxy labels.",
+            "hit_rate_note": (
+                "Labeled beat/miss and revenue growth targets not yet wired — "
+                "reporting regime distribution + score stability; model layer uses proxy labels."
+            ),
             "incremental_lift_satellite": lift_sat,
             "incremental_lift_app_pricing": lift_app,
         },

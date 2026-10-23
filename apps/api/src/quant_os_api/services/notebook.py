@@ -13,9 +13,9 @@ _MAX_CODE_CHARS = 8_000
 def execute_notebook_code(code: str, *, timeout_hint: int = 5) -> dict[str, Any]:
     """Execute a small research snippet in a restricted namespace.
 
-    Local single-user sandbox — not a multi-tenant kernel. Dangerous
-    imports/builtins are blocked; this is not a security boundary for
-    untrusted remote users.
+    Local single-user helper for development. It is disabled when
+    QUANT_OS_ENV is production or staging. Dunder access, imports, and
+    pandas file readers are rejected. This is still not a multi-tenant kernel.
     """
     _ = timeout_hint
     if len(code) > _MAX_CODE_CHARS:
@@ -26,30 +26,49 @@ def execute_notebook_code(code: str, *, timeout_hint: int = 5) -> dict[str, Any]
             "result": None,
         }
     banned = (
+        "__",
+        "import ",
+        "import\t",
+        "__import__",
         "os.system",
         "subprocess",
         "open(",
         "eval(",
         "exec(",
-        "__import__",
-        "Path(",
+        "getattr",
+        "setattr",
+        "delattr",
+        "globals(",
+        "locals(",
+        "vars(",
+        "compile(",
+        "breakpoint(",
+        "pathlib",
         "shutil",
         "socket",
         "requests",
         "httpx",
-        "import os",
-        "import sys",
+        "read_csv",
+        "read_parquet",
+        "read_pickle",
+        "read_json",
+        "read_excel",
+        "read_sql",
+        "read_html",
+        "read_feather",
+        "to_pickle",
+        "np.load",
+        ".load(",
     )
     lowered = code.lower()
     for token in banned:
-        if token.lower() in lowered and "quant_os_api" not in token:
-            if token in code or token.lower() in lowered:
-                return {
-                    "ok": False,
-                    "error": f"Blocked token for safety: {token}",
-                    "stdout": "",
-                    "result": None,
-                }
+        if token.lower() in lowered:
+            return {
+                "ok": False,
+                "error": f"Blocked token for safety: {token}",
+                "stdout": "",
+                "result": None,
+            }
 
     # Minimal safe builtins
     safe_builtins = {

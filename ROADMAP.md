@@ -80,7 +80,7 @@ Living document. Updated after every meaningful iteration.
 | Plugin loader from config module paths | ✅ |
 | Audit log + security docs | ✅ |
 | SQLite default for local; Postgres via Compose | ✅ |
-| CI lint/tests/typecheck | ✅ |
+| CI lint/tests/typecheck (`.github/workflows/ci.yml`) | ✅ |
 
 ---
 
@@ -122,6 +122,8 @@ Living document. Updated after every meaningful iteration.
 | 2026-07-24 | Fixture fallback when NSE URL unset | Reproducible offline demos |
 | 2026-07-24 | Hypothesis-first AI cycle | Scientific discovery over indicator soup |
 | 2026-07-24 | In-process forever loop + Celery hooks | Pause/resume without Redis required |
+| 2026-10-23 | Keep PolyForm Noncommercial 1.0.0 | License already chosen; file restored to the SPDX text plus the existing copyright notice |
+| 2026-10-23 | Local research helpers off in production | Notebook, seed, and encrypt routes are not a networked vault |
 
 ---
 

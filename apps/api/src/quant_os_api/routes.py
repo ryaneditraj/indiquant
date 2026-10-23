@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import io
+import re
 from datetime import date, timedelta
 from typing import Any
 from uuid import UUID, uuid4
@@ -67,14 +68,39 @@ router = APIRouter()
 _PRODUCTION_ENVS = {"production", "prod", "staging"}
 
 
-def _require_dev_tools() -> None:
-    """Crypto helper routes are for local research, not a networked vault."""
+def _require_dev_tools(feature: str) -> None:
+    """Local research helpers are not a networked vault or a multi-user kernel."""
     env = get_settings().quant_os_env.strip().lower()
     if env in _PRODUCTION_ENVS:
         raise HTTPException(
             403,
-            "Encrypt/decrypt helpers are disabled when QUANT_OS_ENV is production/staging.",
+            f"{feature} is disabled when QUANT_OS_ENV is production or staging.",
         )
+
+
+def _like_contains(raw: str) -> str:
+    """Escape LIKE wildcards so a search for `%` is a literal percent sign."""
+    escaped = raw.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return f"%{escaped}%"
+
+
+def _csv_cell(value: Any) -> Any:
+    """Prefix spreadsheet formula triggers so Excel/Sheets treat them as text."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        stripped = value.lstrip(" \t")
+        if stripped[:1] in {"=", "+", "-", "@"} or value[:1] in {"\t", "\r", "\n"}:
+            return "'" + value
+    return value
+
+
+_FILENAME_SAFE = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def _attachment_filename(name: str) -> str:
+    cleaned = _FILENAME_SAFE.sub("-", name).strip(".-")
+    return (cleaned or "export")[:80]
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -528,11 +554,17 @@ def ai_loop_stop() -> dict[str, Any]:
 
 @router.get("/search")
 def search(q: str = Query(min_length=1), db: Session = Depends(get_db)) -> dict[str, Any]:
-    like = f"%{q}%"
+    like = _like_contains(q)
     strategies = list(
         db.scalars(
             select(Strategy)
-            .where(or_(Strategy.name.ilike(like), Strategy.idea.ilike(like), Strategy.code.ilike(like)))
+            .where(
+                or_(
+                    Strategy.name.ilike(like, escape="\\"),
+                    Strategy.idea.ilike(like, escape="\\"),
+                    Strategy.code.ilike(like, escape="\\"),
+                )
+            )
             .limit(20)
         )
     )
@@ -541,9 +573,9 @@ def search(q: str = Query(min_length=1), db: Session = Depends(get_db)) -> dict[
             select(Experiment)
             .where(
                 or_(
-                    Experiment.ai_summary.ilike(like),
-                    Experiment.rejection_reason.ilike(like),
-                    Experiment.reasoning.ilike(like),
+                    Experiment.ai_summary.ilike(like, escape="\\"),
+                    Experiment.rejection_reason.ilike(like, escape="\\"),
+                    Experiment.reasoning.ilike(like, escape="\\"),
                 )
             )
             .limit(20)
@@ -552,7 +584,12 @@ def search(q: str = Query(min_length=1), db: Session = Depends(get_db)) -> dict[
     hypotheses = list(
         db.scalars(
             select(Hypothesis)
-            .where(or_(Hypothesis.title.ilike(like), Hypothesis.thesis.ilike(like)))
+            .where(
+                or_(
+                    Hypothesis.title.ilike(like, escape="\\"),
+                    Hypothesis.thesis.ilike(like, escape="\\"),
+                )
+            )
             .limit(20)
         )
     )
@@ -594,6 +631,7 @@ def notebook_examples() -> dict[str, Any]:
 
 @router.post("/notebook/execute")
 def notebook_execute(body: NotebookExecuteRequest) -> dict[str, Any]:
+    _require_dev_tools("Notebook execution")
     return execute_notebook_code(body.code)
 
 
@@ -612,6 +650,7 @@ def analytics_query(body: DuckDBQueryRequest) -> dict[str, Any]:
 
 @router.post("/admin/seed")
 def admin_seed() -> dict[str, Any]:
+    _require_dev_tools("Sample data seeding")
     result = seed_sample_data()
     write_audit("sample_data_seeded", details={"count": len(result["seeded"])})
     return result
@@ -619,13 +658,13 @@ def admin_seed() -> dict[str, Any]:
 
 @router.post("/security/encrypt")
 def security_encrypt(body: EncryptRequest) -> dict[str, Any]:
-    _require_dev_tools()
+    _require_dev_tools("Encrypt/decrypt helpers")
     return encrypt_secret(body.value)
 
 
 @router.post("/security/decrypt")
 def security_decrypt(body: EncryptRequest) -> dict[str, Any]:
-    _require_dev_tools()
+    _require_dev_tools("Encrypt/decrypt helpers")
     return decrypt_secret(body.value)
 
 
@@ -717,13 +756,12 @@ def trends_score(body: TrendsScoreRequest) -> dict[str, Any]:
 
 @router.get("/trends/{entity_id}/dashboard")
 def trends_dashboard(entity_id: str, window: str = Query("90d")) -> dict[str, Any]:
+    from quant_os_api.trends import CAVEATS
+    from quant_os_api.trends import store as trends_store
     from quant_os_api.trends.alerts import build_alerts
     from quant_os_api.trends.backtest import pre_earnings_panel
     from quant_os_api.trends.cross_signals import load_cross_signals
     from quant_os_api.trends.score import score_entity
-    from quant_os_api.trends import store as trends_store
-
-    from quant_os_api.trends import CAVEATS
 
     inv = trends_store.inventory(entity_id)
     if inv["interest_rows"] == 0:
@@ -821,7 +859,10 @@ def trends_models_train(body: TrendsTrainRequest) -> dict[str, Any]:
     from quant_os_api.trends.modeling import train_models
 
     result = train_models(entity_ids=body.entity_ids, entity_id=body.entity_id)
-    write_audit("trends_models_train", details={"ok": result.get("ok"), "n_rows": (result.get("meta") or {}).get("n_rows")})
+    write_audit(
+        "trends_models_train",
+        details={"ok": result.get("ok"), "n_rows": (result.get("meta") or {}).get("n_rows")},
+    )
     return result
 
 
@@ -868,19 +909,22 @@ def _trends_comparison_csv(payload: dict[str, Any]) -> str:
     writer = csv.writer(buf)
     writer.writerow(
         [
-            "rank",
-            "entity_id",
-            "label",
-            "ticker",
-            "ranking_score",
-            "search_demand_score",
-            "regime",
-            "quality_badge",
-            "ranking_method",
-            "side_hint",
-            "window",
-            "is_absolute_volume",
-            "note",
+            _csv_cell(cell)
+            for cell in (
+                "rank",
+                "entity_id",
+                "label",
+                "ticker",
+                "ranking_score",
+                "search_demand_score",
+                "regime",
+                "quality_badge",
+                "ranking_method",
+                "side_hint",
+                "window",
+                "is_absolute_volume",
+                "note",
+            )
         ]
     )
     window = payload.get("window") or ""
@@ -888,21 +932,24 @@ def _trends_comparison_csv(payload: dict[str, Any]) -> str:
     for row in payload.get("rankings") or []:
         writer.writerow(
             [
-                row.get("rank") if row.get("rank") is not None else "",
-                row.get("entity_id") or "",
-                row.get("label") or "",
-                row.get("ticker") or "",
-                row.get("ranking_score") if row.get("ranking_score") is not None else "",
-                row.get("search_demand_score")
-                if row.get("search_demand_score") is not None
-                else "",
-                row.get("regime") or "",
-                row.get("quality_badge") or "",
-                row.get("ranking_method") or "",
-                row.get("side_hint") or "",
-                window,
-                False,
-                note,
+                _csv_cell(cell)
+                for cell in (
+                    row.get("rank") if row.get("rank") is not None else "",
+                    row.get("entity_id") or "",
+                    row.get("label") or "",
+                    row.get("ticker") or "",
+                    row.get("ranking_score") if row.get("ranking_score") is not None else "",
+                    row.get("search_demand_score")
+                    if row.get("search_demand_score") is not None
+                    else "",
+                    row.get("regime") or "",
+                    row.get("quality_badge") or "",
+                    row.get("ranking_method") or "",
+                    row.get("side_hint") or "",
+                    window,
+                    False,
+                    note,
+                )
             ]
         )
     return buf.getvalue()
@@ -922,7 +969,9 @@ def trends_comparison(
             content=body,
             media_type="text/csv; charset=utf-8",
             headers={
-                "Content-Disposition": f'attachment; filename="trends-comparison-{window}.csv"'
+                "Content-Disposition": (
+                    f'attachment; filename="{_attachment_filename(f"trends-comparison-{window}.csv")}"'
+                )
             },
         )
     return payload
@@ -957,17 +1006,20 @@ def _trends_export_csv(payload: dict[str, Any]) -> str:
     def row(section: str, key: str, value: Any, date: str | None = None) -> None:
         writer.writerow(
             [
-                section,
-                eid,
-                label,
-                ticker,
-                window,
-                as_of,
-                key,
-                date or "",
-                value if value is not None else "",
-                False,
-                note,
+                _csv_cell(cell)
+                for cell in (
+                    section,
+                    eid,
+                    label,
+                    ticker,
+                    window,
+                    as_of,
+                    key,
+                    date or "",
+                    value if value is not None else "",
+                    False,
+                    note,
+                )
             ]
         )
 
@@ -1043,7 +1095,9 @@ def trends_export(
             content=body,
             media_type="text/csv; charset=utf-8",
             headers={
-                "Content-Disposition": f'attachment; filename="trends-{entity_id}-{window}.csv"'
+                "Content-Disposition": (
+                    f'attachment; filename="{_attachment_filename(f"trends-{entity_id}-{window}.csv")}"'
+                )
             },
         )
     return payload

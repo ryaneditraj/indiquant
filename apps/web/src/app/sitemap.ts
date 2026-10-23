@@ -12,14 +12,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/backtests",
     "/validation",
     "/portfolio",
+    "/optimization",
     "/ai-lab",
     "/notebook",
+    "/logs",
     "/settings",
     "/docs",
   ];
+  const lastModified = new Date("2026-10-23");
   return paths.map((path) => ({
     url: `${base}${path}`,
-    lastModified: new Date(),
+    lastModified,
     changeFrequency: "weekly" as const,
     priority: path === "" ? 1 : 0.7,
   }));

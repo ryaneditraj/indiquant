@@ -1,6 +1,6 @@
 # Contributing to Indiquant
 
-Indiquant is a **Money Radar** product by **Thugir Group**.
+Indiquant is a **Money Radar** product by **Thugir Group**. The GitHub repository is maintained by [Ryan Editraj](https://github.com/ryaneditraj).
 
 ## License reminder
 
@@ -12,7 +12,7 @@ This project uses **PolyForm Noncommercial 1.0.0**. Contributions are accepted u
 2. **No hardcoding** — Providers, URLs, keys → config.
 3. **Reproducibility** — Experiment IDs, inputs, seeds, metrics.
 4. **Evidence** — Tests and statistics over vibes.
-5. **No secrets** in git.
+5. **No secrets** in git. Read [SECURITY.md](SECURITY.md) before adding an endpoint.
 6. **Brand** — Keep Indiquant ↔ Money Radar ↔ Thugir Group hierarchy clear. See [docs/brand.md](docs/brand.md).
 7. **Honest Trends** — Never claim absolute search volume or guaranteed returns.
 
@@ -47,6 +47,7 @@ Focused PRs. Update CHANGELOG for user-facing changes. Pass the edge test.
 - Keep PolyForm NC language intact in README and docs.
 - Surface Trends caveats on any new scoring / ranking UI.
 - Empty-state UX beats silent failures — especially on `/trends`.
+- Security reports go through a private GitHub advisory, not a public issue.
 
 ## Code of conduct
 

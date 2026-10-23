@@ -1,0 +1,45 @@
+# Indiquant
+
+> Open-source AI quant research OS for Indian equity markets (NSE and BSE). Hypothesis-first discovery, walk-forward backtesting, and Google Trends search-demand scores. A Money Radar product by Thugir Group, maintained by Ryan Editraj.
+
+Indiquant is a research lab. It records hypotheses, backtests them, and walk-forward validates them. It does not place live broker orders.
+
+## Links
+
+- Repository: https://github.com/ryaneditraj/indiquant
+- Product page: https://moneyradar.in/indiquant
+- Parent brand: https://moneyradar.in
+- Author: https://github.com/ryaneditraj
+- Instagram: https://instagram.com/ryaneditraj
+- License: PolyForm Noncommercial 1.0.0 (commercial use needs a separate license from Money Radar)
+
+## What it does
+
+- Hypothesis-first AI research loop with experiment IDs
+- Walk-forward, Monte Carlo, out-of-sample, and lookahead checks
+- Google Trends Search Demand Score (relative 0–100 index, not absolute volume)
+- Parquet OHLCV store and DuckDB SELECT analytics over registered views
+- Offline fixture demo with no broker keys
+
+## Questions
+
+### What is Indiquant?
+An open-source quant research OS for NSE and BSE. Hypothesis, backtest, walk-forward validation, experiment ID.
+
+### Is Indiquant a trading bot?
+No. It does not place live orders. A paper broker plugin simulates fills.
+
+### Can I backtest without a broker API key?
+Yes. The default provider is an offline fixture. Sample CSVs ship in data/sample_csv.
+
+### What does the search-demand score measure?
+A relative 0–100 Google Trends index for configured queries in India. Not absolute volume. Not a return forecast.
+
+### Can I use Indiquant commercially?
+Only with a separate license from Money Radar / Thugir Group. The public license is PolyForm Noncommercial 1.0.0.
+
+### Who maintains it?
+Ryan Editraj (https://github.com/ryaneditraj). Product of Money Radar by Thugir Group.
+
+### How do I report a vulnerability?
+Private GitHub security advisory on ryaneditraj/indiquant. See SECURITY.md. Do not open a public issue.

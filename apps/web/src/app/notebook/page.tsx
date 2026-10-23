@@ -58,7 +58,9 @@ export default function NotebookPage() {
         <p className="text-[11px] uppercase tracking-[0.2em] text-accent">Notebooks</p>
         <h1 className="mt-2 font-display text-3xl text-ink">Notebook</h1>
         <p className="mt-2 text-sm text-ink-muted">
-          Restricted server-side research REPL. Dangerous I/O is blocked.
+          Local research REPL for development. It is disabled when QUANT_OS_ENV is
+          production or staging. Imports, file reads, and dunder escapes are blocked.
+          This is not a multi-user sandbox.
         </p>
       </div>
 

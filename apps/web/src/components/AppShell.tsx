@@ -153,6 +153,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-ink-faint">Built by</p>
             <p className="mt-1 text-xs font-medium text-ink">{orgName}</p>
             <p className="mt-2 text-[10px] leading-relaxed text-ink-muted">
+              Author{" "}
+              <a
+                href="https://github.com/ryaneditraj"
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent-radar hover:underline"
+              >
+                Ryan Editraj
+              </a>
+            </p>
+            <p className="mt-2 text-[10px] leading-relaxed text-ink-muted">
               Non-commercial open source. Proof before prediction.
             </p>
           </div>

@@ -55,7 +55,10 @@ def build_alerts(entity_id: str = "dmart", *, as_of: str | None = None, window: 
             "brand_search_acceleration",
             direction="up",
             magnitude=max(z, accel),
-            explanation=f"Brand interest z-score={z:.2f} with acceleration={accel:.2f} versus rolling history (relative index).",
+            explanation=(
+                f"Brand interest z-score={z:.2f} with acceleration={accel:.2f} "
+                "versus rolling history (relative index)."
+            ),
             query_group="brand_vs_anchor",
         )
 
@@ -65,7 +68,10 @@ def build_alerts(entity_id: str = "dmart", *, as_of: str | None = None, window: 
             "transactional_query_surge",
             direction="up",
             magnitude=tx_ratio,
-            explanation=f"Transactional-to-brand ratio at {tx_ratio:.2f}, indicating elevated purchase-intent query mix.",
+            explanation=(
+                f"Transactional-to-brand ratio at {tx_ratio:.2f}, "
+                "indicating elevated purchase-intent query mix."
+            ),
             query_group="tx_vs_brand",
         )
 
@@ -75,7 +81,10 @@ def build_alerts(entity_id: str = "dmart", *, as_of: str | None = None, window: 
             "competitor_relative_share_breakout",
             direction="up",
             magnitude=share,
-            explanation=f"Brand share inside competitor comparison group rose to {share:.1%} (within-request relative index).",
+            explanation=(
+                f"Brand share inside competitor comparison group rose to {share:.1%} "
+                "(within-request relative index)."
+            ),
             query_group="competitor_basket",
         )
 
@@ -94,7 +103,10 @@ def build_alerts(entity_id: str = "dmart", *, as_of: str | None = None, window: 
             "region_specific_anomaly",
             direction="up",
             magnitude=_safe(f.get("core_vs_noncore_spread")),
-            explanation=f"Core-state interest exceeds non-core by {_safe(f.get('core_vs_noncore_spread')):.1f} index points.",
+            explanation=(
+                "Core-state interest exceeds non-core by "
+                f"{_safe(f.get('core_vs_noncore_spread')):.1f} index points."
+            ),
             query_group="brand_vs_anchor",
         )
 

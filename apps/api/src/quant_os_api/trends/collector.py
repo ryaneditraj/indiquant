@@ -5,8 +5,9 @@ from __future__ import annotations
 import hashlib
 import math
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -389,8 +390,8 @@ def _collect_pytrends(entity_id: str, *, windows: list[str] | None = None) -> di
             tf = timeframe_map.get(window, "today 3-m")
             terms = group["terms"][:5]  # Trends comparison limit
 
-            def _fetch_iot() -> Any:
-                pytrends.build_payload(terms, timeframe=tf, geo=geo)
+            def _fetch_iot(_terms: list[str] = terms, _tf: str = tf) -> Any:
+                pytrends.build_payload(_terms, timeframe=_tf, geo=geo)
                 return pytrends.interest_over_time()
 
             iot = call_with_backoff(

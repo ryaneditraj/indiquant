@@ -14,6 +14,8 @@ WORKDIR /app/apps/api
 RUN pip install --no-cache-dir -e .
 
 ENV QUANT_OS_CONFIG_PATH=/app/config.yaml
+# Runs as root so a mounted ./data volume stays writable in local Compose.
+# Do not publish port 8000 onto an untrusted network.
 EXPOSE 8000
 
 CMD ["uvicorn", "quant_os_api.main:app", "--host", "0.0.0.0", "--port", "8000"]

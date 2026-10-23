@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 from quant_os_api.trends import CAVEATS, QUALITY_BADGES
-from quant_os_api.trends.features import compute_features
 from quant_os_api.trends import store as trends_store
+from quant_os_api.trends.features import compute_features
 from quant_os_api.trends.universe import trends_config
 
 

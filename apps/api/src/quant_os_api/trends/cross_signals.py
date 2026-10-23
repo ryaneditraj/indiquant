@@ -185,7 +185,10 @@ def load_cross_signals(
         "window": window,
         "as_of": as_of or datetime.now(UTC).date().isoformat(),
         "source": "fixture",
-        "note": "Fixture adapters generate correlated/divergent series offline. Swap for live feeds when available — same schema.",
+        "note": (
+            "Fixture adapters generate correlated/divergent series offline. "
+            "Swap for live feeds when available — same schema."
+        ),
         "is_absolute_volume": False,
         "metrics": metrics,
         "search_confirmation_composite": confirmation,
